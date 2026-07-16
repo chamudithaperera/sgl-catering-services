@@ -187,6 +187,24 @@ export function HomePage() {
           </button>
         </div>
       </section>
+
+      <section className="premium-about" id="about">
+        <div className="premium-about-shell">
+          <div className="premium-about-media">
+            <img src="/assets/sgl-images/indoor-buffet.jpg" alt="SGL Catering buffet setup" />
+          </div>
+
+          <div className="premium-about-card">
+            <h2>SGL කේටරින් සර්විස් යනු:</h2>
+            <p>
+              වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා
+              ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත්
+              සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට
+              අප සූදානම්.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

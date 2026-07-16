@@ -384,6 +384,68 @@
   color: var(--text-main);
 }
 
+.premium-about {
+  position: relative;
+  padding: 44px 24px 84px;
+  background:
+    linear-gradient(180deg, rgba(11, 15, 16, 0.96) 0%, rgba(11, 15, 16, 1) 100%);
+}
+
+.premium-about-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.premium-about-media {
+  min-height: 460px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.26);
+  border: 1px solid rgba(184, 154, 106, 0.14);
+}
+
+.premium-about-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.96) contrast(1.03) brightness(0.96);
+}
+
+.premium-about-card {
+  display: grid;
+  align-content: center;
+  gap: 20px;
+  min-height: 460px;
+  padding: clamp(28px, 4vw, 46px);
+  border-radius: 30px;
+  background: linear-gradient(180deg, #fffdf8 0%, #f7f2ea 100%);
+  border: 1px solid rgba(184, 154, 106, 0.22);
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+.premium-about-card h2 {
+  margin: 0;
+  font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
+  font-size: clamp(2rem, 3.3vw, 3.15rem);
+  font-weight: 800;
+  line-height: 1.04;
+  color: #111516;
+}
+
+.premium-about-card p {
+  margin: 0;
+  font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
+  font-size: clamp(1rem, 1.7vw, 1.12rem);
+  line-height: 1.95;
+  color: rgba(17, 21, 22, 0.8);
+}
+
 @keyframes heroRise {
   from {
     opacity: 0;
@@ -447,6 +509,23 @@
     padding-top: 150px;
   }
 
+  .premium-about {
+    padding-top: 38px;
+  }
+
+  .premium-about-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .premium-about-media,
+  .premium-about-card {
+    min-height: auto;
+  }
+
+  .premium-about-media {
+    min-height: 360px;
+  }
+
   .premium-slider-dots {
     right: 18px;
     gap: 12px;
@@ -500,6 +579,30 @@
     bottom: 24px;
     display: flex;
     transform: translateX(50%);
+  }
+
+  .premium-about {
+    padding: 34px 16px 72px;
+  }
+
+  .premium-about-media {
+    min-height: 300px;
+    border-radius: 24px;
+  }
+
+  .premium-about-card {
+    gap: 16px;
+    padding: 24px 20px 26px;
+    border-radius: 24px;
+  }
+
+  .premium-about-card h2 {
+    font-size: clamp(1.7rem, 8vw, 2.35rem);
+  }
+
+  .premium-about-card p {
+    font-size: 0.98rem;
+    line-height: 1.84;
   }
 
   .premium-floating-contact {
