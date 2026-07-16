@@ -234,67 +234,6 @@
     linear-gradient(180deg, rgba(255, 138, 61, 0.14), rgba(6, 61, 58, 0.2));
 }
 
-.circle-feature {
-  position: absolute;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.circle-feature.top {
-  top: 156px;
-  left: 2%;
-}
-
-.circle-feature.middle {
-  top: 340px;
-  left: -4%;
-}
-
-.circle-feature.bottom {
-  bottom: 92px;
-  left: 4%;
-}
-
-.circle-badge {
-  width: 134px;
-  height: 134px;
-  border-radius: 50%;
-  padding: 6px;
-  background: #fff;
-  box-shadow: 0 16px 34px rgba(11, 55, 52, 0.18);
-  border: 1px dashed rgba(255, 138, 61, 0.34);
-}
-
-.circle-badge img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.circle-caption {
-  max-width: 140px;
-  padding: 10px 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 12px 28px rgba(11, 55, 52, 0.12);
-}
-
-.circle-caption strong {
-  display: block;
-  font-size: 0.95rem;
-  color: var(--color-primary-deep);
-}
-
-.circle-caption span {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.82rem;
-  color: var(--color-text-soft);
-}
-
 .benefits-strip {
   position: relative;
   z-index: 2;
@@ -1003,23 +942,6 @@
     border-radius: 26px;
   }
 
-  .circle-feature.top {
-    top: 38px;
-    left: 26px;
-  }
-
-  .circle-feature.middle {
-    top: auto;
-    bottom: 180px;
-    left: 24px;
-  }
-
-  .circle-feature.bottom {
-    left: auto;
-    right: 24px;
-    bottom: 38px;
-  }
-
   .service-grid,
   .package-grid,
   .rental-grid,
@@ -1084,15 +1006,6 @@
     min-height: 500px;
   }
 
-  .circle-badge {
-    width: 106px;
-    height: 106px;
-  }
-
-  .circle-caption {
-    max-width: 118px;
-  }
-
   .section-block {
     padding: 26px 0;
   }
@@ -1153,14 +1066,6 @@
 
   .hero-visual {
     min-height: 420px;
-  }
-
-  .circle-feature {
-    gap: 10px;
-  }
-
-  .circle-caption {
-    display: none;
   }
 
   .pricing-table,

@@ -177,48 +177,6 @@ export function HomePage() {
               <div className="hero-photo-panel">
                 <img alt="SGL buffet hero" src="/assets/hero-buffet.jpg" />
               </div>
-
-              <div className="circle-feature top">
-                <div className="circle-badge">
-                  <img
-                    alt="Buffet detail"
-                    src="/assets/hero-buffet.jpg"
-                    style={{ objectPosition: "20% 30%" }}
-                  />
-                </div>
-                <div className="circle-caption">
-                  <strong>බුෆේ සැකසුම්</strong>
-                  <span>Elegant display</span>
-                </div>
-              </div>
-
-              <div className="circle-feature middle">
-                <div className="circle-badge">
-                  <img
-                    alt="Dish detail"
-                    src="/assets/hero-buffet.jpg"
-                    style={{ objectPosition: "52% 60%" }}
-                  />
-                </div>
-                <div className="circle-caption">
-                  <strong>රසවත් මෙනු</strong>
-                  <span>Tailored packages</span>
-                </div>
-              </div>
-
-              <div className="circle-feature bottom">
-                <div className="circle-badge">
-                  <img
-                    alt="Event detail"
-                    src="/assets/hero-buffet.jpg"
-                    style={{ objectPosition: "78% 76%" }}
-                  />
-                </div>
-                <div className="circle-caption">
-                  <strong>විශේෂ අවස්ථා</strong>
-                  <span>On-time service</span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -635,4 +593,3 @@ export function HomePage() {
     </div>
   );
 }
-
