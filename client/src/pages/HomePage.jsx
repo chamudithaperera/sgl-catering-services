@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronRight, Menu, PhoneCall, X } from "lucide-react";
 import "./HomePage.css";
 
@@ -38,7 +38,9 @@ const navItems = [
 
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isNavPinned, setIsNavPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const heroBoundaryRef = useRef(null);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -46,6 +48,28 @@ export function HomePage() {
     }, 5200);
 
     return () => window.clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const heroBoundary = heroBoundaryRef.current;
+
+    if (!heroBoundary) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsNavPinned(!entry.isIntersecting);
+      },
+      {
+        threshold: 0,
+        rootMargin: "-92px 0px 0px 0px",
+      }
+    );
+
+    observer.observe(heroBoundary);
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -102,7 +126,7 @@ export function HomePage() {
 
         <div className="premium-hero-overlay" aria-hidden="true" />
 
-        <header className="premium-nav">
+        <header className={`premium-nav ${isNavPinned ? "is-pinned" : "is-overlay"}`}>
           <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
             <span className="premium-brand-copy">
               <strong>SGL කේටරින් සර්විස්</strong>
@@ -171,15 +195,17 @@ export function HomePage() {
           ))}
         </div>
 
+        <div ref={heroBoundaryRef} className="premium-hero-boundary" aria-hidden="true" />
+
       </section>
 
       <section className="premium-about" id="about">
         <div className="premium-about-shell">
-          <div className="premium-about-media premium-reveal premium-reveal-left" data-reveal>
+          <div className="premium-about-media premium-reveal premium-reveal-media" data-reveal>
             <img src="/assets/sgl-images/indoor-buffet.jpg" alt="SGL Catering buffet setup" />
           </div>
 
-          <div className="premium-about-card premium-reveal premium-reveal-right" data-reveal>
+          <div className="premium-about-card premium-reveal premium-reveal-card" data-reveal>
             <h2>SGL කේටරින් සර්විස් යනු:</h2>
             <p>
               වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා
