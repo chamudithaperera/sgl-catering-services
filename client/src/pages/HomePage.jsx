@@ -49,8 +49,6 @@ export function HomePage() {
     setActiveSlide((currentSlide) => (currentSlide + 1) % heroSlides.length);
   }
 
-  const currentSlide = heroSlides[activeSlide];
-
   return (
     <main className="premium-home">
       <section className="premium-hero" id="home">
@@ -66,7 +64,6 @@ export function HomePage() {
         </div>
 
         <div className="premium-hero-overlay" aria-hidden="true" />
-        <div className="premium-hero-accent" aria-hidden="true" />
 
         <header className="premium-nav">
           <div className="premium-nav-left">
@@ -108,7 +105,6 @@ export function HomePage() {
 
         <div className="premium-hero-content">
           <div className="premium-hero-panel">
-            <span className="premium-kicker">ප්‍රිමියම් උත්සව කේටරින් අත්දැකීම</span>
             <h1>SGL කේටරින් සර්විස්</h1>
             <p>
               විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන
@@ -125,26 +121,6 @@ export function HomePage() {
                 අප අමතන්න
               </a>
             </div>
-          </div>
-        </div>
-
-        <div className="premium-slide-dock">
-          <div className="premium-slide-copy">
-            <span>{currentSlide.label}</span>
-            <p>{currentSlide.detail}</p>
-          </div>
-
-          <div className="premium-slide-indicators" aria-label="Hero slide controls">
-            {heroSlides.map((slide, index) => (
-              <button
-                key={slide.label}
-                type="button"
-                className={`premium-slide-indicator ${index === activeSlide ? "is-active" : ""}`}
-                aria-label={`${slide.label} slide`}
-                aria-pressed={index === activeSlide}
-                onClick={() => selectSlide(index)}
-              />
-            ))}
           </div>
         </div>
       </section>
