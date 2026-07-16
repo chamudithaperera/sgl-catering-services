@@ -13,7 +13,7 @@
   --color-border: rgba(6, 61, 58, 0.12);
   --shadow-soft: 0 28px 70px rgba(11, 55, 52, 0.12);
   --shadow-card: 0 18px 35px rgba(11, 55, 52, 0.1);
-  font-family: "Noto Sans Sinhala", sans-serif;
+  font-family: "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: var(--color-text);
@@ -61,4 +61,3 @@ img {
 #root {
   min-height: 100vh;
 }
-
