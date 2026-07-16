@@ -20,22 +20,23 @@
 }
 
 .site-container {
-  width: 100%;
-  margin: 0;
-  padding-inline: clamp(20px, 4vw, 48px);
+  width: min(1360px, calc(100% - 32px));
+  margin: 0 auto;
+  padding-inline: 0;
 }
 
 .hero-wrap {
-  padding: 0;
+  padding: 28px 0 54px;
 }
 
 .hero-shell {
   position: relative;
-  min-height: 100vh;
+  min-height: min(920px, calc(100vh - 56px));
   overflow: hidden;
-  border-radius: 0;
+  border-radius: 30px;
   background: rgba(255, 255, 255, 0.88);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow-soft);
   backdrop-filter: blur(18px);
 }
 
@@ -88,7 +89,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin: 34px 34px 0;
+  margin: 28px 28px 0;
   padding: 18px 26px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.94);
@@ -206,13 +207,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: 24px;
-  padding: 40px 34px 0;
+  padding: 34px 28px 164px;
 }
 
 .hero-copy {
   position: relative;
   z-index: 2;
-  padding: 70px 0 110px 34px;
+  padding: 72px 0 0 34px;
 }
 
 .hero-intro-copy {
@@ -221,7 +222,7 @@
 
 .hero-frame {
   position: absolute;
-  inset: 38px 30px 78px 0;
+  inset: 34px 16px -12px 0;
   border: 1px solid rgba(255, 138, 61, 0.2);
   border-radius: 36px 96px 36px 96px;
   opacity: 0.7;
@@ -268,7 +269,7 @@
 
 .hero-visual {
   position: relative;
-  min-height: 640px;
+  min-height: 100%;
 }
 
 .hero-intro-visual {
@@ -277,11 +278,13 @@
 
 .hero-photo-panel {
   position: absolute;
-  inset: 0 0 0 4%;
+  inset: 0 -2px 0 10%;
+  border-top-left-radius: min(28vw, 420px);
+  border-bottom-left-radius: min(28vw, 420px);
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   overflow: hidden;
-  clip-path: polygon(35% 0%, 100% 0%, 100% 100%, 0% 100%, 17% 58%);
+  clip-path: none;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
 }
 
@@ -304,18 +307,26 @@
 }
 
 .benefits-strip {
-  position: relative;
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 26px;
   z-index: 2;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
-  padding: 26px 36px 34px;
+  padding: 22px 24px;
+  border-radius: 28px;
+  background: rgba(255, 249, 244, 0.84);
+  border: 1px solid rgba(255, 138, 61, 0.14);
+  box-shadow: 0 22px 50px rgba(11, 55, 52, 0.12);
+  backdrop-filter: blur(18px);
 }
 
 .scroll-cue {
   position: absolute;
   left: 50%;
-  bottom: 52px;
+  bottom: 132px;
   z-index: 3;
   transform: translateX(-50%);
   display: inline-grid;
@@ -338,7 +349,7 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 18px 8px;
+  padding: 14px 8px;
 }
 
 .benefit-item:not(:last-child) {
@@ -1209,6 +1220,10 @@
 }
 
 @media (max-width: 1100px) {
+  .site-container {
+    width: min(100% - 24px, 1360px);
+  }
+
   .hero-grid,
   .about-panel,
   .contact-grid,
@@ -1218,7 +1233,7 @@
   }
 
   .hero-copy {
-    padding: 44px 0 34px 12px;
+    padding: 44px 0 0 12px;
   }
 
   .hero-visual {
@@ -1226,8 +1241,7 @@
   }
 
   .hero-photo-panel {
-    inset: 0;
-    clip-path: none;
+    inset: 0 0 0 20%;
     border-radius: 26px;
   }
 
@@ -1246,6 +1260,11 @@
   }
 
   .benefits-strip {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: -64px 18px 18px;
     grid-template-columns: 1fr;
   }
 
@@ -1284,11 +1303,11 @@
   }
 
   .hero-grid {
-    padding: 26px 18px 0;
+    padding: 26px 18px 98px;
   }
 
   .scroll-cue {
-    bottom: 28px;
+    bottom: 118px;
   }
 
   .hero-copy h1 {
@@ -1320,7 +1339,8 @@
   }
 
   .benefits-strip {
-    padding: 16px 18px 24px;
+    margin: -42px 18px 18px;
+    padding: 18px;
   }
 
   .about-panel,
@@ -1332,16 +1352,16 @@
 
 @media (max-width: 640px) {
   .site-container {
-    width: 100%;
-    padding-inline: 16px;
+    width: calc(100% - 20px);
   }
 
   .hero-wrap {
-    padding-top: 0;
+    padding-top: 12px;
   }
 
   .hero-shell {
-    border-radius: 0;
+    border-radius: 24px;
+    min-height: auto;
   }
 
   .hero-copy h1 {
@@ -1367,6 +1387,17 @@
 
   .hero-ornament {
     width: min(280px, calc(100% - 32px));
+  }
+
+  .hero-photo-panel {
+    inset: 0;
+    border-top-left-radius: 26px;
+    border-bottom-left-radius: 26px;
+  }
+
+  .benefits-strip {
+    margin: -28px 14px 14px;
+    border-radius: 22px;
   }
 
   .scroll-cue {
