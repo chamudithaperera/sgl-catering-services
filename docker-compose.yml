@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sgl-catering-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sgl_catering
+      POSTGRES_USER: sgl_user
+      POSTGRES_PASSWORD: sgl_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+

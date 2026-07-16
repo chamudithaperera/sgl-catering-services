@@ -1,49 +1,11 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Dependency directories
-node_modules/
-jspm_packages/
-web_modules/
-
-# Build outputs
-dist/
-dist-ssr/
-build/
-out/
-
-# Environment and Local configuration
+node_modules
+client/node_modules
+server/node_modules
+client/dist
+server/uploads/*
+!server/uploads/.gitkeep
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-*.env
-*.env.*
+client/.env
+server/.env
+npm-debug.log*
 
-# Database / Prisma
-/server/prisma/*.db
-/server/prisma/*.db-journal
-
-# Uploads / user files
-/server/uploads/*
-!/server/uploads/.gitkeep
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS metadata
-.DS_Store
-Thumbs.db

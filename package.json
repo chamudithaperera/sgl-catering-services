@@ -1,10 +1,19 @@
 {
   "name": "sgl-catering-services",
+  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "SGL Catering Services local full-stack project",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently -k \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build": "npm run build --prefix client",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
+    "prisma:generate": "npm run prisma:generate --prefix server",
+    "prisma:push": "npm run prisma:push --prefix server",
+    "prisma:seed": "npm run prisma:seed --prefix server"
   },
   "repository": {
     "type": "git",
@@ -13,7 +22,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/chamudithaperera/sgl-catering-services/issues"
   },
