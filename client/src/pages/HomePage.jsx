@@ -48,6 +48,35 @@ export function HomePage() {
     return () => window.clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    const revealItems = Array.from(document.querySelectorAll("[data-reveal]"));
+
+    if (revealItems.length === 0) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.18,
+        rootMargin: "0px 0px -10% 0px",
+      }
+    );
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    return () => observer.disconnect();
+  }, []);
+
   function selectSlide(slideIndex) {
     setActiveSlide(slideIndex);
     setMenuOpen(false);
@@ -146,11 +175,11 @@ export function HomePage() {
 
       <section className="premium-about" id="about">
         <div className="premium-about-shell">
-          <div className="premium-about-media">
+          <div className="premium-about-media premium-reveal premium-reveal-left" data-reveal>
             <img src="/assets/sgl-images/indoor-buffet.jpg" alt="SGL Catering buffet setup" />
           </div>
 
-          <div className="premium-about-card">
+          <div className="premium-about-card premium-reveal premium-reveal-right" data-reveal>
             <h2>SGL කේටරින් සර්විස් යනු:</h2>
             <p>
               වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා
