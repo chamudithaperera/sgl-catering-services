@@ -76,7 +76,7 @@ export function HomePage() {
         <header className="premium-nav">
           <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
             <span className="premium-brand-copy">
-              <strong>කේටරින් සර්විස්</strong>
+              <strong>SGL කේටරින් සර්විස්</strong>
               <small>Premium Event Catering</small>
             </span>
           </a>
