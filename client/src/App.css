@@ -20,13 +20,13 @@
 }
 
 .site-container {
-  width: min(1360px, calc(100% - 32px));
+  width: 100%;
   margin: 0 auto;
   padding-inline: 0;
 }
 
 .hero-wrap {
-  padding: 28px 0 54px;
+  padding: 12px 0 40px;
 }
 
 .hero-shell {
@@ -1221,7 +1221,7 @@
 
 @media (max-width: 1100px) {
   .site-container {
-    width: min(100% - 24px, 1360px);
+    width: 100%;
   }
 
   .hero-grid,
@@ -1352,11 +1352,11 @@
 
 @media (max-width: 640px) {
   .site-container {
-    width: calc(100% - 20px);
+    width: 100%;
   }
 
   .hero-wrap {
-    padding-top: 12px;
+    padding-top: 6px;
   }
 
   .hero-shell {
