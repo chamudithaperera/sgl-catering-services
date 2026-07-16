@@ -33,10 +33,15 @@ function whatsappHref(phoneNumber) {
 
 function SectionHeading({ eyebrow, title, description }) {
   return (
-    <div className="section-heading">
+    <div className="section-heading reveal-on-scroll reveal-up">
       <span>{eyebrow}</span>
       <h2>{title}</h2>
       {description ? <p>{description}</p> : null}
+      <div className="section-ornament" aria-hidden="true">
+        <span />
+        <i />
+        <span />
+      </div>
     </div>
   );
 }
@@ -70,6 +75,32 @@ export function HomePage() {
       setErrorMessage("දත්ත ලබාගැනීමේ දෝෂයක් ඇතිවිය.");
     });
   }, []);
+
+  useEffect(() => {
+    if (!content) {
+      return undefined;
+    }
+
+    const elements = document.querySelectorAll(".reveal-on-scroll");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.18,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, [content]);
 
   if (!content) {
     return (
@@ -119,7 +150,8 @@ export function HomePage() {
     <div className="page-shell">
       <div className="site-container hero-wrap" id="home">
         <div className="hero-shell">
-          <header className="hero-nav">
+          <div className="hero-ornament hero-ornament-top" aria-hidden="true" />
+          <header className="hero-nav hero-intro-nav">
             <button className="menu-toggle" onClick={() => setMenuOpen((current) => !current)} type="button">
               {menuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -149,7 +181,8 @@ export function HomePage() {
           </header>
 
           <div className="hero-grid">
-            <div className="hero-copy">
+            <div className="hero-copy hero-intro-copy">
+              <div className="hero-frame" aria-hidden="true" />
               <div className="eyebrow">
                 <BadgeCheck size={16} />
                 {siteConfig.heroBadge}
@@ -173,7 +206,7 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="hero-visual">
+            <div className="hero-visual hero-intro-visual">
               <div className="hero-photo-panel">
                 <img alt="SGL buffet hero" src="/assets/hero-buffet.jpg" />
               </div>
@@ -184,7 +217,11 @@ export function HomePage() {
             {benefits.map((benefit) => {
               const Icon = getIconComponent(benefit.icon);
               return (
-                <div className="benefit-item" key={benefit.id}>
+                <div
+                  className="benefit-item reveal-on-scroll reveal-up"
+                  key={benefit.id}
+                  style={{ "--reveal-delay": `${benefit.sortOrder * 90}ms` }}
+                >
                   <div className="icon-orb">
                     <Icon size={24} />
                   </div>
@@ -196,16 +233,22 @@ export function HomePage() {
               );
             })}
           </div>
+
+          <a className="scroll-cue" href="#about">
+            <span>පහළට බලන්න</span>
+            <i />
+          </a>
+          <div className="hero-ornament hero-ornament-bottom" aria-hidden="true" />
         </div>
       </div>
 
       <main className="site-container">
-        <section className="section-block" id="about">
-          <div className="about-panel">
-            <div className="about-visual">
+        <section className="section-block section-traditional" id="about">
+          <div className="about-panel reveal-on-scroll reveal-up">
+            <div className="about-visual reveal-on-scroll reveal-left">
               <img alt="SGL catering spread" src="/assets/hero-buffet.jpg" />
             </div>
-            <div className="about-copy">
+            <div className="about-copy reveal-on-scroll reveal-right">
               <SectionHeading
                 eyebrow="SGL Story"
                 title={siteConfig.aboutHeading}
@@ -214,15 +257,15 @@ export function HomePage() {
               <p>{siteConfig.aboutBody}</p>
 
               <div className="stats-row">
-                <div className="stat-pill">
+                <div className="stat-pill reveal-on-scroll reveal-up" style={{ "--reveal-delay": "80ms" }}>
                   <strong>06+</strong>
                   <span>සේවා වර්ග</span>
                 </div>
-                <div className="stat-pill">
+                <div className="stat-pill reveal-on-scroll reveal-up" style={{ "--reveal-delay": "160ms" }}>
                   <strong>03</strong>
                   <span>ප්‍රධාන ආහාර පැකේජ</span>
                 </div>
-                <div className="stat-pill">
+                <div className="stat-pill reveal-on-scroll reveal-up" style={{ "--reveal-delay": "240ms" }}>
                   <strong>250+</strong>
                   <span>කුලී උපකරණ</span>
                 </div>
@@ -231,7 +274,7 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="section-block" id="services">
+        <section className="section-block section-traditional" id="services">
           <SectionHeading
             eyebrow="Our Services"
             title="අපගේ සේවාවන්"
@@ -241,7 +284,11 @@ export function HomePage() {
             {services.map((service) => {
               const Icon = getIconComponent(service.icon);
               return (
-                <article className="service-card" key={service.id}>
+                <article
+                  className="service-card reveal-on-scroll reveal-up"
+                  key={service.id}
+                  style={{ "--reveal-delay": `${service.sortOrder * 80}ms` }}
+                >
                   <div className="icon-orb">
                     <Icon size={26} />
                   </div>
@@ -260,8 +307,12 @@ export function HomePage() {
             description="අමුත්තන්ගේ ගණන, අවස්ථාව සහ අයවැය අනුව සකස් කළ පැකේජ."
           />
           <div className="package-grid">
-            {foodPackages.map((item) => (
-              <article className={`package-card ${item.featured ? "featured" : ""}`} key={item.id}>
+            {foodPackages.map((item, index) => (
+              <article
+                className={`package-card ${item.featured ? "featured" : ""} reveal-on-scroll reveal-up`}
+                key={item.id}
+                style={{ "--reveal-delay": `${(index + 1) * 90}ms` }}
+              >
                 {item.featured ? <div className="feature-chip">Most Popular</div> : null}
                 <h3>{item.name}</h3>
                 <p>{item.summary}</p>
@@ -290,8 +341,12 @@ export function HomePage() {
             description="උත්සවය සම්පූර්ණ කිරීමට අවශ්‍ය furniture, buffet සහ setup items."
           />
           <div className="rental-grid">
-            {rentalItems.map((item) => (
-              <article className="rental-card" key={item.id}>
+            {rentalItems.map((item, index) => (
+              <article
+                className="rental-card reveal-on-scroll reveal-up"
+                key={item.id}
+                style={{ "--reveal-delay": `${(index + 1) * 70}ms` }}
+              >
                 <img alt={item.name} src={item.imageUrl} />
                 <div className="rental-copy">
                   <div className="badge-row">
@@ -320,13 +375,13 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="section-block">
+        <section className="section-block section-traditional">
           <SectionHeading
             eyebrow="Rental Pricing"
             title="කුලී උපකරණ මිල ගණන්"
             description="නිවැරදි මිල ගණන් සඳහා ප්‍රවාහන දුර සහ අවශ්‍ය ප්‍රමාණය සමඟ අප අමතන්න."
           />
-          <div className="pricing-panel">
+          <div className="pricing-panel reveal-on-scroll reveal-up">
             <table className="pricing-table">
               <thead>
                 <tr>
@@ -349,15 +404,19 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="section-block">
+        <section className="section-block section-traditional">
           <SectionHeading
             eyebrow="Rental Packages"
             title="කුලී උපකරණ පැකේජ"
             description="කුඩා සිට විශාල උත්සව දක්වා වෙන්කරවා ගත හැකි pre-built setups."
           />
           <div className="rental-package-grid">
-            {rentalPackages.map((item) => (
-              <article className="rental-package-card" key={item.id}>
+            {rentalPackages.map((item, index) => (
+              <article
+                className="rental-package-card reveal-on-scroll reveal-up"
+                key={item.id}
+                style={{ "--reveal-delay": `${(index + 1) * 100}ms` }}
+              >
                 <h3>{item.name}</h3>
                 <p>{item.summary}</p>
                 <ul className="rental-package-list">
@@ -379,13 +438,13 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="section-block" id="gallery">
+        <section className="section-block section-traditional" id="gallery">
           <SectionHeading
             eyebrow="Gallery"
             title="අපගේ රසවත් මතකයන්"
             description="Event catering, buffet displays සහ setup highlights preview කරන්න."
           />
-          <div className="gallery-filter-row">
+          <div className="gallery-filter-row reveal-on-scroll reveal-up">
             {galleryCategories.map((category) => (
               <button
                 className={`filter-chip ${galleryCategory === category ? "active" : ""}`}
@@ -398,8 +457,14 @@ export function HomePage() {
             ))}
           </div>
           <div className="gallery-grid">
-            {visibleGallery.map((item) => (
-              <button className="gallery-card" key={item.id} onClick={() => setSelectedGalleryItem(item)} type="button">
+            {visibleGallery.map((item, index) => (
+              <button
+                className="gallery-card reveal-on-scroll reveal-scale"
+                key={item.id}
+                onClick={() => setSelectedGalleryItem(item)}
+                style={{ "--reveal-delay": `${(index + 1) * 60}ms` }}
+                type="button"
+              >
                 <img alt={item.title} src={item.imageUrl} />
                 <div className="gallery-card-footer">
                   <strong>{item.title}</strong>
@@ -410,15 +475,19 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="section-block" id="reviews">
+        <section className="section-block section-traditional" id="reviews">
           <SectionHeading
             eyebrow="Client Reviews"
             title="පාරිභෝගිකයන් අප ගැන පවසන දේ"
             description="Event day execution, food quality සහ service reliability ගැන සත්‍ය feedback."
           />
           <div className="review-grid">
-            {reviews.map((review) => (
-              <article className="review-card" key={review.id}>
+            {reviews.map((review, index) => (
+              <article
+                className="review-card reveal-on-scroll reveal-up"
+                key={review.id}
+                style={{ "--reveal-delay": `${(index + 1) * 100}ms` }}
+              >
                 <div className="rating-row">
                   {Array.from({ length: review.rating }).map((_, index) => (
                     <Star fill="currentColor" key={`${review.id}-${index}`} size={18} />
@@ -434,16 +503,16 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="section-block" id="contact">
+        <section className="section-block section-traditional" id="contact">
           <SectionHeading
             eyebrow="Contact"
             title={siteConfig.contactHeading}
             description={siteConfig.contactDescription}
           />
-          <div className="contact-panel">
+          <div className="contact-panel reveal-on-scroll reveal-up">
             <div className="contact-grid">
               <div className="contact-info-grid">
-                <div className="contact-info-card">
+                <div className="contact-info-card reveal-on-scroll reveal-left" style={{ "--reveal-delay": "80ms" }}>
                   <div className="icon-orb">
                     <Phone size={22} />
                   </div>
@@ -452,7 +521,7 @@ export function HomePage() {
                     <p>{siteConfig.phone}</p>
                   </div>
                 </div>
-                <div className="contact-info-card">
+                <div className="contact-info-card reveal-on-scroll reveal-left" style={{ "--reveal-delay": "140ms" }}>
                   <div className="icon-orb">
                     <MessageCircle size={22} />
                   </div>
@@ -461,7 +530,7 @@ export function HomePage() {
                     <p>{siteConfig.whatsapp}</p>
                   </div>
                 </div>
-                <div className="contact-info-card">
+                <div className="contact-info-card reveal-on-scroll reveal-left" style={{ "--reveal-delay": "200ms" }}>
                   <div className="icon-orb">
                     <Mail size={22} />
                   </div>
@@ -470,7 +539,7 @@ export function HomePage() {
                     <p>{siteConfig.email}</p>
                   </div>
                 </div>
-                <div className="contact-info-card">
+                <div className="contact-info-card reveal-on-scroll reveal-left" style={{ "--reveal-delay": "260ms" }}>
                   <div className="icon-orb">
                     <MapPinned size={22} />
                   </div>
@@ -482,7 +551,7 @@ export function HomePage() {
                 </div>
               </div>
 
-              <form className="contact-form" onSubmit={handleContactSubmit}>
+              <form className="contact-form reveal-on-scroll reveal-right" onSubmit={handleContactSubmit}>
                 <div className="field-grid">
                   <label className="field">
                     <span>ඔබගේ නම</span>
