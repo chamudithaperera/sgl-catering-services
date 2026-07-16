@@ -7,25 +7,33 @@ const contactPhone = "+94712345678";
 const heroSlides = [
   {
     image: "/assets/sgl-images/hero-buffet.jpg",
-    label: "විවාහ උත්සව",
-    detail: "අලංකාර බුෆේ සැකසුම් සහ මතකයේ රැඳෙන සංග්‍රහ අත්දැකීම්.",
+    label: "Hero buffet",
   },
   {
     image: "/assets/sgl-images/indoor-buffet.jpg",
-    label: "ආයතනික උත්සව",
-    detail: "නියමිත වේලාවට, පිරිසිදුව සහ වෘත්තීයමය ලෙස සැලසුම් කළ සේවාව.",
+    label: "Indoor buffet",
   },
   {
     image: "/assets/sgl-images/grill-buffet.jpg",
-    label: "පවුල් සැමරුම්",
-    detail: "උණුසුම් ආගන්තුක සත්කාරය සමඟ රසවත් මෙනු සහ සුවිශේෂී සැකසුම්.",
+    label: "Grill buffet",
+  },
+  {
+    image: "/assets/sgl-images/salad-buffet.jpg",
+    label: "Salad buffet",
+  },
+  {
+    image: "/assets/sgl-images/salad-station.jpg",
+    label: "Salad station",
   },
 ];
 
 const navItems = [
-  { label: "විවාහ උත්සව", slideIndex: 0 },
-  { label: "ආයතනික", slideIndex: 1 },
-  { label: "පවුල් සැමරුම්", slideIndex: 2 },
+  { label: "මුල් පිටුව", href: "#home" },
+  { label: "අප ගැන", href: "#about" },
+  { label: "අපගේ සේවාවන්", href: "#services" },
+  { label: "මිල පැකේජ", href: "#pricing" },
+  { label: "ඡායාරූප", href: "#gallery" },
+  { label: "අප අමතන්න", href: `tel:${contactPhone}` },
 ];
 
 export function HomePage() {
@@ -66,7 +74,27 @@ export function HomePage() {
         <div className="premium-hero-overlay" aria-hidden="true" />
 
         <header className="premium-nav">
-          <div className="premium-nav-left">
+          <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
+            <span className="premium-brand-copy">
+              <strong>කේටරින් සර්විස්</strong>
+              <small>Premium Event Catering</small>
+            </span>
+          </a>
+
+          <div className="premium-nav-right">
+            <nav className={`premium-nav-links ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
+              {navItems.map((item, index) => (
+                <a
+                  key={item.label}
+                  className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+
             <button
               type="button"
               className="premium-nav-toggle"
@@ -76,36 +104,13 @@ export function HomePage() {
             >
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
-
-            <nav className={`premium-nav-links ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
-              {navItems.map((item) => (
-                <button
-                  key={item.label}
-                  type="button"
-                  className={`premium-nav-button ${item.slideIndex === activeSlide ? "is-active" : ""}`}
-                  onClick={() => selectSlide(item.slideIndex)}
-                >
-                  {item.label}
-                </button>
-              ))}
-              <a className="premium-nav-contact" href={`tel:${contactPhone}`} onClick={() => setMenuOpen(false)}>
-                අප අමතන්න
-              </a>
-            </nav>
           </div>
-
-          <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
-            <span className="premium-brand-mark">SGL</span>
-            <span className="premium-brand-copy">
-              <strong>කේටරින් සර්විස්</strong>
-              <small>Premium Event Catering</small>
-            </span>
-          </a>
         </header>
 
         <div className="premium-hero-content">
           <div className="premium-hero-panel">
             <h1>SGL කේටරින් සර්විස්</h1>
+            <span className="premium-hero-subtitle">SGL Catering Service</span>
             <p>
               විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන
               සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.
@@ -122,6 +127,19 @@ export function HomePage() {
               </a>
             </div>
           </div>
+        </div>
+
+        <div className="premium-slider-dots" aria-label="Hero slide controls">
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide.label}
+              type="button"
+              className={`premium-slider-dot ${index === activeSlide ? "is-active" : ""}`}
+              aria-label={`${slide.label} slide`}
+              aria-pressed={index === activeSlide}
+              onClick={() => selectSlide(index)}
+            />
+          ))}
         </div>
       </section>
     </main>
