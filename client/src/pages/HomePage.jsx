@@ -16,6 +16,85 @@ import {
 import { api } from "../lib/api";
 import { getIconComponent } from "../lib/icons";
 
+const imageLibrary = {
+  hero: "/assets/sgl-images/hero-buffet.jpg",
+  about: "/assets/sgl-images/indoor-buffet.jpg",
+  packages: [
+    {
+      src: "/assets/sgl-images/rice-plate.jpg",
+      alt: "Sri Lankan rice plate",
+    },
+    {
+      src: "/assets/sgl-images/carrot-sambol.jpg",
+      alt: "Traditional carrot sambol",
+    },
+    {
+      src: "/assets/sgl-images/curry-selection.jpg",
+      alt: "Curry selection",
+    },
+  ],
+  rentals: [
+    "/assets/sgl-images/indoor-buffet.jpg",
+    "/assets/sgl-images/salad-station.jpg",
+    "/assets/sgl-images/grill-buffet.jpg",
+    "/assets/sgl-images/salad-buffet.jpg",
+    "/assets/sgl-images/devilled-side.jpg",
+    "/assets/sgl-images/traditional-sweets.jpg",
+  ],
+  gallery: [
+    {
+      title: "ප්‍රධාන බුෆේ සැකසුම",
+      category: "බුෆේ සැකසුම්",
+      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
+    },
+    {
+      title: "නැවුම් සලාද කවුන්ටරය",
+      category: "ආහාර",
+      imageUrl: "/assets/sgl-images/salad-buffet.jpg",
+    },
+    {
+      title: "ශ්‍රී ලාංකික ප්‍රධාන පිඟාන",
+      category: "ආහාර",
+      imageUrl: "/assets/sgl-images/rice-plate.jpg",
+    },
+    {
+      title: "උණුසුම් මස් බුෆේ",
+      category: "විවාහ උත්සව",
+      imageUrl: "/assets/sgl-images/grill-buffet.jpg",
+    },
+    {
+      title: "රසවත් අතුරුපස සහ රසකැවිලි",
+      category: "උපන්දින සාද",
+      imageUrl: "/assets/sgl-images/traditional-sweets.jpg",
+    },
+    {
+      title: "සම්බෝල සහ අතුරු කෑම",
+      category: "ආහාර",
+      imageUrl: "/assets/sgl-images/carrot-sambol.jpg",
+    },
+    {
+      title: "ඩෙවල්ඩ් අතුරු කෑම",
+      category: "බුෆේ සැකසුම්",
+      imageUrl: "/assets/sgl-images/devilled-side.jpg",
+    },
+    {
+      title: "සලාද සහ සේවා තලය",
+      category: "කුලී උපකරණ",
+      imageUrl: "/assets/sgl-images/salad-station.jpg",
+    },
+    {
+      title: "Indoor chafing setup",
+      category: "ටෙන්ට් සහ උත්සව සැකසුම්",
+      imageUrl: "/assets/sgl-images/indoor-buffet.jpg",
+    },
+    {
+      title: "කරි සහ මෙනු තේරීම්",
+      category: "විවාහ උත්සව",
+      imageUrl: "/assets/sgl-images/curry-selection.jpg",
+    },
+  ],
+};
+
 const navItems = [
   ["home", "මුල් පිටුව"],
   ["about", "අප ගැන"],
@@ -114,13 +193,13 @@ export function HomePage() {
     );
   }
 
-  const { siteConfig, benefits, services, foodPackages, rentalItems, rentalPrices, rentalPackages, gallery, reviews } =
+  const { siteConfig, benefits, services, foodPackages, rentalItems, rentalPrices, rentalPackages, reviews } =
     content;
-  const galleryCategories = ["සියල්ල", ...new Set(gallery.map((item) => item.category))];
+  const galleryCategories = ["සියල්ල", ...new Set(imageLibrary.gallery.map((item) => item.category))];
   const visibleGallery =
     galleryCategory === "සියල්ල"
-      ? gallery
-      : gallery.filter((item) => item.category === galleryCategory);
+      ? imageLibrary.gallery
+      : imageLibrary.gallery.filter((item) => item.category === galleryCategory);
 
   async function handleContactSubmit(event) {
     event.preventDefault();
@@ -204,11 +283,11 @@ export function HomePage() {
                   ආහාර පැකේජ බලන්න
                 </a>
               </div>
-            </div>
+              </div>
 
             <div className="hero-visual hero-intro-visual">
               <div className="hero-photo-panel">
-                <img alt="SGL buffet hero" src="/assets/hero-buffet.jpg" />
+                <img alt="SGL buffet hero" src={imageLibrary.hero} />
               </div>
             </div>
           </div>
@@ -246,7 +325,7 @@ export function HomePage() {
         <section className="section-block section-traditional" id="about">
           <div className="about-panel reveal-on-scroll reveal-up">
             <div className="about-visual reveal-on-scroll reveal-left">
-              <img alt="SGL catering spread" src="/assets/hero-buffet.jpg" />
+              <img alt="SGL catering buffet setup" src={imageLibrary.about} />
             </div>
             <div className="about-copy reveal-on-scroll reveal-right">
               <SectionHeading
@@ -313,6 +392,12 @@ export function HomePage() {
                 key={item.id}
                 style={{ "--reveal-delay": `${(index + 1) * 90}ms` }}
               >
+                <div className="package-media">
+                  <img
+                    alt={imageLibrary.packages[index % imageLibrary.packages.length].alt}
+                    src={imageLibrary.packages[index % imageLibrary.packages.length].src}
+                  />
+                </div>
                 {item.featured ? <div className="feature-chip">Most Popular</div> : null}
                 <h3>{item.name}</h3>
                 <p>{item.summary}</p>
@@ -347,7 +432,7 @@ export function HomePage() {
                 key={item.id}
                 style={{ "--reveal-delay": `${(index + 1) * 70}ms` }}
               >
-                <img alt={item.name} src={item.imageUrl} />
+                <img alt={item.name} src={imageLibrary.rentals[index % imageLibrary.rentals.length]} />
                 <div className="rental-copy">
                   <div className="badge-row">
                     <div className="soft-badge">

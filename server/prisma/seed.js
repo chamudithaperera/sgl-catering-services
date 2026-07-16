@@ -199,7 +199,7 @@ async function main() {
         name: "ටෙන්ට්",
         description: "එළිමහන් උත්සව සඳහා වර්ෂාවෙන් සහ අව්වෙන් ආරක්ෂා වන premium tent setup.",
         category: "ටෙන්ට් සහ උත්සව සැකසුම්",
-        imageUrl: "/assets/hero-buffet.jpg",
+        imageUrl: "/assets/sgl-images/indoor-buffet.jpg",
         priceLabel: "රු. 15,000 සිට",
         availableQuantity: 8,
         status: "ලබාගත හැකියි",
@@ -209,7 +209,7 @@ async function main() {
         name: "ප්ලාස්ටික් පුටු",
         description: "උත්සව, සාද සහ කෙටි කාලීන සැකසුම් සඳහා පිරිසිදු පුටු.",
         category: "පුටු සහ මේස",
-        imageUrl: "/assets/hero-buffet.jpg",
+        imageUrl: "/assets/sgl-images/salad-station.jpg",
         priceLabel: "දිනකට රු. 120",
         availableQuantity: 250,
         status: "ලබාගත හැකියි",
@@ -219,7 +219,7 @@ async function main() {
         name: "මේස",
         description: "අමුත්තන්ගේ ආහාර හෝ සේවා සැකසුම් සඳහා ශක්තිමත් event tables.",
         category: "පුටු සහ මේස",
-        imageUrl: "/assets/hero-buffet.jpg",
+        imageUrl: "/assets/sgl-images/grill-buffet.jpg",
         priceLabel: "දිනකට රු. 650",
         availableQuantity: 60,
         status: "ලබාගත හැකියි",
@@ -229,7 +229,7 @@ async function main() {
         name: "බුෆේ සෙට්",
         description: "බුෆේ service line සඳහා ආහාර display setup එක සම්පූර්ණයෙන්ම.",
         category: "බුෆේ උපකරණ",
-        imageUrl: "/assets/hero-buffet.jpg",
+        imageUrl: "/assets/sgl-images/hero-buffet.jpg",
         priceLabel: "දිනකට රු. 4,500",
         availableQuantity: 14,
         status: "ලබාගත හැකියි",
@@ -239,7 +239,7 @@ async function main() {
         name: "කෑම උණුසුම්ව තබන භාජන",
         description: "සේවාව පුරා ආහාර උණුසුම්ව තබාගැනීමට chafing dish sets.",
         category: "බුෆේ උපකරණ",
-        imageUrl: "/assets/hero-buffet.jpg",
+        imageUrl: "/assets/sgl-images/devilled-side.jpg",
         priceLabel: "දිනකට රු. 1,500",
         availableQuantity: 30,
         status: "ලබාගත හැකියි",
@@ -249,7 +249,7 @@ async function main() {
         name: "මේස රෙදි සහ පුටු ආවරණ",
         description: "උත්සව theme එකට ගැළපෙන පිරිසිදු table linen සහ chair covers.",
         category: "සැරසිලි උපකරණ",
-        imageUrl: "/assets/hero-buffet.jpg",
+        imageUrl: "/assets/sgl-images/traditional-sweets.jpg",
         priceLabel: "රු. 180 සිට",
         availableQuantity: 200,
         status: "ලබාගත හැකියි",
@@ -300,12 +300,16 @@ async function main() {
 
   await prisma.galleryItem.createMany({
     data: [
-      { title: "බුෆේ සැකසුම", category: "බුෆේ සැකසුම්", imageUrl: "/assets/hero-buffet.jpg", featured: true, sortOrder: 1 },
-      { title: "විවාහ ආහාර ව්‍යුහය", category: "විවාහ උත්සව", imageUrl: "/assets/hero-buffet.jpg", featured: false, sortOrder: 2 },
-      { title: "රසවත් මෙනු තේරීම්", category: "ආහාර", imageUrl: "/assets/hero-buffet.jpg", featured: true, sortOrder: 3 },
-      { title: "පවුල් උත්සව සැකසුම", category: "උපන්දින සාද", imageUrl: "/assets/hero-buffet.jpg", featured: false, sortOrder: 4 },
-      { title: "කුලී උපකරණ පේළිය", category: "කුලී උපකරණ", imageUrl: "/assets/hero-buffet.jpg", featured: false, sortOrder: 5 },
-      { title: "ටෙන්ට් සහ පිළිගැනීම", category: "ටෙන්ට් සහ උත්සව සැකසුම්", imageUrl: "/assets/hero-buffet.jpg", featured: false, sortOrder: 6 },
+      { title: "ප්‍රධාන බුෆේ සැකසුම", category: "බුෆේ සැකසුම්", imageUrl: "/assets/sgl-images/hero-buffet.jpg", featured: true, sortOrder: 1 },
+      { title: "නැවුම් සලාද කවුන්ටරය", category: "ආහාර", imageUrl: "/assets/sgl-images/salad-buffet.jpg", featured: true, sortOrder: 2 },
+      { title: "ශ්‍රී ලාංකික ප්‍රධාන පිඟාන", category: "ආහාර", imageUrl: "/assets/sgl-images/rice-plate.jpg", featured: false, sortOrder: 3 },
+      { title: "උණුසුම් මස් බුෆේ", category: "විවාහ උත්සව", imageUrl: "/assets/sgl-images/grill-buffet.jpg", featured: false, sortOrder: 4 },
+      { title: "රසවත් අතුරුපස සහ රසකැවිලි", category: "උපන්දින සාද", imageUrl: "/assets/sgl-images/traditional-sweets.jpg", featured: false, sortOrder: 5 },
+      { title: "සම්බෝල සහ අතුරු කෑම", category: "ආහාර", imageUrl: "/assets/sgl-images/carrot-sambol.jpg", featured: false, sortOrder: 6 },
+      { title: "ඩෙවල්ඩ් අතුරු කෑම", category: "බුෆේ සැකසුම්", imageUrl: "/assets/sgl-images/devilled-side.jpg", featured: false, sortOrder: 7 },
+      { title: "සලාද සහ සේවා තලය", category: "කුලී උපකරණ", imageUrl: "/assets/sgl-images/salad-station.jpg", featured: false, sortOrder: 8 },
+      { title: "Indoor chafing setup", category: "ටෙන්ට් සහ උත්සව සැකසුම්", imageUrl: "/assets/sgl-images/indoor-buffet.jpg", featured: false, sortOrder: 9 },
+      { title: "කරි සහ මෙනු තේරීම්", category: "විවාහ උත්සව", imageUrl: "/assets/sgl-images/curry-selection.jpg", featured: false, sortOrder: 10 },
     ],
   });
 
@@ -345,4 +349,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-

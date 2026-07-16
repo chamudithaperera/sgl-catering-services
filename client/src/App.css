@@ -565,6 +565,10 @@
   border-color: rgba(255, 138, 61, 0.22);
 }
 
+.package-card:hover .package-media img {
+  transform: scale(1.05);
+}
+
 .service-card p,
 .package-card p,
 .review-card p {
@@ -577,6 +581,20 @@
   overflow: hidden;
   display: grid;
   gap: 18px;
+}
+
+.package-media {
+  margin: -24px -24px 2px;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 28px 28px 22px 22px;
+}
+
+.package-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease;
 }
 
 .package-card.featured {
