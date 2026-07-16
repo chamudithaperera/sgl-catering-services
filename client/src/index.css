@@ -13,6 +13,14 @@
   --color-border: rgba(6, 61, 58, 0.12);
   --shadow-soft: 0 28px 70px rgba(11, 55, 52, 0.12);
   --shadow-card: 0 18px 35px rgba(11, 55, 52, 0.1);
+  --bg-main: #0b0f10;
+  --text-main: #f5f1e8;
+  --text-muted: rgba(245, 241, 232, 0.72);
+  --text-soft: rgba(245, 241, 232, 0.56);
+  --accent-primary: #26ffe9;
+  --accent-luxury: #b89a6a;
+  --surface-dark: rgba(16, 20, 21, 0.9);
+  --border-soft: rgba(199, 173, 132, 0.24);
   font-family: "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;

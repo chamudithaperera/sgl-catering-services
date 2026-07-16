@@ -1,7 +1,7 @@
 .premium-home {
   min-height: 100vh;
-  background: #05090a;
-  color: #f6ffff;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
 .premium-hero {
@@ -34,7 +34,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.5) saturate(0.95) contrast(1.08);
+  filter: brightness(0.46) saturate(0.82) contrast(1.04);
 }
 
 .premium-hero-overlay {
@@ -44,7 +44,7 @@
 }
 
 .premium-hero-overlay {
-  background: linear-gradient(180deg, rgba(1, 5, 6, 0.9) 0%, rgba(1, 5, 6, 0.56) 38%, rgba(1, 5, 6, 0.92) 100%);
+  background: linear-gradient(180deg, rgba(11, 15, 16, 0.9) 0%, rgba(11, 15, 16, 0.58) 38%, rgba(11, 15, 16, 0.94) 100%);
 }
 
 .premium-nav {
@@ -58,8 +58,9 @@
   justify-content: space-between;
   gap: 24px;
   padding: 16px clamp(18px, 4vw, 38px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(4, 7, 8, 0.9);
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-dark);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.26);
   backdrop-filter: blur(18px);
 }
 
@@ -76,10 +77,10 @@
   justify-content: center;
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(38, 255, 233, 0.2);
+  border: 1px solid var(--border-soft);
   border-radius: 16px;
-  background: rgba(38, 255, 233, 0.08);
-  color: #f6ffff;
+  background: rgba(245, 241, 232, 0.04);
+  color: var(--text-main);
 }
 
 .premium-nav-links {
@@ -97,7 +98,7 @@
   border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
-  color: rgba(246, 255, 255, 0.8);
+  color: var(--text-soft);
   font-size: 0.95rem;
   font-weight: 500;
   transition:
@@ -109,9 +110,9 @@
 
 .premium-nav-link:hover,
 .premium-nav-link.is-active {
-  color: #26ffe9;
-  background: rgba(38, 255, 233, 0.12);
-  border-color: rgba(38, 255, 233, 0.24);
+  color: var(--accent-primary);
+  background: rgba(38, 255, 233, 0.08);
+  border-color: rgba(38, 255, 233, 0.18);
   transform: translateY(-1px);
 }
 
@@ -132,11 +133,11 @@
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .premium-brand-copy small {
-  color: rgba(246, 255, 255, 0.58);
+  color: var(--accent-luxury);
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -166,12 +167,12 @@
   font-size: clamp(3.5rem, 7vw, 6.8rem);
   font-weight: 800;
   line-height: 0.92;
-  color: #ffffff;
-  text-shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
+  color: var(--text-main);
+  text-shadow: 0 18px 46px rgba(0, 0, 0, 0.32);
 }
 
 .premium-hero-subtitle {
-  color: #26ffe9;
+  color: var(--accent-luxury);
   font-size: 0.98rem;
   font-weight: 600;
   letter-spacing: 0.3em;
@@ -181,7 +182,7 @@
 .premium-hero-panel p {
   max-width: 720px;
   margin: 0;
-  color: rgba(246, 255, 255, 0.84);
+  color: var(--text-muted);
   font-size: clamp(1rem, 2.1vw, 1.2rem);
   line-height: 1.75;
 }
@@ -216,15 +217,15 @@
 }
 
 .premium-button-primary {
-  background: #26ffe9;
-  color: #041415;
-  box-shadow: 0 18px 36px rgba(38, 255, 233, 0.2);
+  background: var(--accent-primary);
+  color: var(--bg-main);
+  box-shadow: 0 14px 28px rgba(38, 255, 233, 0.14);
 }
 
 .premium-button-secondary {
-  background: rgba(4, 7, 8, 0.38);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(11, 15, 16, 0.42);
+  color: var(--text-main);
+  border-color: var(--border-soft);
 }
 
 .premium-slider-dots {
@@ -241,9 +242,9 @@
   width: 14px;
   height: 14px;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(245, 241, 232, 0.46);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(245, 241, 232, 0.1);
   transition:
     transform 0.2s ease,
     background-color 0.2s ease,
@@ -252,8 +253,8 @@
 
 .premium-slider-dot:hover,
 .premium-slider-dot.is-active {
-  background: #26ffe9;
-  border-color: #26ffe9;
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
   transform: scale(1.08);
 }
 
@@ -282,9 +283,9 @@
     display: grid;
     gap: 10px;
     padding: 14px;
-    border: 1px solid rgba(38, 255, 233, 0.18);
+    border: 1px solid var(--border-soft);
     border-radius: 22px;
-    background: rgba(4, 7, 8, 0.95);
+    background: rgba(15, 18, 19, 0.96);
     box-shadow: 0 22px 40px rgba(0, 0, 0, 0.25);
     opacity: 0;
     pointer-events: none;
