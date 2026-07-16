@@ -1,0 +1,113 @@
+.site-floating-contact {
+  position: fixed;
+  right: clamp(20px, 3vw, 34px);
+  bottom: clamp(20px, 3vw, 34px);
+  z-index: 80;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.site-floating-actions {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.site-floating-link,
+.site-floating-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.24);
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.site-floating-link {
+  color: var(--text-main);
+  opacity: 0;
+  transform: translateY(18px) scale(0.88);
+}
+
+.site-floating-link-call {
+  background: rgba(245, 241, 232, 0.08);
+  border-color: var(--border-soft);
+}
+
+.site-floating-link-whatsapp {
+  background: rgba(24, 199, 120, 0.16);
+  border-color: rgba(24, 199, 120, 0.32);
+}
+
+.site-floating-link-email {
+  background: rgba(184, 154, 106, 0.16);
+  border-color: rgba(184, 154, 106, 0.28);
+}
+
+.site-floating-toggle {
+  background: var(--accent-primary);
+  border-color: rgba(38, 255, 233, 0.28);
+  color: var(--bg-main);
+}
+
+.site-floating-link:hover,
+.site-floating-toggle:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.site-floating-contact.is-open .site-floating-actions {
+  pointer-events: auto;
+}
+
+.site-floating-contact.is-open .site-floating-link {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.site-floating-contact.is-open .site-floating-link:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.site-floating-contact.is-open .site-floating-link:nth-child(2) {
+  transition-delay: 45ms;
+}
+
+.site-floating-contact.is-open .site-floating-link:nth-child(3) {
+  transition-delay: 90ms;
+}
+
+.site-floating-contact.is-open .site-floating-toggle {
+  background: rgba(245, 241, 232, 0.1);
+  border-color: var(--border-soft);
+  color: var(--text-main);
+}
+
+@media (max-width: 680px) {
+  .site-floating-contact {
+    right: 18px;
+    bottom: 18px;
+  }
+
+  .site-floating-link,
+  .site-floating-toggle {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-floating-link,
+  .site-floating-toggle {
+    transition: none;
+  }
+}

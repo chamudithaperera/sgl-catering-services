@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { ChevronRight, Mail, Menu, MessageCircle, PhoneCall, X } from "lucide-react";
+import { ChevronRight, Menu, PhoneCall, X } from "lucide-react";
 import "./HomePage.css";
 
 const contactPhone = "+94712345678";
-const contactEmail = "info@sglcateringservice.lk";
-const whatsappHref = `https://wa.me/${contactPhone.replace(/[^\d]/g, "")}`;
 
 const heroSlides = [
   {
@@ -41,7 +39,6 @@ const navItems = [
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [contactMenuOpen, setContactMenuOpen] = useState(false);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -58,10 +55,6 @@ export function HomePage() {
 
   function showNextSlide() {
     setActiveSlide((currentSlide) => (currentSlide + 1) % heroSlides.length);
-  }
-
-  function toggleContactMenu() {
-    setContactMenuOpen((currentState) => !currentState);
   }
 
   return (
@@ -149,43 +142,6 @@ export function HomePage() {
           ))}
         </div>
 
-        <div className={`premium-floating-contact ${contactMenuOpen ? "is-open" : ""}`}>
-          <div className="premium-floating-actions" aria-hidden={!contactMenuOpen}>
-            <a
-              className="premium-floating-link premium-floating-link-call"
-              href={`tel:${contactPhone}`}
-              aria-label="Call us"
-            >
-              <PhoneCall size={20} />
-            </a>
-            <a
-              className="premium-floating-link premium-floating-link-whatsapp"
-              href={whatsappHref}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="WhatsApp us"
-            >
-              <MessageCircle size={20} />
-            </a>
-            <a
-              className="premium-floating-link premium-floating-link-email"
-              href={`mailto:${contactEmail}`}
-              aria-label="Email us"
-            >
-              <Mail size={20} />
-            </a>
-          </div>
-
-          <button
-            type="button"
-            className="premium-floating-toggle"
-            aria-expanded={contactMenuOpen}
-            aria-label={contactMenuOpen ? "Close contact menu" : "Open contact menu"}
-            onClick={toggleContactMenu}
-          >
-            {contactMenuOpen ? <X size={24} /> : <PhoneCall size={22} />}
-          </button>
-        </div>
       </section>
 
       <section className="premium-about" id="about">
