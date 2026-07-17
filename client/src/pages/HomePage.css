@@ -634,6 +634,26 @@
   background: linear-gradient(180deg, rgba(10, 13, 14, 0.96) 0%, rgba(10, 13, 14, 0) 100%);
 }
 
+.premium-gallery::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -44px;
+  height: clamp(126px, 14vw, 182px);
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(20px);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(9, 12, 13, 0) 0%,
+      rgba(9, 12, 13, 0.46) 42%,
+      rgba(9, 12, 13, 0.88) 78%,
+      rgba(10, 13, 14, 0.98) 100%
+    );
+}
+
 .premium-gallery-background {
   position: absolute;
   inset: 0;
@@ -818,6 +838,26 @@
     radial-gradient(circle at top left, rgba(38, 255, 233, 0.08) 0%, transparent 30%),
     radial-gradient(circle at bottom right, rgba(184, 154, 106, 0.08) 0%, transparent 26%),
     linear-gradient(180deg, #090c0d 0%, #0b0f10 100%);
+}
+
+.premium-reviews::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -44px;
+  height: clamp(126px, 14vw, 182px);
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(20px);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11, 15, 16, 0) 0%,
+      rgba(11, 15, 16, 0.44) 42%,
+      rgba(11, 15, 16, 0.86) 78%,
+      rgba(10, 13, 14, 0.98) 100%
+    );
 }
 
 .premium-reviews-shell {

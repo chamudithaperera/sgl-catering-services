@@ -35,7 +35,7 @@ const navItems = [
   { label: "මුල් පිටුව", href: "#home" },
   { label: "අප ගැන", href: "#about" },
   { label: "අපගේ සේවාවන්", href: "#services" },
-  { label: "මිල පැකේජ", href: "#pricing" },
+  { label: "මිල පැකේජ", href: "#services" },
   { label: "ඡායාරූප", href: "#gallery" },
   { label: "අප අමතන්න", href: "#contact" },
 ];
