@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, Check, Mail, PhoneCall } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Mail, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./ServiceShowcasePage.css";
 
@@ -83,7 +83,21 @@ function CateringSections({ page }) {
     setActiveCategoryId(page.categories[0]?.id ?? "");
   }, [page]);
 
-  const activeCategory = page.categories.find((category) => category.id === activeCategoryId) ?? page.categories[0];
+  const activeCategoryIndex = Math.max(
+    0,
+    page.categories.findIndex((category) => category.id === activeCategoryId)
+  );
+  const activeCategory = page.categories[activeCategoryIndex] ?? page.categories[0];
+  const previousCategory = page.categories[(activeCategoryIndex - 1 + page.categories.length) % page.categories.length];
+  const nextCategory = page.categories[(activeCategoryIndex + 1) % page.categories.length];
+
+  const showPreviousCategory = () => {
+    setActiveCategoryId(previousCategory.id);
+  };
+
+  const showNextCategory = () => {
+    setActiveCategoryId(nextCategory.id);
+  };
 
   return (
     <>
@@ -116,6 +130,15 @@ function CateringSections({ page }) {
       <section className="service-band service-band-ivory" id="menus">
         <div className="service-page-shell">
           <div className="service-category-feature">
+            <button
+              type="button"
+              className="service-category-arrow service-category-arrow-left"
+              aria-label={`Show previous category: ${previousCategory.title}`}
+              onClick={showPreviousCategory}
+            >
+              <ChevronLeft size={22} />
+            </button>
+
             <div className="service-category-feature-media">
               <img src={activeCategory.image} alt={activeCategory.title} loading="lazy" decoding="async" />
             </div>
@@ -131,6 +154,15 @@ function CateringSections({ page }) {
                 ))}
               </ul>
             </div>
+
+            <button
+              type="button"
+              className="service-category-arrow service-category-arrow-right"
+              aria-label={`Show next category: ${nextCategory.title}`}
+              onClick={showNextCategory}
+            >
+              <ChevronRight size={22} />
+            </button>
           </div>
 
           <div className="service-menu-grid">
