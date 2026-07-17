@@ -36,6 +36,25 @@ const navItems = [
   { label: "අප අමතන්න", href: `tel:${contactPhone}` },
 ];
 
+const serviceItems = [
+  {
+    title: "කේටරින් සේවාව",
+    label: "Signature Catering",
+    image: "/assets/sgl-images/hero-buffet.jpg",
+    description:
+      "මංගල උත්සව, ආයතනික හමුවීම්, දාන පිංකම් සහ පවුල් සැමරුම් සඳහා ඔබේ අවස්ථාවට ගැළපෙන ලෙස රසවත්, සෞඛ්‍යාරක්ෂිත සහ වෘත්තීයමය ආහාර සැපයීමක් අපි සකස් කරමු.",
+    highlights: ["මංගල හා විශේෂ උත්සව", "අභිරුචි මෙනු සැලසුම්", "පිළිවෙළට සේවා සපයීම"],
+  },
+  {
+    title: "උත්සව භාණ්ඩ කුලියට ලබාදීම",
+    label: "Event Rentals",
+    image: "/assets/sgl-images/indoor-buffet.jpg",
+    description:
+      "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
+    highlights: ["බෆේ හා සේවනාංග උපකරණ", "උත්සව සැකසුම් භාණ්ඩ", "විශ්වාසනීය ලබාදීම"],
+  },
+];
+
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isNavPinned, setIsNavPinned] = useState(false);
@@ -213,6 +232,45 @@ export function HomePage() {
               සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට
               අප සූදානම්.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="premium-services" id="services">
+        <div className="premium-services-shell">
+          <div className="premium-services-heading premium-reveal premium-reveal-heading" data-reveal>
+            <span>Professional Event Solutions</span>
+            <h2>අපගේ සේවාවන්</h2>
+            <p>
+              ඔබගේ උත්සව අවශ්‍යතාවයට ගැළපෙන පරිදි ආහාර සේවාවන් සහ උත්සව භාණ්ඩ සැපයුම් එක්ම විශ්වාසනීය
+              ස්ථානයකින් ලබාදීමට අපි සූදානම්.
+            </p>
+          </div>
+
+          <div className="premium-services-grid">
+            {serviceItems.map((service, index) => (
+              <article key={service.title} className="premium-service-card premium-reveal premium-reveal-service" data-reveal>
+                <div className="premium-service-media">
+                  <img src={service.image} alt={service.title} />
+                </div>
+
+                <div className="premium-service-content">
+                  <div className="premium-service-meta">
+                    <strong>{`0${index + 1}`}</strong>
+                    <span>{service.label}</span>
+                  </div>
+
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
+
+                  <div className="premium-service-highlights">
+                    {service.highlights.map((highlight) => (
+                      <span key={highlight}>{highlight}</span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
