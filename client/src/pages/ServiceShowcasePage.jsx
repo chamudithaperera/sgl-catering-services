@@ -27,7 +27,7 @@ function PackageCard({ item }) {
     <article className={`service-package-card${item.featured ? " is-featured" : ""}`}>
       <div className="service-package-card-head">
         <div>
-          {item.featured ? <small>ප්‍රධාන තේරීම</small> : null}
+          {item.featured ? <small>Featured</small> : null}
           <h3>{item.name}</h3>
         </div>
         <strong>{item.priceLabel}</strong>
@@ -218,7 +218,7 @@ function ContactBand({ page, anchorId }) {
       <div className="service-page-shell">
         <div className="service-contact-panel">
           <div className="service-contact-copy">
-            <span>{page.type === "catering" ? "වෙන්කිරීම් අංශය" : "කුලී වෙන්කිරීම් අංශය"}</span>
+            <span>{page.type === "catering" ? "Reservation Desk" : "Rental Booking Desk"}</span>
             <h2>{page.consultation.title}</h2>
             <p>{page.consultation.description}</p>
           </div>
@@ -248,7 +248,7 @@ export function ServiceShowcasePage({ page }) {
       <header className="service-page-topbar">
         <Link className="service-page-brand" to="/">
           <span>SGL කේටරින් සර්විස්</span>
-          <small>ප්‍රිමියම් උත්සව කේටරින්</small>
+          <small>Premium Event Catering</small>
         </Link>
 
         <nav className="service-page-primary-nav" aria-label="Primary">

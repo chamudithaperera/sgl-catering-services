@@ -3,7 +3,7 @@ export const servicePageContent = {
   catering: {
     type: "catering",
     title: "ආහාර පාන සැපයීම",
-    eyebrow: "ප්‍රධාන කේටරින් සේවාව",
+    eyebrow: "Signature Catering",
     image: "/assets/sgl-images/hero-buffet.jpg",
     description:
       "විවාහ උත්සව, නිවසේ සැමරුම්, උපන්දින සාද සහ ආයතනික වැඩසටහන් සඳහා අවස්ථාවට ගැළපෙන මෙනු, වෘත්තීයමය පිළිගැන්වීම සහ රසවත් ආහාර අත්දැකීමක් අපි සකස් කරමු.",
@@ -18,7 +18,7 @@ export const servicePageContent = {
       { id: "consultation", label: "වෙන්කරවා ගැනීම" },
     ],
     overview: {
-      eyebrow: "උත්සව කාණ්ඩ",
+      eyebrow: "Event Categories",
       title: "ඔබගේ උත්සවයට ගැළපෙන කේටරින් වර්ග",
       description:
         "සෑම අවස්ථාවක්ම එකම ආකාරයෙන් නොසැලසුම් වන නිසා, කාණ්ඩ අනුව රසය, සේවනාංග සැකසුම සහ මිල පරාසය වෙනස් කර සකස් කළ හැකි මෙනු අපි පිරිනමන්නෙමු.",
@@ -27,7 +27,7 @@ export const servicePageContent = {
       {
         id: "weddings",
         title: "විවාහ උත්සව",
-        shortLabel: "විවාහ",
+        shortLabel: "Weddings",
         iconKey: "sparkles",
         image: "/assets/sgl-images/hero-buffet.jpg",
         description:
@@ -67,7 +67,7 @@ export const servicePageContent = {
       {
         id: "home-functions",
         title: "නිවසේ උත්සව",
-        shortLabel: "නිවසේ උත්සව",
+        shortLabel: "Home Functions",
         iconKey: "house",
         image: "/assets/sgl-images/indoor-buffet.jpg",
         description:
@@ -107,7 +107,7 @@ export const servicePageContent = {
       {
         id: "birthday-parties",
         title: "උපන්දින සාද",
-        shortLabel: "උපන්දින",
+        shortLabel: "Birthday Parties",
         iconKey: "cake",
         image: "/assets/sgl-images/traditional-sweets.jpg",
         description:
@@ -147,7 +147,7 @@ export const servicePageContent = {
       {
         id: "office-parties",
         title: "ඔෆිස් සහ ආයතනික සාද",
-        shortLabel: "ආයතනික",
+        shortLabel: "Office Events",
         iconKey: "briefcase",
         image: "/assets/sgl-images/grill-buffet.jpg",
         description:
@@ -187,7 +187,7 @@ export const servicePageContent = {
       {
         id: "more-events",
         title: "වෙනත් විශේෂ අවස්ථා",
-        shortLabel: "වෙනත්",
+        shortLabel: "More Events",
         iconKey: "utensils",
         image: "/assets/sgl-images/salad-buffet.jpg",
         description:
@@ -234,7 +234,7 @@ export const servicePageContent = {
   renting: {
     type: "renting",
     title: "උත්සව භාණ්ඩ සැපයීම",
-    eyebrow: "උත්සව භාණ්ඩ කුලිය",
+    eyebrow: "Event Rentals",
     image: "/assets/sgl-images/indoor-buffet.jpg",
     description:
       "බෆේ උපකරණ, මේස සැකසුම්, සේවනාංග සහ උත්සව අවශ්‍ය භාණ්ඩ පැකේජ මට්ටමින් හෝ භාණ්ඩ වශයෙන්ම කුලියට ලබාදෙමින් ඔබගේ අවස්ථාව පිළිවෙළට සංවිධානය කිරීමට අපි සහාය වෙමු.",
@@ -249,7 +249,7 @@ export const servicePageContent = {
       { id: "booking", label: "වෙන්කරවා ගැනීම" },
     ],
     packagesIntro: {
-      eyebrow: "කුලී පැකේජ",
+      eyebrow: "Rental Bundles",
       title: "උත්සව අවශ්‍යතාවයට ගැළපෙන පැකේජ තේරීම්",
       description:
         "කුඩා පවුල් උත්සවයක සිට විශාල සාදයක දක්වා, අවශ්‍ය උපකරණ පැකේජයක් ලෙස සකස් කර ලබාදීමෙන් සැලසුම් කිරීම පහසු කරමු.",
@@ -299,14 +299,14 @@ export const servicePageContent = {
       },
     ],
     itemGroupsIntro: {
-      eyebrow: "භාණ්ඩ මිල ගණන්",
+      eyebrow: "Item Pricing",
       title: "භාණ්ඩ වශයෙන් කුලියට ලබාගත හැකි මිල ගණන්",
       description:
         "පැකේජයක් අවශ්‍ය නොවන විට, අවශ්‍ය භාණ්ඩ වශයෙන්ම තෝරාගෙන මිල ගණන් අනුව වෙන්කරවා ගත හැකියි.",
     },
     itemGroups: [
       {
-        title: "බෆේ උපකරණ",
+        title: "Buffet Equipment",
         description: "ප්‍රධාන ආහාර පිළිගැන්වීම් සඳහා භාවිතා කරන උණුසුම් තබන සහ පිළිගැන්වීමේ උපකරණ.",
         items: [
           {
@@ -333,7 +333,7 @@ export const servicePageContent = {
         ],
       },
       {
-        title: "මේස හා අසුන් සැකසුම්",
+        title: "Tables & Seating",
         description: "නිවස තුළ සහ එළිමහන් උත්සව සඳහා මේස, පුටු සහ රෙදි සැකසුම් තේරීම්.",
         items: [
           {
@@ -360,7 +360,7 @@ export const servicePageContent = {
         ],
       },
       {
-        title: "භෝජන හා සේවනාංග",
+        title: "Dining Serviceware",
         description: "අමුත්තන්ගේ භෝජන සැකසුම සම්පූර්ණ කිරීමට අවශ්‍ය භාජන සහ පිළිගැන්වීමේ භාණ්ඩ.",
         items: [
           {
@@ -387,7 +387,7 @@ export const servicePageContent = {
         ],
       },
       {
-        title: "බීම හා සහායක උපකරණ",
+        title: "Beverage Support",
         description: "පානීය මධ්‍යස්ථාන, තේ සැකසුම් සහ සහායක පිළිගැන්වීම් සඳහා භාවිතා කරන උපකරණ.",
         items: [
           {
