@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Clock3, Globe2, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Globe2, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
 
@@ -842,15 +842,6 @@ export function HomePage() {
                   </div>
                 </div>
 
-                <div className="premium-contact-card">
-                  <span className="premium-contact-card-icon" aria-hidden="true">
-                    <Clock3 size={18} />
-                  </span>
-                  <div>
-                    <strong>සේවා කාලය</strong>
-                    <span>පූර්ව වෙන්කරවා ගැනීම් සඳහා සතියේ දින 7ම</span>
-                  </div>
-                </div>
               </div>
             </div>
 
