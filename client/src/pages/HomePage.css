@@ -57,33 +57,18 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 18px clamp(18px, 4vw, 38px);
-  border-bottom: 1px solid rgba(245, 241, 232, 0.08);
-  background: linear-gradient(180deg, rgba(11, 15, 16, 0.34) 0%, rgba(11, 15, 16, 0.12) 100%);
-  box-shadow: none;
-  backdrop-filter: blur(10px);
+  padding: 16px clamp(18px, 4vw, 38px);
+  border-bottom: 1px solid rgba(245, 241, 232, 0.1);
+  background: linear-gradient(180deg, rgba(12, 16, 17, 0.68) 0%, rgba(12, 16, 17, 0.44) 100%);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px) saturate(140%);
   transition:
-    padding 0.3s ease,
     border-color 0.3s ease,
     background 0.3s ease,
     box-shadow 0.3s ease,
     backdrop-filter 0.3s ease;
-}
-
-.premium-nav.is-overlay {
-  border-bottom-color: rgba(245, 241, 232, 0.08);
-  background: linear-gradient(180deg, rgba(11, 15, 16, 0.38) 0%, rgba(11, 15, 16, 0.12) 100%);
-  box-shadow: none;
-  backdrop-filter: blur(10px);
-}
-
-.premium-nav.is-pinned {
-  padding-top: 13px;
-  padding-bottom: 13px;
-  border-bottom-color: var(--border-soft);
-  background: rgba(13, 17, 18, 0.94);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(18px);
 }
 
 .premium-nav-right {
@@ -131,16 +116,6 @@
     background-color 0.2s ease,
     border-color 0.2s ease,
     transform 0.2s ease;
-}
-
-.premium-nav.is-overlay .premium-nav-link {
-  color: rgba(245, 241, 232, 0.82);
-}
-
-.premium-nav.is-overlay .premium-nav-link:hover,
-.premium-nav.is-overlay .premium-nav-link.is-active {
-  background: rgba(245, 241, 232, 0.05);
-  border-color: rgba(245, 241, 232, 0.12);
 }
 
 .premium-nav-link::before {
@@ -1384,12 +1359,6 @@
       transform 0.2s ease;
   }
 
-  .premium-nav.is-overlay .premium-nav-links,
-  .premium-nav.is-pinned .premium-nav-links {
-    background: rgba(15, 18, 19, 0.96);
-    box-shadow: 0 22px 40px rgba(0, 0, 0, 0.25);
-  }
-
   .premium-nav-links.is-open {
     opacity: 1;
     pointer-events: auto;
@@ -1517,11 +1486,6 @@
 @media (max-width: 680px) {
   .premium-nav {
     padding: 12px 14px;
-  }
-
-  .premium-nav.is-pinned {
-    padding-top: 11px;
-    padding-bottom: 11px;
   }
 
   .premium-nav {

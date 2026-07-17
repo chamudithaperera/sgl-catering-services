@@ -379,10 +379,8 @@ export function HomePage() {
     eventType: "",
     message: "",
   });
-  const [isNavPinned, setIsNavPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
-  const heroBoundaryRef = useRef(null);
   const gallerySectionRef = useRef(null);
   const galleryVideoRef = useRef(null);
   const isGalleryVideoActive = useActivateOnIntersect(gallerySectionRef, { rootMargin: "240px 0px", threshold: 0.08 });
@@ -395,28 +393,6 @@ export function HomePage() {
     }, 5200);
 
     return () => window.clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    const heroBoundary = heroBoundaryRef.current;
-
-    if (!heroBoundary) {
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsNavPinned(!entry.isIntersecting);
-      },
-      {
-        threshold: 0,
-        rootMargin: "-92px 0px 0px 0px",
-      }
-    );
-
-    observer.observe(heroBoundary);
-
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -519,6 +495,40 @@ export function HomePage() {
 
   return (
     <main className="premium-home">
+      <header className="premium-nav">
+        <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
+          <span className="premium-brand-copy">
+            <strong>SGL කේටරින් සර්විස්</strong>
+            <small>Premium Event Catering</small>
+          </span>
+        </a>
+
+        <div className="premium-nav-right">
+          <nav className={`premium-nav-links ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
+            {navItems.map((item, index) => (
+              <a
+                key={item.label}
+                className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          <button
+            type="button"
+            className="premium-nav-toggle"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            onClick={() => setMenuOpen((currentState) => !currentState)}
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </header>
+
       <section className="premium-hero" id="home">
         <div className="premium-hero-media" aria-hidden="true">
           {heroSlides.map((slide, index) => (
@@ -538,40 +548,6 @@ export function HomePage() {
         </div>
 
         <div className="premium-hero-overlay" aria-hidden="true" />
-
-        <header className={`premium-nav ${isNavPinned ? "is-pinned" : "is-overlay"}`}>
-          <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
-            <span className="premium-brand-copy">
-              <strong>SGL කේටරින් සර්විස්</strong>
-              <small>Premium Event Catering</small>
-            </span>
-          </a>
-
-          <div className="premium-nav-right">
-            <nav className={`premium-nav-links ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
-              {navItems.map((item, index) => (
-                <a
-                  key={item.label}
-                  className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
-
-            <button
-              type="button"
-              className="premium-nav-toggle"
-              aria-expanded={menuOpen}
-              aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-              onClick={() => setMenuOpen((currentState) => !currentState)}
-            >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
-        </header>
 
         <div className="premium-hero-content">
           <div className="premium-hero-panel">
@@ -607,8 +583,6 @@ export function HomePage() {
             />
           ))}
         </div>
-
-        <div ref={heroBoundaryRef} className="premium-hero-boundary" aria-hidden="true" />
 
       </section>
 
