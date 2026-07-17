@@ -90,9 +90,9 @@ function CateringSections({ page }) {
       <section className="service-band service-band-dark" id="categories">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow="උත්සව කාණ්ඩ"
-            title="උත්සව කාණ්ඩ"
-            description="ඔබගේ උත්සව වර්ගය තෝරන්න. තෝරාගත් කාණ්ඩයට අදාළ මෙනු සහ මිල ගණන් පහතින් පෙන්වනු ලැබේ."
+            eyebrow={page.overview.eyebrow}
+            title={page.overview.title}
+            description={page.overview.description}
             center
           />
 
@@ -158,9 +158,9 @@ function RentingSections({ page }) {
       <section className="service-band service-band-dark" id="packages">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow="කුලී පැකේජ"
-            title="කුලී පැකේජ"
-            description="සැලසුම් කළ උත්සවයට ගැළපෙන package තේරීම් පහතින් දක්වා ඇත."
+            eyebrow={page.packagesIntro.eyebrow}
+            title={page.packagesIntro.title}
+            description={page.packagesIntro.description}
             center
           />
 
@@ -175,9 +175,9 @@ function RentingSections({ page }) {
       <section className="service-band service-band-light" id="items">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow="භාණ්ඩ මිල ගණන්"
-            title="භාණ්ඩ මිල ගණන්"
-            description="භාණ්ඩ වශයෙන් කුලියට ලබාගත හැකි item cards පහතින් බලන්න."
+            eyebrow={page.itemGroupsIntro.eyebrow}
+            title={page.itemGroupsIntro.title}
+            description={page.itemGroupsIntro.description}
             light
             center
           />

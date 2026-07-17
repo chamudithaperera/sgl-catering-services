@@ -50,7 +50,7 @@ export const servicePageContent = {
           },
           {
             name: "ප්‍රිමියම් විවාහ මෙනුව",
-            summary: "විශාල ආරාධිත පිරිසකට සුදුසු ප්‍රිමියම් buffet table එකක් සහ අලංකාර dessert finish එකක් සමඟ සම්පූර්ණ මෙනුව.",
+            summary: "විශාල ආරාධිත පිරිසකට සුදුසු ප්‍රිමියම් බෆේ මේසයක් සහ අලංකාර අතුරුපස අවසන් කිරීමක් සමඟ සම්පූර්ණ මෙනුව.",
             priceLabel: "රු. 3,950 සිට / අමුත්තා",
             featured: true,
             includedItems: [
@@ -76,7 +76,7 @@ export const servicePageContent = {
         packages: [
           {
             name: "පවුලේ දිවා භෝජන සැකසුම",
-            summary: "සැහැල්ලු නිවසේ උත්සව සඳහා සරලව රසවත් දිවා භෝජන buffet එකක්.",
+            summary: "සැහැල්ලු නිවසේ උත්සව සඳහා සරලව රසවත් දිවා භෝජන බෆේ සැකසුමක්.",
             priceLabel: "රු. 1,850 සිට / අමුත්තා",
             featured: false,
             includedItems: [
@@ -111,12 +111,12 @@ export const servicePageContent = {
         iconKey: "cake",
         image: "/assets/sgl-images/traditional-sweets.jpg",
         description:
-          "ළමයින්ගේ සහ වැඩිහිටි උපන්දින අවස්ථා සඳහා රසවත් buffet, කුඩා බයිට්ස් සහ අතුරුපස මූලික මෙනු.",
+          "ළමයින්ගේ සහ වැඩිහිටි උපන්දින අවස්ථා සඳහා රසවත් බෆේ, කුඩා බයිට්ස් සහ අතුරුපස මූලික මෙනු.",
         highlights: ["ළමයින්ටත් වැඩිහිටියන්ටත් ගැළපෙන මෙනු", "කුඩා බයිට්ස් තේරීම්", "අතුරුපස කේන්ද්‍රගත සැකසුම්"],
         packages: [
           {
             name: "උද්‍යාන සාද මෙනුව",
-            summary: "සැහැල්ලු celebration එකකට ගැළපෙන බයිට්ස්, ප්‍රධාන ආහාර සහ අතුරුපස මේසයක් සමඟ මෙනුවක්.",
+            summary: "සැහැල්ලු සැමරුමකට ගැළපෙන බයිට්ස්, ප්‍රධාන ආහාර සහ අතුරුපස මේසයක් සමඟ මෙනුවක්.",
             priceLabel: "රු. 1,950 සිට / අමුත්තා",
             featured: false,
             includedItems: [
@@ -151,12 +151,12 @@ export const servicePageContent = {
         iconKey: "briefcase",
         image: "/assets/sgl-images/grill-buffet.jpg",
         description:
-          "ආයතනික හමුවීම්, නව නිෂ්පාදන හඳුන්වාදීමේ උත්සව සහ කාර්ය මණ්ඩල සාද සඳහා වේලාවට ගැළපෙන, පිළිවෙළ ඇති catering සේවාවන්.",
-        highlights: ["වේලාවට සැපයීම", "නිසි buffet presentation", "තේ වේලාව හෝ සම්පූර්ණ ආහාර මෙනු"],
+          "ආයතනික හමුවීම්, නව නිෂ්පාදන හඳුන්වාදීමේ උත්සව සහ කාර්ය මණ්ඩල සාද සඳහා වේලාවට ගැළපෙන, පිළිවෙළ ඇති කේටරින් සේවාවන්.",
+        highlights: ["වේලාවට සැපයීම", "නිසි බෆේ ඉදිරිපත් කිරීම", "තේ වේලාව හෝ සම්පූර්ණ ආහාර මෙනු"],
         packages: [
           {
             name: "විධායක දිවා භෝජන මෙනුව",
-            summary: "boardroom හෝ company event සඳහා පිළිවෙළ සහ රසය රැකගන්න ප්‍රිමියම් දිවා භෝජන මෙනුවක්.",
+            summary: "සභා කාමර හෝ ආයතනික උත්සව සඳහා පිළිවෙළ සහ රසය රැකගන්න ප්‍රිමියම් දිවා භෝජන මෙනුවක්.",
             priceLabel: "රු. 2,650 සිට / අමුත්තා",
             featured: true,
             includedItems: [
@@ -170,7 +170,7 @@ export const servicePageContent = {
           },
           {
             name: "තේ සහ සැහැල්ලු බයිට්ස් සැකසුම",
-            summary: "meeting breaks, seminars සහ office celebrations සඳහා සැහැල්ලු refreshment මෙනුවක්.",
+            summary: "රැස්වීම් විරාම, සම්මන්ත්‍රණ සහ කාර්යාලීය සැමරුම් සඳහා සැහැල්ලු ආහාරපාන මෙනුවක්.",
             priceLabel: "රු. 1,450 සිට / අමුත්තා",
             featured: false,
             includedItems: [
@@ -196,7 +196,7 @@ export const servicePageContent = {
         packages: [
           {
             name: "ගිවිස ගැනීමේ සැමරුම් මෙනුව",
-            summary: "අලංකාර පිළිගැන්වීමක් සහ සමබර buffet selection එකක් සමඟ pre-wedding celebrations සඳහා සුදුසු මෙනුවක්.",
+            summary: "අලංකාර පිළිගැන්වීමක් සහ සමබර බෆේ තේරීමක් සමඟ විවාහයට පෙර සැමරුම් සඳහා සුදුසු මෙනුවක්.",
             priceLabel: "රු. 2,550 සිට / අමුත්තා",
             featured: false,
             includedItems: [
@@ -257,7 +257,7 @@ export const servicePageContent = {
     packages: [
       {
         name: "මූලික බෆේ සැකසුම් පැකේජය",
-        summary: "කුඩා හා මධ්‍යම ප්‍රමාණයේ උත්සව සඳහා අවශ්‍ය මූලික buffet service setup එක.",
+        summary: "කුඩා හා මධ්‍යම ප්‍රමාණයේ උත්සව සඳහා අවශ්‍ය මූලික බෆේ සේවා සැකසුම.",
         priceLabel: "රු. 35,000 / දිනකට",
         featured: false,
         includedItems: [
@@ -271,7 +271,7 @@ export const servicePageContent = {
       },
       {
         name: "විවාහ සේවා එකතුව",
-        summary: "විවාහ හා formal celebrations සඳහා අලංකාර serving items සහ dining setup ඇතුළත් පැකේජයක්.",
+        summary: "විවාහ හා නිල සැමරුම් සඳහා අලංකාර පිළිගැන්වීමේ භාණ්ඩ සහ භෝජන සැකසුම් ඇතුළත් පැකේජයක්.",
         priceLabel: "රු. 68,000 / දිනකට",
         featured: true,
         includedItems: [
@@ -285,14 +285,14 @@ export const servicePageContent = {
       },
       {
         name: "සම්පූර්ණ උත්සව සහය පැකේජය",
-        summary: "විශාල උත්සව සහ බහු-station buffet arrangements සඳහා වැඩිම සම්පූර්ණ පැකේජය.",
+        summary: "විශාල උත්සව සහ බහු සේවා මධ්‍යස්ථාන සහිත බෆේ සැකසුම් සඳහා වැඩිම සම්පූර්ණ පැකේජය.",
         priceLabel: "රු. 125,000 / දිනකට",
         featured: true,
         includedItems: [
           "බෆේ වෝමර්ස් 14",
-          "අමුත්තන් 200කට dining setup",
-          "සේවා මේස සහ skirtings",
-          "අතුරුපස display stands",
+          "අමුත්තන් 200කට භෝජන සැකසුම",
+          "සේවා මේස සහ ආවරණ සැරසිලි",
+          "අතුරුපස ප්‍රදර්ශන ස්ථාන",
           "තේ හෝ කෝපි සේවා උපකරණ",
           "බීම සහ වතුර මධ්‍යස්ථාන",
         ],
@@ -307,7 +307,7 @@ export const servicePageContent = {
     itemGroups: [
       {
         title: "බෆේ උපකරණ",
-        description: "ප්‍රධාන ආහාර පිළිගැන්වීම් සඳහා භාවිතා කරන warming සහ serving equipment.",
+        description: "ප්‍රධාන ආහාර පිළිගැන්වීම් සඳහා භාවිතා කරන උණුසුම් තබන සහ පිළිගැන්වීමේ උපකරණ.",
         items: [
           {
             name: "චේෆින් ඩිෂ්",
@@ -361,7 +361,7 @@ export const servicePageContent = {
       },
       {
         title: "භෝජන හා සේවනාංග",
-        description: "guest dining setup එක සම්පූර්ණ කිරීමට අවශ්‍ය tableware සහ serving items.",
+        description: "අමුත්තන්ගේ භෝජන සැකසුම සම්පූර්ණ කිරීමට අවශ්‍ය භාජන සහ පිළිගැන්වීමේ භාණ්ඩ.",
         items: [
           {
             name: "භෝජන පිඟාන",
@@ -388,7 +388,7 @@ export const servicePageContent = {
       },
       {
         title: "බීම හා සහායක උපකරණ",
-        description: "drink counters, tea stations සහ utility serving සඳහා භාවිතා කරන උපකරණ.",
+        description: "පානීය මධ්‍යස්ථාන, තේ සැකසුම් සහ සහායක පිළිගැන්වීම් සඳහා භාවිතා කරන උපකරණ.",
         items: [
           {
             name: "ජූස් බෙදාහැරීමේ උපකරණය",
