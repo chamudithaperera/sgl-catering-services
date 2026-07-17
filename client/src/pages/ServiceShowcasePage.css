@@ -67,7 +67,7 @@
 
 .service-page-hero {
   position: relative;
-  min-height: 100vh;
+  min-height: clamp(360px, 52vh, 520px);
   overflow: hidden;
   isolation: isolate;
 }
@@ -96,15 +96,17 @@
   position: relative;
   z-index: 2;
   display: grid;
-  align-content: end;
-  min-height: 100vh;
+  justify-items: center;
+  align-content: center;
+  min-height: clamp(360px, 52vh, 520px);
   width: min(980px, 100%);
-  padding: 140px clamp(18px, 4vw, 38px) 96px;
+  margin: 0 auto;
+  padding: 124px clamp(18px, 4vw, 38px) 48px;
+  text-align: center;
 }
 
 .service-page-content span {
   display: inline-flex;
-  width: fit-content;
   align-items: center;
   min-height: 38px;
   padding: 0 16px;
@@ -157,7 +159,8 @@
   }
 
   .service-page-content {
-    padding: 124px 16px 78px;
+    min-height: clamp(320px, 48vh, 420px);
+    padding: 108px 16px 34px;
   }
 
   .service-page-content h1 {
