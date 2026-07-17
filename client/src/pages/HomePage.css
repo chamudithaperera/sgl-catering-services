@@ -1345,6 +1345,14 @@
   padding: 22px 24px 28px;
 }
 
+.premium-footer-info {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
 .premium-footer-shell p {
   margin: 0;
   color: var(--text-soft);
@@ -1845,6 +1853,7 @@
     padding: 20px 16px 24px;
   }
 
+  .premium-footer-info,
   .premium-footer-shell p {
     font-size: 0.88rem;
     line-height: 1.7;

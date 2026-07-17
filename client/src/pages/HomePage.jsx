@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Clock3, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock3, Globe2, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
 
-const contactPhone = "+94712345678";
-const contactEmail = "info@sglcateringservice.lk";
+const contactPhone = "+94703324500";
+const secondaryContactPhone = "+94717394581";
+const contactPhoneLabel = "070 33 24 500";
+const secondaryContactPhoneLabel = "071 73 94 581";
+const contactEmail = "sudathjayathilakabs@gmail.com";
 const whatsappHref = `https://wa.me/${contactPhone.replace(/[^\d]/g, "")}`;
-const contactLocation = "අනුරාධපුරය, ශ්‍රී ලංකාව";
+const facebookUrl = "https://www.facebook.com/100032894391854/";
+const contactLocation = "No.360, National Housing, Stage II, Anuradhapura.";
+const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
 
 const heroSlides = [
   {
@@ -783,6 +788,7 @@ export function HomePage() {
             <div className="premium-contact-info premium-reveal premium-reveal-card" data-reveal>
               <div className="premium-contact-intro">
                 <h3>SGL කේටරින් සර්විස්</h3>
+                <p>{brandTagline}</p>
               </div>
 
               <div className="premium-contact-cards">
@@ -792,7 +798,7 @@ export function HomePage() {
                   </span>
                   <div>
                     <strong>දුරකථනය</strong>
-                    <span>{contactPhone}</span>
+                    <span>{`${contactPhoneLabel} / ${secondaryContactPhoneLabel}`}</span>
                   </div>
                 </a>
 
@@ -803,6 +809,16 @@ export function HomePage() {
                   <div>
                     <strong>විද්‍යුත් තැපෑල</strong>
                     <span>{contactEmail}</span>
+                  </div>
+                </a>
+
+                <a className="premium-contact-card" href={facebookUrl} target="_blank" rel="noreferrer">
+                  <span className="premium-contact-card-icon" aria-hidden="true">
+                    <Globe2 size={18} />
+                  </span>
+                  <div>
+                    <strong>Facebook</strong>
+                    <span>SGL Catering Service</span>
                   </div>
                 </a>
 
@@ -907,6 +923,9 @@ export function HomePage() {
 
       <footer className="premium-footer">
         <div className="premium-footer-shell">
+          <p className="premium-footer-info">
+            {contactLocation} | {contactPhoneLabel} / {secondaryContactPhoneLabel} | {contactEmail}
+          </p>
           <p>
             © 2026 sglcateringservice.lk by{" "}
             <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import "./FloatingContact.css";
 
-const contactPhone = "+94712345678";
-const contactEmail = "info@sglcateringservice.lk";
+const contactPhone = "+94703324500";
+const contactEmail = "sudathjayathilakabs@gmail.com";
 const whatsappHref = `https://wa.me/${contactPhone.replace(/[^\d]/g, "")}`;
 
 function PhoneIcon({ size = 20 }) {
