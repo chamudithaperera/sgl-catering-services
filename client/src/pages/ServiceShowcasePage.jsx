@@ -19,7 +19,7 @@ export function ServiceShowcasePage({ title, description, eyebrow, image }) {
 
       <section className="service-page-hero">
         <div className="service-page-media" aria-hidden="true">
-          <img src={image} alt="" />
+          <img src={image} alt="" loading="eager" decoding="async" fetchPriority="high" />
         </div>
 
         <div className="service-page-overlay" aria-hidden="true" />

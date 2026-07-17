@@ -230,7 +230,10 @@ export function HomePage() {
   const [activeReview, setActiveReview] = useState(0);
   const [isNavPinned, setIsNavPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
+  const [isGalleryVideoActive, setIsGalleryVideoActive] = useState(false);
   const heroBoundaryRef = useRef(null);
+  const gallerySectionRef = useRef(null);
   const galleryVideoRef = useRef(null);
 
   useEffect(() => {
@@ -264,6 +267,21 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
+    const upcomingSlide = (activeSlide + 1) % heroSlides.length;
+
+    setLoadedHeroSlides((currentSlides) => {
+      if (currentSlides.has(activeSlide) && currentSlides.has(upcomingSlide)) {
+        return currentSlides;
+      }
+
+      const nextSlides = new Set(currentSlides);
+      nextSlides.add(activeSlide);
+      nextSlides.add(upcomingSlide);
+      return nextSlides;
+    });
+  }, [activeSlide]);
+
+  useEffect(() => {
     const revealItems = Array.from(document.querySelectorAll("[data-reveal]"));
 
     if (revealItems.length === 0) {
@@ -293,6 +311,37 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
+    const gallerySection = gallerySectionRef.current;
+
+    if (!gallerySection) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        setIsGalleryVideoActive(true);
+        observer.disconnect();
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "240px 0px",
+      }
+    );
+
+    observer.observe(gallerySection);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isGalleryVideoActive) {
+      return undefined;
+    }
+
     const galleryVideo = galleryVideoRef.current;
 
     if (!galleryVideo) {
@@ -307,6 +356,7 @@ export function HomePage() {
       galleryVideo.setAttribute("loop", "");
       galleryVideo.autoplay = true;
       galleryVideo.loop = true;
+      galleryVideo.preload = "metadata";
       galleryVideo.muted = true;
       galleryVideo.defaultMuted = true;
       galleryVideo.playsInline = true;
@@ -352,7 +402,7 @@ export function HomePage() {
       galleryVideo.removeEventListener("waiting", handlePlaybackInterruption);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+  }, [isGalleryVideoActive]);
 
   function selectSlide(slideIndex) {
     setActiveSlide(slideIndex);
@@ -392,7 +442,13 @@ export function HomePage() {
               key={slide.image}
               className={`premium-hero-slide ${index === activeSlide ? "is-active" : ""}`}
             >
-              <img src={slide.image} alt="" />
+              <img
+                src={loadedHeroSlides.has(index) ? slide.image : undefined}
+                alt=""
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding={index === 0 ? "sync" : "async"}
+                fetchPriority={index === 0 ? "high" : "low"}
+              />
             </div>
           ))}
         </div>
@@ -475,7 +531,12 @@ export function HomePage() {
       <section className="premium-about" id="about">
         <div className="premium-about-shell">
           <div className="premium-about-media premium-reveal premium-reveal-media" data-reveal>
-            <img src="/assets/sgl-images/indoor-buffet.jpg" alt="SGL Catering buffet setup" />
+            <img
+              src="/assets/sgl-images/indoor-buffet.jpg"
+              alt="SGL Catering buffet setup"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
 
           <div className="premium-about-card premium-reveal premium-reveal-card" data-reveal>
@@ -505,7 +566,7 @@ export function HomePage() {
             {serviceItems.map((service, index) => (
               <article key={service.title} className="premium-service-card premium-reveal premium-reveal-service" data-reveal>
                 <div className="premium-service-media">
-                  <img src={service.image} alt={service.title} />
+                  <img src={service.image} alt={service.title} loading="lazy" decoding="async" />
                 </div>
 
                 <div className="premium-service-content">
@@ -530,7 +591,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="premium-gallery" id="gallery">
+      <section ref={gallerySectionRef} className="premium-gallery" id="gallery">
         <div className="premium-gallery-background" aria-hidden="true">
           <video
             ref={galleryVideoRef}
@@ -540,11 +601,13 @@ export function HomePage() {
             loop
             playsInline
             defaultMuted
-            preload="auto"
+            preload="metadata"
             disablePictureInPicture
             disableRemotePlayback
           >
-            <source src="/assets/sgl-videos/gallery-background.mp4?v=2" type="video/mp4" />
+            {isGalleryVideoActive ? (
+              <source src="/assets/sgl-videos/gallery-background.mp4?v=3" type="video/mp4" />
+            ) : null}
           </video>
           <div className="premium-gallery-veil" />
         </div>
@@ -566,7 +629,14 @@ export function HomePage() {
                 className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
                 data-reveal
               >
-                <img src={item.image} alt={item.title} style={{ objectPosition: item.position }} />
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                  style={{ objectPosition: item.position }}
+                />
               </article>
             ))}
           </div>
