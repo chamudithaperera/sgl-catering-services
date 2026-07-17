@@ -433,7 +433,7 @@
 }
 
 .premium-services-shell {
-  width: min(1180px, 100%);
+  width: min(1380px, 100%);
   margin: 0 auto;
   display: grid;
   gap: 34px;
@@ -846,7 +846,7 @@
 }
 
 .premium-reviews-shell {
-  width: min(1180px, 100%);
+  width: min(1380px, 100%);
   margin: 0 auto;
   display: grid;
   gap: 34px;
@@ -1082,7 +1082,7 @@
 }
 
 .premium-contact-shell {
-  width: min(1180px, 100%);
+  width: min(1380px, 100%);
   margin: 0 auto;
   display: grid;
   gap: 34px;
