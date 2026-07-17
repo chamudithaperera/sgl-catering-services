@@ -38,7 +38,7 @@ const navItems = [
 
 const serviceItems = [
   {
-    title: "කේටරින් සේවාව",
+    title: "ආහාර පාන සැපයීම",
     label: "Signature Catering",
     image: "/assets/sgl-images/hero-buffet.jpg",
     description:
@@ -46,7 +46,7 @@ const serviceItems = [
     highlights: ["මංගල හා විශේෂ උත්සව", "අභිරුචි මෙනු සැලසුම්", "පිළිවෙළට සේවා සපයීම"],
   },
   {
-    title: "උත්සව භාණ්ඩ කුලියට ලබාදීම",
+    title: "උත්සව භාණ්ඩ සැපයීම",
     label: "Event Rentals",
     image: "/assets/sgl-images/indoor-buffet.jpg",
     description:

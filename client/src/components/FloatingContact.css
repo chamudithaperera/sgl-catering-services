@@ -22,9 +22,11 @@
   justify-content: center;
   width: 62px;
   height: 62px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(16, 20, 21, 0.14);
   border-radius: 50%;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.24);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.42) inset;
   transition:
     transform 0.28s ease,
     opacity 0.28s ease,
@@ -40,24 +42,29 @@
 }
 
 .site-floating-link-call {
-  background: rgba(245, 241, 232, 0.08);
-  border-color: var(--border-soft);
+  background: rgba(14, 18, 19, 0.94);
+  border-color: rgba(38, 255, 233, 0.18);
 }
 
 .site-floating-link-whatsapp {
-  background: rgba(24, 199, 120, 0.16);
-  border-color: rgba(24, 199, 120, 0.32);
+  color: #f7fff9;
+  background: linear-gradient(180deg, #24c874 0%, #1ea963 100%);
+  border-color: rgba(17, 111, 61, 0.3);
 }
 
 .site-floating-link-email {
-  background: rgba(184, 154, 106, 0.16);
-  border-color: rgba(184, 154, 106, 0.28);
+  color: var(--accent-luxury);
+  background: rgba(18, 22, 23, 0.94);
+  border-color: rgba(184, 154, 106, 0.34);
 }
 
 .site-floating-toggle {
-  background: var(--accent-primary);
-  border-color: rgba(38, 255, 233, 0.28);
+  background: linear-gradient(180deg, #49ffec 0%, #26ffe9 100%);
+  border-color: rgba(6, 61, 58, 0.18);
   color: var(--bg-main);
+  box-shadow:
+    0 18px 34px rgba(38, 255, 233, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.34) inset;
 }
 
 .site-floating-link:hover,
@@ -87,9 +94,12 @@
 }
 
 .site-floating-contact.is-open .site-floating-toggle {
-  background: rgba(245, 241, 232, 0.1);
-  border-color: var(--border-soft);
+  background: rgba(14, 18, 19, 0.96);
+  border-color: rgba(184, 154, 106, 0.26);
   color: var(--text-main);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 }
 
 @media (max-width: 680px) {
