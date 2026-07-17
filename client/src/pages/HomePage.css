@@ -643,10 +643,20 @@
   position: relative;
   padding: 0 24px 120px;
   background:
-    linear-gradient(180deg, rgba(4, 7, 12, 0.78) 0%, rgba(4, 7, 12, 0.9) 46%, rgba(4, 7, 12, 0.96) 100%),
-    radial-gradient(circle at top left, rgba(38, 255, 233, 0.26) 0%, rgba(18, 105, 138, 0.72) 26%, transparent 56%),
-    radial-gradient(circle at bottom right, rgba(38, 255, 233, 0.16) 0%, rgba(8, 58, 111, 0.7) 22%, transparent 46%),
-    #071520;
+    radial-gradient(circle at top left, rgba(38, 255, 233, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at bottom right, rgba(184, 154, 106, 0.08) 0%, transparent 26%),
+    linear-gradient(180deg, #0c1011 0%, #090c0d 100%);
+}
+
+.premium-gallery::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(96px, 12vw, 144px);
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(10, 13, 14, 0.96) 0%, rgba(10, 13, 14, 0) 100%);
 }
 
 .premium-gallery-shell {
@@ -700,12 +710,12 @@
 .premium-gallery-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(77, 132, 255, 0.16);
+  border: 1px solid rgba(18, 27, 31, 0.14);
   border-radius: 24px;
-  background: rgba(9, 15, 29, 0.96);
+  background: rgba(13, 17, 18, 0.98);
   box-shadow:
-    0 22px 42px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 20px 38px rgba(17, 24, 29, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
   transition:
     transform 0.28s ease,
     border-color 0.28s ease,
@@ -714,11 +724,11 @@
 
 .premium-gallery-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(77, 132, 255, 0.28);
+  border-color: rgba(38, 255, 233, 0.16);
   box-shadow:
-    0 28px 52px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(77, 132, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 24px 46px rgba(17, 24, 29, 0.18),
+    0 0 0 1px rgba(38, 255, 233, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .premium-gallery-card img {
