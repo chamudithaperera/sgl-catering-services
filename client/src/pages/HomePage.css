@@ -641,7 +641,7 @@
 
 .premium-gallery {
   position: relative;
-  padding: 0 24px 120px;
+  padding: 88px 24px 120px;
   background:
     radial-gradient(circle at top left, rgba(38, 255, 233, 0.08) 0%, transparent 30%),
     radial-gradient(circle at bottom right, rgba(184, 154, 106, 0.08) 0%, transparent 26%),
@@ -802,7 +802,7 @@
 
 .premium-reviews {
   position: relative;
-  padding: 0 24px 120px;
+  padding: 88px 24px 120px;
   background:
     radial-gradient(circle at top left, rgba(38, 255, 233, 0.08) 0%, transparent 30%),
     radial-gradient(circle at bottom right, rgba(184, 154, 106, 0.08) 0%, transparent 26%),
@@ -810,10 +810,10 @@
 }
 
 .premium-reviews-shell {
-  width: min(980px, 100%);
+  width: min(1180px, 100%);
   margin: 0 auto;
   display: grid;
-  gap: 32px;
+  gap: 34px;
 }
 
 .premium-reviews-heading {
@@ -841,17 +841,23 @@
 }
 
 .premium-reviews-heading p {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0;
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
-  font-size: clamp(1rem, 1.8vw, 1.12rem);
-  line-height: 1.86;
+  font-size: clamp(1rem, 1.85vw, 1.12rem);
+  line-height: 1.88;
   color: var(--text-muted);
 }
 
 .premium-reviews-stage {
   display: grid;
-  gap: 22px;
+  gap: 30px;
+}
+
+.premium-reviews-carousel {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
 }
 
 .premium-reviews-controls {
@@ -859,27 +865,34 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  color: var(--text-soft);
-  font-size: 0.86rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
 }
 
 .premium-review-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  border: 1px solid rgba(184, 154, 106, 0.22);
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(184, 154, 106, 0.2);
   border-radius: 50%;
   background: rgba(245, 241, 232, 0.04);
   color: var(--text-main);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
     background-color 0.22s ease,
     color 0.22s ease;
+}
+
+.premium-review-arrow.is-active {
+  background: linear-gradient(180deg, #49ffec 0%, #26ffe9 100%);
+  border-color: rgba(6, 61, 58, 0.16);
+  color: var(--bg-main);
 }
 
 .premium-review-arrow:hover {
@@ -889,61 +902,133 @@
   color: var(--accent-primary);
 }
 
-.premium-review-card {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  gap: 20px;
-  padding: clamp(30px, 4vw, 44px);
-  border: 1px solid rgba(184, 154, 106, 0.16);
-  border-radius: 30px;
-  background: linear-gradient(180deg, rgba(18, 22, 23, 0.96) 0%, rgba(12, 15, 16, 0.98) 100%);
-  box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+.premium-review-arrow.is-active:hover {
+  background: linear-gradient(180deg, #5cfff1 0%, #26ffe9 100%);
+  color: var(--bg-main);
+}
+
+.premium-review-count {
+  min-width: 96px;
   text-align: center;
-  animation: reviewCardIn 0.55s ease;
+}
+
+.premium-review-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: grid;
+  gap: 20px;
+  width: min(520px, calc(100% - 120px));
+  padding: clamp(26px, 3vw, 34px);
+  border: 1px solid rgba(184, 154, 106, 0.16);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(49, 49, 46, 0.9) 0%, rgba(43, 43, 40, 0.94) 100%);
+  box-shadow:
+    0 22px 40px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) scale(0.92);
+  transition:
+    transform 0.42s ease,
+    opacity 0.42s ease,
+    box-shadow 0.42s ease;
+}
+
+.premium-review-card.is-active {
+  z-index: 3;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) scale(1);
+  box-shadow:
+    0 24px 44px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.premium-review-card.is-previous {
+  z-index: 1;
+  opacity: 0.54;
+  transform: translateX(-122%) scale(0.9);
+}
+
+.premium-review-card.is-next {
+  z-index: 1;
+  opacity: 0.54;
+  transform: translateX(22%) scale(0.9);
+}
+
+.premium-review-rating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .premium-review-quote-mark {
+  position: absolute;
+  right: 24px;
+  bottom: 16px;
   font-family: "Abhaya Libre", "Noto Sans Sinhala", serif;
-  font-size: 4rem;
+  font-size: 4.8rem;
   line-height: 0.72;
-  color: rgba(184, 154, 106, 0.58);
+  color: rgba(114, 121, 136, 0.46);
 }
 
 .premium-review-stars {
-  color: var(--accent-primary);
+  color: #ff7a29;
   font-size: 1.02rem;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.18em;
+}
+
+.premium-review-rating strong {
+  color: var(--text-main);
+  font-size: 1.02rem;
 }
 
 .premium-review-card p {
-  max-width: 760px;
   margin: 0;
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
-  font-size: clamp(1.02rem, 2vw, 1.16rem);
-  line-height: 1.94;
+  font-size: clamp(0.98rem, 1.4vw, 1.08rem);
+  line-height: 1.82;
   color: var(--text-main);
 }
 
 .premium-review-meta {
-  display: grid;
-  gap: 6px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.premium-review-meta strong {
+.premium-review-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(184, 154, 106, 0.32) 0%, rgba(184, 154, 106, 0.14) 100%);
+  color: var(--text-main);
+  font-family: "Abhaya Libre", "Noto Sans Sinhala", serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.premium-review-meta-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.premium-review-meta-copy strong {
   font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
-  font-size: 1.46rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--text-main);
 }
 
-.premium-review-meta span {
-  color: var(--accent-luxury);
-  font-size: 0.82rem;
+.premium-review-meta-copy span {
+  color: rgba(245, 241, 232, 0.72);
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -965,18 +1050,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes reviewCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.988);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -1062,11 +1135,11 @@
   }
 
   .premium-gallery {
-    padding: 0 20px 96px;
+    padding: 76px 20px 96px;
   }
 
   .premium-reviews {
-    padding: 0 20px 98px;
+    padding: 76px 20px 98px;
   }
 
   .premium-services-grid {
@@ -1094,6 +1167,22 @@
   .premium-gallery-card-standard {
     grid-column: span 2;
     grid-row: span 2;
+  }
+
+  .premium-reviews-carousel {
+    min-height: 320px;
+  }
+
+  .premium-review-card {
+    width: min(440px, calc(100% - 72px));
+  }
+
+  .premium-review-card.is-previous {
+    transform: translateX(-118%) scale(0.88);
+  }
+
+  .premium-review-card.is-next {
+    transform: translateX(18%) scale(0.88);
   }
 
   .premium-slider-dots {
@@ -1189,11 +1278,11 @@
   }
 
   .premium-gallery {
-    padding: 0 16px 78px;
+    padding: 64px 16px 78px;
   }
 
   .premium-reviews {
-    padding: 0 16px 82px;
+    padding: 64px 16px 82px;
   }
 
   .premium-services-shell {
@@ -1285,13 +1374,32 @@
     height: 48px;
   }
 
+  .premium-reviews-carousel {
+    min-height: 338px;
+  }
+
   .premium-review-card {
+    left: 0;
+    width: 100%;
     gap: 18px;
-    padding: 28px 18px 30px;
+    padding: 26px 18px 30px;
     border-radius: 24px;
+    transform: translateX(0) scale(0.96);
+  }
+
+  .premium-review-card.is-active {
+    transform: translateX(0) scale(1);
+  }
+
+  .premium-review-card.is-previous,
+  .premium-review-card.is-next {
+    opacity: 0;
+    transform: translateX(0) scale(0.96);
   }
 
   .premium-review-quote-mark {
+    right: 18px;
+    bottom: 14px;
     font-size: 3.25rem;
   }
 
@@ -1300,13 +1408,13 @@
     line-height: 1.82;
   }
 
-  .premium-review-meta strong {
-    font-size: 1.24rem;
+  .premium-review-meta-copy strong {
+    font-size: 1.08rem;
   }
 
-  .premium-review-meta span {
-    font-size: 0.74rem;
-    letter-spacing: 0.12em;
+  .premium-review-meta-copy span {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
   }
 
   .premium-service-media {

@@ -135,20 +135,93 @@ const reviewItems = [
   {
     name: "සචිනි සහ දිනේෂ්",
     event: "මංගල උත්සවය",
+    score: "5.0",
     quote:
       "අපේ මංගල උත්සවයට ආහාරයේ රස, සේවයේ පිළිවෙළ සහ කාර්ය මණ්ඩලයේ වෘත්තීයභාවය අප බලාපොරොත්තු වූ දේටත් වඩා ඉහළ මට්ටමේ තිබුණා. ආරාධිතයෝ හැමෝම විශේෂයෙන් ආහාර ගැනම කතා කළා.",
   },
   {
     name: "දිනුකා ප්‍රනාන්දු",
     event: "ආයතනික හමුවීම",
+    score: "5.0",
     quote:
       "ආයතනික වැඩසටහන සඳහා ලබාදුන් ආහාර හා සැකසුම් සේවාව ඉතා සංවිධානාත්මකව සිදු වුණා. වේලාවට සැපයීම, පිරිසිදුභාවය සහ පිළිගැන්වීම නිසා අපගේ ආරාධිතයින්ට ඉතා හොඳ අත්දැකීමක් ලැබුණා.",
   },
   {
     name: "අමල්කා ජයසිංහ",
     event: "දාන පිංකම",
+    score: "5.0",
     quote:
       "දාන පිංකමට අවශ්‍ය ආහාර සහ භාණ්ඩ එකම ස්ථානයකින් ලැබුණු නිසා අපට සැලසුම් කිරීම බොහෝ පහසු වුණා. රසවත් ආහාරත්, ගෞරවනීය සේවාවත් නිසා පවුලේ හැමෝම ඉතා සතුටු වුණා.",
+  },
+  {
+    name: "නිල්මිණි සහ අකිල",
+    event: "ගිවිස ගැනීමේ උත්සවය",
+    score: "5.0",
+    quote:
+      "අපගේ ගිවිස ගැනීමේ උත්සවය සඳහා සකස් කළ මෙනුව ඉතා අලංකාරව සහ රසවත් ලෙස ඉදිරිපත් කළා. ආරාධිතයින්ට සුවපහසු සේවාවක් ලබාදීමට කණ්ඩායම දැක්වූ කැපවීම විශේෂයෙන්ම ගණන්ගන්න වටිනවා.",
+  },
+  {
+    name: "චතුරංග පෙරේරා",
+    event: "ආයතනික සම්මන්ත්‍රණය",
+    score: "5.0",
+    quote:
+      "වෘත්තීයමය සැකසුම, වේලාවට සේවය සහ පිරිසිදුභාවය නිසා අපගේ සම්මන්ත්‍රණ දිනය ඉතා සාර්ථක වුණා. සභාගත වූ අමුත්තන්ගෙන් ආහාරයේ ගුණාත්මකභාවය ගැන හොඳ ප්‍රතිචාර ලැබුණා.",
+  },
+  {
+    name: "හර්ෂනී ද සිල්වා",
+    event: "නිවසේ සැමරුම",
+    score: "5.0",
+    quote:
+      "නිවසේ පැවැත්වූ පවුල් සැමරුමට ගැළපෙන ලෙස සරලත් අලංකාරත් සේවාවක් ලබාදුන්නා. රසය, පිළිවෙළ සහ කාර්ය මණ්ඩලයේ සුහදත්වය නිසා අපට කිසිඳු කනස්සල්ලක් නොමැතිව අමුත්තන් සමඟ කාලය ගත කළා.",
+  },
+  {
+    name: "සංජීව කුමාර",
+    event: "නිවාස ප්‍රවේශය",
+    score: "5.0",
+    quote:
+      "නිවාස ප්‍රවේශ උත්සවයට අවශ්‍ය ආහාර හා භාණ්ඩ දෙකම එකම ස්ථානයකින් ලැබුණු එක අපට ලොකු පහසුවක් වුණා. සැපයීමේ වේලාව, භාණ්ඩවල තත්ත්වය සහ සේවාව සියල්ලම ඉතාමත් සතුටුදායකයි.",
+  },
+  {
+    name: "මධුෂානි සහ තරිඳු",
+    event: "උපන්දින උත්සවය",
+    score: "5.0",
+    quote:
+      "උපන්දින උත්සවය සඳහා සකස් කළ බෆේ සැකසුම සහ රසවත් මෙනුව නිසා අවස්ථාවට ඉතා සුන්දර පෙනුමක් ලැබුණා. කුඩා විස්තර පවා සැලකිල්ලට ගෙන වැඩ කළ ආකාරය අපට බොහෝ වටිනවා.",
+  },
+  {
+    name: "රුවන් ජයවර්ධන",
+    event: "වාර්ෂික සමාගම් උත්සවය",
+    score: "5.0",
+    quote:
+      "අපගේ වාර්ෂික සමාගම් උත්සවයට අමුත්තන් විශාල ප්‍රමාණයක් සහභාගී වුණත් සේවාව කිසිම වෙලාවක අඩුවුණේ නැහැ. විශිෂ්ට සංවිධානය සහ පරිපූර්ණ ආහාර සැපයීම නිසා මේ සේවාව නැවතත් තෝරාගන්න අපි තීරණය කළා.",
+  },
+  {
+    name: "සඳුනි රත්නායක",
+    event: "සාදය",
+    score: "5.0",
+    quote:
+      "අමුත්තන්ගේ රුචිකත්වය හඳුනාගෙන මෙනුව සකස් කළ ආකාරය අපට ඉතා කැමතියි. සෞඛ්‍යාරක්ෂිත පිළිවෙත් සහ අලංකාර පිළිගැන්වීම එකට තිබුණු නිසා අවස්ථාව පුරාම උසස්ම හැඟීමක් ලැබුණා.",
+  },
+  {
+    name: "තිලිණි අබේරත්න",
+    event: "අවුරුදු උත්සවය",
+    score: "5.0",
+    quote:
+      "අවුරුදු උත්සවයට අවශ්‍ය සම්ප්‍රදායික රසයන් නවීන අලංකාරයකින් ඉදිරිපත් කළා. විශේෂයෙන් අතුරුපස සහ සේවනාංග සැකසුම ගැන පවුලේ හැමෝම ඉතාමත් ප්‍රශංසා කළා.",
+  },
+  {
+    name: "කවිඳු සහ නෙත්මි",
+    event: "පූර්ව මංගල සාදය",
+    score: "5.0",
+    quote:
+      "පූර්ව මංගල සාදය සඳහා අවශ්‍ය පරිසරය නිර්මාණය කරන්න ආහාර සැකසුමත් භාණ්ඩත් බොහෝ දුරට උපකාරී වුණා. අපේ අදහස් වලට ගරු කරලා ගැළපෙන විසඳුම් ලබාදුන් නිසා ප්‍රතිඵලය අප බලාපොරොත්තු වූ දේට වඩා හොඳයි.",
+  },
+  {
+    name: "ඉෂාරා ගුණසේකර",
+    event: "දායකත්ව හමුවීම",
+    score: "5.0",
+    quote:
+      "අමුත්තන් පිළිගැනීමේ සිට ආහාර අවසන් වනතුරුම සේවාව ඉතාමත් පිළිවෙළින් කළා. ගුණාත්මක ආහාර, නිසි පිරිසිදුකම සහ වෘත්තීයභාවය එකට ලැබුණු නිසා මෙය විශ්වාසයෙන් නිර්දේශ කළ හැකි සේවාවක්.",
   },
 ];
 
@@ -235,7 +308,17 @@ export function HomePage() {
     setActiveReview((currentReview) => (currentReview + 1) % reviewItems.length);
   }
 
-  const currentReview = reviewItems[activeReview];
+  const previousReviewIndex = activeReview === 0 ? reviewItems.length - 1 : activeReview - 1;
+  const nextReviewIndex = (activeReview + 1) % reviewItems.length;
+
+  function getInitials(name) {
+    return name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => Array.from(part)[0] ?? "")
+      .join("");
+  }
 
   return (
     <main className="premium-home">
@@ -421,32 +504,57 @@ export function HomePage() {
           </div>
 
           <div className="premium-reviews-stage premium-reveal premium-reveal-review" data-reveal>
+            <div className="premium-reviews-carousel">
+              {reviewItems.map((review, index) => {
+                let positionClass = "is-hidden";
+
+                if (index === activeReview) {
+                  positionClass = "is-active";
+                } else if (index === previousReviewIndex) {
+                  positionClass = "is-previous";
+                } else if (index === nextReviewIndex) {
+                  positionClass = "is-next";
+                }
+
+                return (
+                  <article key={review.name} className={`premium-review-card ${positionClass}`}>
+                    <div className="premium-review-rating" aria-hidden="true">
+                      <span className="premium-review-stars">★★★★★</span>
+                      <strong>{review.score}</strong>
+                    </div>
+
+                    <p>{review.quote}</p>
+
+                    <div className="premium-review-meta">
+                      <div className="premium-review-avatar" aria-hidden="true">
+                        {getInitials(review.name)}
+                      </div>
+
+                      <div className="premium-review-meta-copy">
+                        <strong>{review.name}</strong>
+                        <span>{review.event}</span>
+                      </div>
+                    </div>
+
+                    <span className="premium-review-quote-mark" aria-hidden="true">
+                      “
+                    </span>
+                  </article>
+                );
+              })}
+            </div>
+
             <div className="premium-reviews-controls">
               <button type="button" className="premium-review-arrow" aria-label="Previous review" onClick={showPreviousReview}>
                 <ChevronLeft size={20} />
               </button>
 
-              <span>{`${String(activeReview + 1).padStart(2, "0")} / ${String(reviewItems.length).padStart(2, "0")}`}</span>
+              <span className="premium-review-count">{`${String(activeReview + 1).padStart(2, "0")} / ${String(reviewItems.length).padStart(2, "0")}`}</span>
 
-              <button type="button" className="premium-review-arrow" aria-label="Next review" onClick={showNextReview}>
+              <button type="button" className="premium-review-arrow is-active" aria-label="Next review" onClick={showNextReview}>
                 <ChevronRight size={20} />
               </button>
             </div>
-
-            <article key={currentReview.name} className="premium-review-card">
-              <span className="premium-review-quote-mark" aria-hidden="true">
-                “
-              </span>
-              <div className="premium-review-stars" aria-hidden="true">
-                ★★★★★
-              </div>
-              <p>{currentReview.quote}</p>
-
-              <div className="premium-review-meta">
-                <strong>{currentReview.name}</strong>
-                <span>{currentReview.event}</span>
-              </div>
-            </article>
           </div>
         </div>
       </section>
