@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Menu, PhoneCall, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock3, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
 
 const contactPhone = "+94712345678";
+const contactEmail = "info@sglcateringservice.lk";
+const whatsappHref = `https://wa.me/${contactPhone.replace(/[^\d]/g, "")}`;
+const contactLocation = "අනුරාධපුරය, ශ්‍රී ලංකාව";
 
 const heroSlides = [
   {
@@ -34,7 +37,7 @@ const navItems = [
   { label: "අපගේ සේවාවන්", href: "#services" },
   { label: "මිල පැකේජ", href: "#pricing" },
   { label: "ඡායාරූප", href: "#gallery" },
-  { label: "අප අමතන්න", href: `tel:${contactPhone}` },
+  { label: "අප අමතන්න", href: "#contact" },
 ];
 
 const serviceItems = [
@@ -370,6 +373,12 @@ function useAutoplayVideo(videoRef, isActive) {
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeReview, setActiveReview] = useState(0);
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    phone: "",
+    eventType: "",
+    message: "",
+  });
   const [isNavPinned, setIsNavPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
@@ -469,6 +478,31 @@ export function HomePage() {
 
   function showNextReview() {
     setActiveReview((currentReview) => (currentReview + 1) % reviewItems.length);
+  }
+
+  function handleContactFormChange(event) {
+    const { name, value } = event.target;
+
+    setContactForm((currentForm) => ({
+      ...currentForm,
+      [name]: value,
+    }));
+  }
+
+  function handleContactFormSubmit(event) {
+    event.preventDefault();
+
+    const subject = `${contactForm.eventType || "Catering Inquiry"} - ${contactForm.name || "SGL Website"}`;
+    const body = [
+      `නම: ${contactForm.name}`,
+      `දුරකථන අංකය: ${contactForm.phone}`,
+      `උත්සව වර්ගය: ${contactForm.eventType || "-"}`,
+      "",
+      "පණිවිඩය:",
+      contactForm.message,
+    ].join("\n");
+
+    window.location.href = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   const previousReviewIndex = activeReview === 0 ? reviewItems.length - 1 : activeReview - 1;
@@ -759,6 +793,154 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      <section className="premium-contact" id="contact">
+        <div className="premium-contact-shell">
+          <div className="premium-contact-heading premium-reveal premium-reveal-heading" data-reveal>
+            <span>Reach Out To SGL</span>
+            <h2>අප අමතන්න</h2>
+            <p>
+              ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න.
+              ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු.
+            </p>
+          </div>
+
+          <div className="premium-contact-layout">
+            <div className="premium-contact-info premium-reveal premium-reveal-card" data-reveal>
+              <div className="premium-contact-intro">
+                <h3>SGL කේටරින් සර්විස්</h3>
+              </div>
+
+              <div className="premium-contact-cards">
+                <a className="premium-contact-card" href={`tel:${contactPhone}`}>
+                  <span className="premium-contact-card-icon" aria-hidden="true">
+                    <PhoneCall size={18} />
+                  </span>
+                  <div>
+                    <strong>දුරකථනය</strong>
+                    <span>{contactPhone}</span>
+                  </div>
+                </a>
+
+                <a className="premium-contact-card" href={`mailto:${contactEmail}`}>
+                  <span className="premium-contact-card-icon" aria-hidden="true">
+                    <Mail size={18} />
+                  </span>
+                  <div>
+                    <strong>විද්‍යුත් තැපෑල</strong>
+                    <span>{contactEmail}</span>
+                  </div>
+                </a>
+
+                <a className="premium-contact-card" href={whatsappHref} target="_blank" rel="noreferrer">
+                  <span className="premium-contact-card-icon" aria-hidden="true">
+                    <MessageCircle size={18} />
+                  </span>
+                  <div>
+                    <strong>WhatsApp</strong>
+                    <span>ක්ෂණික සම්බන්ධතා සහ වෙන්කරවා ගැනීම්</span>
+                  </div>
+                </a>
+
+                <div className="premium-contact-card">
+                  <span className="premium-contact-card-icon" aria-hidden="true">
+                    <MapPin size={18} />
+                  </span>
+                  <div>
+                    <strong>ස්ථානය</strong>
+                    <span>{contactLocation}</span>
+                  </div>
+                </div>
+
+                <div className="premium-contact-card">
+                  <span className="premium-contact-card-icon" aria-hidden="true">
+                    <Clock3 size={18} />
+                  </span>
+                  <div>
+                    <strong>සේවා කාලය</strong>
+                    <span>පූර්ව වෙන්කරවා ගැනීම් සඳහා සතියේ දින 7ම</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="premium-contact-form-card premium-reveal premium-reveal-card" data-reveal>
+              <form className="premium-contact-form" onSubmit={handleContactFormSubmit}>
+                <div className="premium-contact-form-head">
+                  <h3>ඔබගේ අවශ්‍යතාවය අපට දන්වන්න</h3>
+                </div>
+
+                <div className="premium-contact-form-grid">
+                  <label className="premium-contact-field">
+                    <span>නම</span>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="ඔබගේ නම"
+                      value={contactForm.name}
+                      onChange={handleContactFormChange}
+                      required
+                    />
+                  </label>
+
+                  <label className="premium-contact-field">
+                    <span>දුරකථන අංකය</span>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="+94 7X XXX XXXX"
+                      value={contactForm.phone}
+                      onChange={handleContactFormChange}
+                      required
+                    />
+                  </label>
+                </div>
+
+                <label className="premium-contact-field">
+                  <span>උත්සව වර්ගය</span>
+                  <input
+                    type="text"
+                    name="eventType"
+                    placeholder="මංගල උත්සවය / දාන පිංකම / නිවසේ උත්සවය"
+                    value={contactForm.eventType}
+                    onChange={handleContactFormChange}
+                  />
+                </label>
+
+                <label className="premium-contact-field">
+                  <span>පණිවිඩය</span>
+                  <textarea
+                    name="message"
+                    placeholder="ඔබගේ අවශ්‍ය විස්තර මෙහි සදහන් කරන්න"
+                    value={contactForm.message}
+                    onChange={handleContactFormChange}
+                    rows={6}
+                    required
+                  />
+                </label>
+
+                <button type="submit" className="premium-contact-submit">
+                  <span>පණිවිඩය යවන්න</span>
+                  <span className="premium-contact-submit-icon" aria-hidden="true">
+                    <Send size={18} />
+                  </span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="premium-footer">
+        <div className="premium-footer-shell">
+          <p>
+            © 2026 sglcateringservice.lk by{" "}
+            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
+              chamudithaperera.online
+            </a>
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }
