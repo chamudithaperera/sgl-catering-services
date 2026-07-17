@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronRight, Menu, PhoneCall, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Menu, PhoneCall, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
 
@@ -131,8 +131,30 @@ const galleryItems = [
   },
 ];
 
+const reviewItems = [
+  {
+    name: "සචිනි සහ දිනේෂ්",
+    event: "මංගල උත්සවය",
+    quote:
+      "අපේ මංගල උත්සවයට ආහාරයේ රස, සේවයේ පිළිවෙළ සහ කාර්ය මණ්ඩලයේ වෘත්තීයභාවය අප බලාපොරොත්තු වූ දේටත් වඩා ඉහළ මට්ටමේ තිබුණා. ආරාධිතයෝ හැමෝම විශේෂයෙන් ආහාර ගැනම කතා කළා.",
+  },
+  {
+    name: "දිනුකා ප්‍රනාන්දු",
+    event: "ආයතනික හමුවීම",
+    quote:
+      "ආයතනික වැඩසටහන සඳහා ලබාදුන් ආහාර හා සැකසුම් සේවාව ඉතා සංවිධානාත්මකව සිදු වුණා. වේලාවට සැපයීම, පිරිසිදුභාවය සහ පිළිගැන්වීම නිසා අපගේ ආරාධිතයින්ට ඉතා හොඳ අත්දැකීමක් ලැබුණා.",
+  },
+  {
+    name: "අමල්කා ජයසිංහ",
+    event: "දාන පිංකම",
+    quote:
+      "දාන පිංකමට අවශ්‍ය ආහාර සහ භාණ්ඩ එකම ස්ථානයකින් ලැබුණු නිසා අපට සැලසුම් කිරීම බොහෝ පහසු වුණා. රසවත් ආහාරත්, ගෞරවනීය සේවාවත් නිසා පවුලේ හැමෝම ඉතා සතුටු වුණා.",
+  },
+];
+
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeReview, setActiveReview] = useState(0);
   const [isNavPinned, setIsNavPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const heroBoundaryRef = useRef(null);
@@ -204,6 +226,16 @@ export function HomePage() {
   function showNextSlide() {
     setActiveSlide((currentSlide) => (currentSlide + 1) % heroSlides.length);
   }
+
+  function showPreviousReview() {
+    setActiveReview((currentReview) => (currentReview === 0 ? reviewItems.length - 1 : currentReview - 1));
+  }
+
+  function showNextReview() {
+    setActiveReview((currentReview) => (currentReview + 1) % reviewItems.length);
+  }
+
+  const currentReview = reviewItems[activeReview];
 
   return (
     <main className="premium-home">
@@ -373,6 +405,48 @@ export function HomePage() {
                 <img src={item.image} alt={item.title} style={{ objectPosition: item.position }} />
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="premium-reviews" id="reviews">
+        <div className="premium-reviews-shell">
+          <div className="premium-reviews-heading premium-reveal premium-reveal-heading" data-reveal>
+            <span>Client Testimonials</span>
+            <h2>පාරිභෝගික අදහස්</h2>
+            <p>
+              අපගේ සේවාවන් භාවිතා කළ පාරිභෝගිකයින්ගේ අත්දැකීම් අතරින් තෝරාගත් අදහස් කිහිපයක් මෙහි
+              නරඹන්න.
+            </p>
+          </div>
+
+          <div className="premium-reviews-stage premium-reveal premium-reveal-review" data-reveal>
+            <div className="premium-reviews-controls">
+              <button type="button" className="premium-review-arrow" aria-label="Previous review" onClick={showPreviousReview}>
+                <ChevronLeft size={20} />
+              </button>
+
+              <span>{`${String(activeReview + 1).padStart(2, "0")} / ${String(reviewItems.length).padStart(2, "0")}`}</span>
+
+              <button type="button" className="premium-review-arrow" aria-label="Next review" onClick={showNextReview}>
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            <article key={currentReview.name} className="premium-review-card">
+              <span className="premium-review-quote-mark" aria-hidden="true">
+                “
+              </span>
+              <div className="premium-review-stars" aria-hidden="true">
+                ★★★★★
+              </div>
+              <p>{currentReview.quote}</p>
+
+              <div className="premium-review-meta">
+                <strong>{currentReview.name}</strong>
+                <span>{currentReview.event}</span>
+              </div>
+            </article>
           </div>
         </div>
       </section>
