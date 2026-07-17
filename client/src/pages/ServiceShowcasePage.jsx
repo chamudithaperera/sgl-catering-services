@@ -1,31 +1,10 @@
-import {
-  ArrowLeft,
-  ArrowUpRight,
-  BriefcaseBusiness,
-  CakeSlice,
-  Check,
-  House,
-  Mail,
-  Package,
-  PackageSearch,
-  PhoneCall,
-  Sparkles,
-  UtensilsCrossed,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, Check, Mail, PhoneCall, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./ServiceShowcasePage.css";
 
 const contactPhone = "+94703324500";
 const contactEmail = "sudathjayathilakabs@gmail.com";
-
-const iconMap = {
-  sparkles: Sparkles,
-  house: House,
-  cake: CakeSlice,
-  briefcase: BriefcaseBusiness,
-  utensils: UtensilsCrossed,
-  package: PackageSearch,
-};
 
 const primaryLinks = [
   { label: "මුල් පිටුව", href: "/" },
@@ -33,14 +12,9 @@ const primaryLinks = [
   { label: "කුලී භාණ්ඩ", href: "/renting", type: "renting" },
 ];
 
-function ServiceIcon({ iconKey, size = 18 }) {
-  const Icon = iconMap[iconKey] || Sparkles;
-  return <Icon size={size} />;
-}
-
-function SectionHead({ eyebrow, title, description, inverted = false }) {
+function SectionHead({ eyebrow, title, description, light = false, center = false }) {
   return (
-    <div className={`service-page-section-head${inverted ? " is-inverted" : ""}`}>
+    <div className={`service-section-head${light ? " is-light" : ""}${center ? " is-center" : ""}`}>
       <span>{eyebrow}</span>
       <h2>{title}</h2>
       <p>{description}</p>
@@ -48,9 +22,9 @@ function SectionHead({ eyebrow, title, description, inverted = false }) {
   );
 }
 
-function PackageCard({ item, muted = false }) {
+function PackageCard({ item }) {
   return (
-    <article className={`service-package-card${item.featured ? " is-featured" : ""}${muted ? " is-muted" : ""}`}>
+    <article className={`service-package-card${item.featured ? " is-featured" : ""}`}>
       <div className="service-package-card-head">
         <div>
           {item.featured ? <small>Selected Menu</small> : null}
@@ -73,133 +47,97 @@ function PackageCard({ item, muted = false }) {
   );
 }
 
-function HeroPanel({ page }) {
-  const items =
-    page.type === "catering"
-      ? page.categories.map((category) => ({
-          key: category.id,
-          label: category.title,
-          meta: `${category.packages.length} මෙනු තේරීම්`,
-          iconKey: category.iconKey,
-        }))
-      : page.packages.map((item) => ({
-          key: item.name,
-          label: item.name,
-          meta: item.priceLabel,
-          iconKey: "package",
-        }));
-
+function BannerSection({ page, anchorId }) {
   return (
-    <aside className="service-page-hero-panel">
-      <div className="service-page-hero-panel-head">
-        <span>{page.type === "catering" ? "Event Lines" : "Rental Lines"}</span>
-        <strong>{page.type === "catering" ? "අවස්ථා වර්ග සහ මෙනු" : "Package සහ item pricing"}</strong>
+    <section className="service-banner">
+      <div className="service-banner-media" aria-hidden="true">
+        <img src={page.image} alt="" loading="eager" decoding="async" fetchPriority="high" />
       </div>
+      <div className="service-banner-overlay" aria-hidden="true" />
 
-      <div className="service-page-hero-panel-list">
-        {items.map((item) => (
-          <div className="service-page-hero-panel-item" key={item.key}>
-            <span className="service-page-mini-icon" aria-hidden="true">
-              <ServiceIcon iconKey={item.iconKey} size={16} />
-            </span>
-            <div>
-              <strong>{item.label}</strong>
-              <small>{item.meta}</small>
-            </div>
-          </div>
-        ))}
-      </div>
-    </aside>
-  );
-}
+      <div className="service-page-shell service-banner-shell">
+        <div className="service-banner-copy">
+          <span>{page.eyebrow}</span>
+          <h1>{page.title}</h1>
+          <p>{page.description}</p>
 
-function AnchorBand({ page, anchorId }) {
-  return (
-    <section className="service-page-anchor-band">
-      <div className="service-page-shell service-page-anchor-band-shell">
-        <div className="service-page-anchor-copy">
-          <span>{page.type === "catering" ? "Curated Service Guide" : "Rental Service Guide"}</span>
-          <p>
-            {page.type === "catering"
-              ? "උත්සව වර්ග අනුව මෙනු සහ මිල පරාසය පහතින් සකස් කර ඇත."
-              : "පැකේජ, item-wise rates සහ වෙන්කරවා ගැනීමේ අංශ පහතින් සකස් කර ඇත."}
-          </p>
-        </div>
-
-        <nav className="service-page-anchor-links" aria-label="Service page sections">
-          {page.sectionNav.map((item) => (
-            <a href={`#${item.id}`} key={item.id}>
-              {item.label}
+          <div className="service-banner-actions">
+            <a className="service-banner-button is-primary" href={`#${anchorId}`}>
+              වැඩි විස්තර
             </a>
-          ))}
-          <a href={`#${anchorId}`}>අමතන්න</a>
-        </nav>
+            <a className="service-banner-button" href={`tel:${contactPhone}`}>
+              <PhoneCall size={18} />
+              <span>අමතන්න</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 function CateringSections({ page }) {
+  const [activeCategoryId, setActiveCategoryId] = useState(() => page.categories[0]?.id ?? "");
+
+  useEffect(() => {
+    setActiveCategoryId(page.categories[0]?.id ?? "");
+  }, [page]);
+
+  const activeCategory = page.categories.find((category) => category.id === activeCategoryId) ?? page.categories[0];
+
   return (
     <>
-      <section className="service-page-band service-page-band-light" id="categories">
+      <section className="service-band service-band-dark" id="categories">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow={page.overview.eyebrow}
-            title={page.overview.title}
-            description={page.overview.description}
+            eyebrow="Event Categories"
+            title="EVENT CATEGORIES"
+            description="ඔබගේ උත්සව වර්ගය තෝරන්න. තෝරාගත් කාණ්ඩයට අදාළ මෙනු සහ මිල ගණන් පහතින් පෙන්වනු ලැබේ."
+            center
           />
 
-          <div className="service-page-category-index">
-            {page.categories.map((category, index) => (
-              <a className="service-page-category-index-item" href={`#${category.id}`} key={category.id}>
-                <small>{String(index + 1).padStart(2, "0")}</small>
+          <div className="service-category-grid">
+            {page.categories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                className={`service-category-card${category.id === activeCategory.id ? " is-active" : ""}`}
+                onClick={() => setActiveCategoryId(category.id)}
+              >
+                <small>{category.shortLabel}</small>
                 <strong>{category.title}</strong>
-                <span>{category.packages.length} menus</span>
-                <ArrowUpRight size={16} />
-              </a>
+                <span>{category.packages.length} මෙනු තේරීම්</span>
+              </button>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="service-page-band service-page-band-ivory" id="menus">
+      <section className="service-band service-band-ivory" id="menus">
         <div className="service-page-shell">
-          {page.categories.map((category, index) => (
-            <article className={`service-story${index % 2 === 1 ? " is-reversed" : ""}`} id={category.id} key={category.id}>
-              <div className="service-story-visual">
-                <img src={category.image} alt={category.title} loading="lazy" decoding="async" />
-                <div className="service-story-overlay">
-                  <span>{category.shortLabel}</span>
-                  <strong>{category.title}</strong>
-                </div>
-              </div>
+          <div className="service-category-feature">
+            <div className="service-category-feature-media">
+              <img src={activeCategory.image} alt={activeCategory.title} loading="lazy" decoding="async" />
+            </div>
 
-              <div className="service-story-copy">
-                <div className="service-story-heading">
-                  <small>{String(index + 1).padStart(2, "0")}</small>
-                  <span className="service-page-mini-icon is-ivory" aria-hidden="true">
-                    <ServiceIcon iconKey={category.iconKey} size={16} />
-                  </span>
-                  <h3>{category.title}</h3>
-                </div>
+            <div className="service-category-feature-copy">
+              <span>{activeCategory.shortLabel}</span>
+              <h3>{activeCategory.title}</h3>
+              <p>{activeCategory.description}</p>
 
-                <p>{category.description}</p>
-
-                <ul className="service-story-highlights">
-                  {category.highlights.map((highlight) => (
-                    <li key={highlight}>{highlight}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="service-story-menu-grid">
-                {category.packages.map((item, itemIndex) => (
-                  <PackageCard item={item} key={item.name} muted={itemIndex > 0} />
+              <ul className="service-category-feature-list">
+                {activeCategory.highlights.map((highlight) => (
+                  <li key={highlight}>{highlight}</li>
                 ))}
-              </div>
-            </article>
-          ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="service-menu-grid">
+            {activeCategory.packages.map((item) => (
+              <PackageCard item={item} key={item.name} />
+            ))}
+          </div>
         </div>
       </section>
     </>
@@ -207,62 +145,63 @@ function CateringSections({ page }) {
 }
 
 function RentingSections({ page }) {
+  const itemCards = page.itemGroups.flatMap((group) =>
+    group.items.map((item) => ({
+      ...item,
+      categoryTitle: group.title,
+      categoryDescription: group.description,
+    }))
+  );
+
   return (
     <>
-      <section className="service-page-band service-page-band-light" id="packages">
+      <section className="service-band service-band-dark" id="packages">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow={page.packagesIntro.eyebrow}
-            title={page.packagesIntro.title}
-            description={page.packagesIntro.description}
+            eyebrow="Rental Bundles"
+            title="RENTAL BUNDLES"
+            description="සැලසුම් කළ උත්සවයට ගැළපෙන package තේරීම් පහතින් දක්වා ඇත."
+            center
           />
 
-          <div className="service-rental-packages">
-            {page.packages.map((item, index) => (
-              <div className="service-rental-package-slot" key={item.name}>
-                <div className="service-rental-package-number">{String(index + 1).padStart(2, "0")}</div>
-                <PackageCard item={item} muted={!item.featured} />
-              </div>
+          <div className="service-bundle-grid">
+            {page.packages.map((item) => (
+              <PackageCard item={item} key={item.name} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="service-page-band service-page-band-dark" id="items">
+      <section className="service-band service-band-light" id="items">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow={page.itemGroupsIntro.eyebrow}
-            title={page.itemGroupsIntro.title}
-            description={page.itemGroupsIntro.description}
-            inverted
+            eyebrow="Item Pricing"
+            title="ITEM PRICING"
+            description="භාණ්ඩ වශයෙන් කුලියට ලබාගත හැකි item cards පහතින් බලන්න."
+            light
+            center
           />
 
-          <div className="service-rates-grid">
-            {page.itemGroups.map((group) => (
-              <article className="service-rate-group" key={group.title}>
-                <header className="service-rate-group-head">
-                  <div className="service-rate-group-title">
-                    <span className="service-page-mini-icon" aria-hidden="true">
-                      <Package size={16} />
-                    </span>
-                    <h3>{group.title}</h3>
-                  </div>
-                  <p>{group.description}</p>
-                </header>
+          <div className="service-item-card-grid">
+            {itemCards.map((item) => (
+              <article className="service-item-card" key={`${item.categoryTitle}-${item.name}`}>
+                <div className="service-item-card-media">
+                  <img src={item.imageUrl} alt={item.name} loading="lazy" decoding="async" />
+                </div>
 
-                <div className="service-rate-table">
-                  {group.items.map((item) => (
-                    <div className="service-rate-row" key={`${group.title}-${item.name}`}>
-                      <div className="service-rate-name">
-                        <strong>{item.name}</strong>
-                        <span>{item.quantity}</span>
-                      </div>
-                      <div className="service-rate-price">{item.priceLabel}</div>
-                      <div className={`service-rate-status${item.status === "ලබාගත හැකියි" ? " is-available" : ""}`}>
-                        {item.status}
-                      </div>
-                    </div>
-                  ))}
+                <div className="service-item-card-body">
+                  <small>{item.categoryTitle}</small>
+                  <h3>{item.name}</h3>
+                  <p>{item.categoryDescription}</p>
+
+                  <div className="service-item-card-meta">
+                    <strong>{item.priceLabel}</strong>
+                    <span>{item.quantity}</span>
+                  </div>
+
+                  <div className={`service-item-card-status${item.status === "ලබාගත හැකියි" ? " is-available" : ""}`}>
+                    {item.status}
+                  </div>
                 </div>
               </article>
             ))}
@@ -275,7 +214,7 @@ function RentingSections({ page }) {
 
 function ContactBand({ page, anchorId }) {
   return (
-    <section className="service-page-band service-page-band-footer" id={anchorId}>
+    <section className="service-band service-band-footer" id={anchorId}>
       <div className="service-page-shell">
         <div className="service-contact-panel">
           <div className="service-contact-copy">
@@ -285,12 +224,12 @@ function ContactBand({ page, anchorId }) {
           </div>
 
           <div className="service-contact-actions">
-            <a className="service-contact-action is-primary" href={`tel:${contactPhone}`}>
+            <a className="service-banner-button is-primary" href={`tel:${contactPhone}`}>
               <PhoneCall size={18} />
               <span>070 33 24 500</span>
             </a>
 
-            <a className="service-contact-action" href={`mailto:${contactEmail}`}>
+            <a className="service-banner-button" href={`mailto:${contactEmail}`}>
               <Mail size={18} />
               <span>Email</span>
             </a>
@@ -333,44 +272,7 @@ export function ServiceShowcasePage({ page }) {
         </div>
       </header>
 
-      <section className="service-page-hero">
-        <div className="service-page-media" aria-hidden="true">
-          <img src={page.image} alt="" loading="eager" decoding="async" fetchPriority="high" />
-        </div>
-        <div className="service-page-overlay" aria-hidden="true" />
-
-        <div className="service-page-shell service-page-hero-shell">
-          <div className="service-page-hero-copy">
-            <span>{page.eyebrow}</span>
-            <h1>{page.title}</h1>
-            <p>{page.description}</p>
-
-            <div className="service-page-hero-actions">
-              <a className="service-contact-action is-primary" href={`#${anchorId}`}>
-                <span>වැඩි විස්තර / වෙන්කරවා ගැනීම</span>
-              </a>
-              <a className="service-contact-action is-secondary" href={`tel:${contactPhone}`}>
-                <PhoneCall size={18} />
-                <span>දුරකථන ඇමතුම</span>
-              </a>
-            </div>
-
-            <div className="service-page-hero-stats">
-              {page.heroStats.map((stat) => (
-                <div className="service-page-hero-stat" key={stat.label}>
-                  <strong>{stat.value}</strong>
-                  <span>{stat.label}</span>
-                  <small>{stat.note}</small>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <HeroPanel page={page} />
-        </div>
-      </section>
-
-      <AnchorBand anchorId={anchorId} page={page} />
+      <BannerSection anchorId={anchorId} page={page} />
 
       {page.type === "catering" ? <CateringSections page={page} /> : <RentingSections page={page} />}
 
