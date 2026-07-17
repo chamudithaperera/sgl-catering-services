@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, Check, Mail, PhoneCall, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Mail, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./ServiceShowcasePage.css";
 
@@ -27,7 +27,7 @@ function PackageCard({ item }) {
     <article className={`service-package-card${item.featured ? " is-featured" : ""}`}>
       <div className="service-package-card-head">
         <div>
-          {item.featured ? <small>Selected Menu</small> : null}
+          {item.featured ? <small>ප්‍රධාන තේරීම</small> : null}
           <h3>{item.name}</h3>
         </div>
         <strong>{item.priceLabel}</strong>
@@ -90,8 +90,8 @@ function CateringSections({ page }) {
       <section className="service-band service-band-dark" id="categories">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow="Event Categories"
-            title="EVENT CATEGORIES"
+            eyebrow="උත්සව කාණ්ඩ"
+            title="උත්සව කාණ්ඩ"
             description="ඔබගේ උත්සව වර්ගය තෝරන්න. තෝරාගත් කාණ්ඩයට අදාළ මෙනු සහ මිල ගණන් පහතින් පෙන්වනු ලැබේ."
             center
           />
@@ -106,7 +106,7 @@ function CateringSections({ page }) {
               >
                 <small>{category.shortLabel}</small>
                 <strong>{category.title}</strong>
-                <span>{category.packages.length} මෙනු තේරීම්</span>
+                <span>{category.packages.length} මෙනු</span>
               </button>
             ))}
           </div>
@@ -158,8 +158,8 @@ function RentingSections({ page }) {
       <section className="service-band service-band-dark" id="packages">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow="Rental Bundles"
-            title="RENTAL BUNDLES"
+            eyebrow="කුලී පැකේජ"
+            title="කුලී පැකේජ"
             description="සැලසුම් කළ උත්සවයට ගැළපෙන package තේරීම් පහතින් දක්වා ඇත."
             center
           />
@@ -175,8 +175,8 @@ function RentingSections({ page }) {
       <section className="service-band service-band-light" id="items">
         <div className="service-page-shell">
           <SectionHead
-            eyebrow="Item Pricing"
-            title="ITEM PRICING"
+            eyebrow="භාණ්ඩ මිල ගණන්"
+            title="භාණ්ඩ මිල ගණන්"
             description="භාණ්ඩ වශයෙන් කුලියට ලබාගත හැකි item cards පහතින් බලන්න."
             light
             center
@@ -218,7 +218,7 @@ function ContactBand({ page, anchorId }) {
       <div className="service-page-shell">
         <div className="service-contact-panel">
           <div className="service-contact-copy">
-            <span>{page.type === "catering" ? "Reservation Desk" : "Rental Booking Desk"}</span>
+            <span>{page.type === "catering" ? "වෙන්කිරීම් අංශය" : "කුලී වෙන්කිරීම් අංශය"}</span>
             <h2>{page.consultation.title}</h2>
             <p>{page.consultation.description}</p>
           </div>
@@ -231,7 +231,7 @@ function ContactBand({ page, anchorId }) {
 
             <a className="service-banner-button" href={`mailto:${contactEmail}`}>
               <Mail size={18} />
-              <span>Email</span>
+              <span>විද්‍යුත් තැපෑල</span>
             </a>
           </div>
         </div>
@@ -248,7 +248,7 @@ export function ServiceShowcasePage({ page }) {
       <header className="service-page-topbar">
         <Link className="service-page-brand" to="/">
           <span>SGL කේටරින් සර්විස්</span>
-          <small>Premium Event Catering</small>
+          <small>ප්‍රිමියම් උත්සව කේටරින්</small>
         </Link>
 
         <nav className="service-page-primary-nav" aria-label="Primary">
