@@ -9,8 +9,8 @@ export const servicePageContent = {
       "විවාහ උත්සව, නිවසේ සැමරුම්, උපන්දින සාද සහ ආයතනික වැඩසටහන් සඳහා අවස්ථාවට ගැළපෙන මෙනු, වෘත්තීයමය පිළිගැන්වීම සහ රසවත් ආහාර අත්දැකීමක් අපි සකස් කරමු.",
     heroStats: [
       { label: "උත්සව කාණ්ඩ", value: "05", note: "අවස්ථා වර්ග" },
-      { label: "මෙනු තේරීම්", value: "10+", note: "dummy packages" },
-      { label: "ඇණවුම් විලාසය", value: "Custom", note: "budget friendly" },
+      { label: "මෙනු තේරීම්", value: "10+", note: "විවිධ මෙනු" },
+      { label: "ඇණවුම් විලාසය", value: "Custom", note: "අයවැය අනුව" },
     ],
     sectionNav: [
       { id: "categories", label: "කාණ්ඩ" },
@@ -239,9 +239,9 @@ export const servicePageContent = {
     description:
       "බෆේ උපකරණ, මේස සැකසුම්, සේවනාංග සහ උත්සව අවශ්‍ය භාණ්ඩ package මට්ටමින් හෝ item-wise ලෙස කුලියට ලබාදෙමින් ඔබගේ අවස්ථාව පිළිවෙළට සංවිධානය කිරීමට අපි සහාය වෙමු.",
     heroStats: [
-      { label: "Rental Packages", value: "03", note: "ready bundles" },
-      { label: "Item Lists", value: "12+", note: "dummy rates" },
-      { label: "Availability", value: "Daily", note: "pre-booking" },
+      { label: "Rental Packages", value: "03", note: "සූදානම් package" },
+      { label: "Item Lists", value: "12+", note: "භාණ්ඩ තේරීම්" },
+      { label: "Availability", value: "Daily", note: "පූර්ව වෙන්කිරීම්" },
     ],
     sectionNav: [
       { id: "packages", label: "පැකේජ" },
