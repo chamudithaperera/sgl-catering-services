@@ -225,16 +225,124 @@ const reviewItems = [
   },
 ];
 
+function useActivateOnIntersect(targetRef, { rootMargin = "240px 0px", threshold = 0.08 } = {}) {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    if (isActive) {
+      return undefined;
+    }
+
+    const target = targetRef.current;
+
+    if (!target) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        setIsActive(true);
+        observer.disconnect();
+      },
+      {
+        threshold,
+        rootMargin,
+      }
+    );
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, [isActive, rootMargin, targetRef, threshold]);
+
+  return isActive;
+}
+
+function useAutoplayVideo(videoRef, isActive) {
+  useEffect(() => {
+    if (!isActive) {
+      return undefined;
+    }
+
+    const video = videoRef.current;
+
+    if (!video) {
+      return undefined;
+    }
+
+    const attemptPlayback = () => {
+      video.setAttribute("autoplay", "");
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.setAttribute("loop", "");
+      video.autoplay = true;
+      video.loop = true;
+      video.preload = "metadata";
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+
+      if (video.readyState === 0) {
+        video.load();
+      }
+
+      const playPromise = video.play();
+
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    };
+
+    const handlePlaybackInterruption = () => {
+      if (document.visibilityState === "visible") {
+        window.setTimeout(attemptPlayback, 120);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        attemptPlayback();
+      }
+    };
+
+    attemptPlayback();
+    video.addEventListener("loadeddata", attemptPlayback);
+    video.addEventListener("canplay", attemptPlayback);
+    video.addEventListener("pause", handlePlaybackInterruption);
+    video.addEventListener("stalled", handlePlaybackInterruption);
+    video.addEventListener("suspend", handlePlaybackInterruption);
+    video.addEventListener("waiting", handlePlaybackInterruption);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      video.removeEventListener("loadeddata", attemptPlayback);
+      video.removeEventListener("canplay", attemptPlayback);
+      video.removeEventListener("pause", handlePlaybackInterruption);
+      video.removeEventListener("stalled", handlePlaybackInterruption);
+      video.removeEventListener("suspend", handlePlaybackInterruption);
+      video.removeEventListener("waiting", handlePlaybackInterruption);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isActive, videoRef]);
+}
+
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeReview, setActiveReview] = useState(0);
   const [isNavPinned, setIsNavPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
-  const [isGalleryVideoActive, setIsGalleryVideoActive] = useState(false);
   const heroBoundaryRef = useRef(null);
   const gallerySectionRef = useRef(null);
   const galleryVideoRef = useRef(null);
+  const isGalleryVideoActive = useActivateOnIntersect(gallerySectionRef, { rootMargin: "240px 0px", threshold: 0.08 });
+
+  useAutoplayVideo(galleryVideoRef, isGalleryVideoActive);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -309,100 +417,6 @@ export function HomePage() {
 
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    const gallerySection = gallerySectionRef.current;
-
-    if (!gallerySection) {
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        setIsGalleryVideoActive(true);
-        observer.disconnect();
-      },
-      {
-        threshold: 0.08,
-        rootMargin: "240px 0px",
-      }
-    );
-
-    observer.observe(gallerySection);
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isGalleryVideoActive) {
-      return undefined;
-    }
-
-    const galleryVideo = galleryVideoRef.current;
-
-    if (!galleryVideo) {
-      return undefined;
-    }
-
-    const attemptPlayback = () => {
-      galleryVideo.setAttribute("autoplay", "");
-      galleryVideo.setAttribute("muted", "");
-      galleryVideo.setAttribute("playsinline", "");
-      galleryVideo.setAttribute("webkit-playsinline", "");
-      galleryVideo.setAttribute("loop", "");
-      galleryVideo.autoplay = true;
-      galleryVideo.loop = true;
-      galleryVideo.preload = "metadata";
-      galleryVideo.muted = true;
-      galleryVideo.defaultMuted = true;
-      galleryVideo.playsInline = true;
-
-      if (galleryVideo.readyState === 0) {
-        galleryVideo.load();
-      }
-
-      const playPromise = galleryVideo.play();
-
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {});
-      }
-    };
-
-    const handlePlaybackInterruption = () => {
-      if (document.visibilityState === "visible") {
-        window.setTimeout(attemptPlayback, 120);
-      }
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        attemptPlayback();
-      }
-    };
-
-    attemptPlayback();
-    galleryVideo.addEventListener("loadeddata", attemptPlayback);
-    galleryVideo.addEventListener("canplay", attemptPlayback);
-    galleryVideo.addEventListener("pause", handlePlaybackInterruption);
-    galleryVideo.addEventListener("stalled", handlePlaybackInterruption);
-    galleryVideo.addEventListener("suspend", handlePlaybackInterruption);
-    galleryVideo.addEventListener("waiting", handlePlaybackInterruption);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      galleryVideo.removeEventListener("loadeddata", attemptPlayback);
-      galleryVideo.removeEventListener("canplay", attemptPlayback);
-      galleryVideo.removeEventListener("pause", handlePlaybackInterruption);
-      galleryVideo.removeEventListener("stalled", handlePlaybackInterruption);
-      galleryVideo.removeEventListener("suspend", handlePlaybackInterruption);
-      galleryVideo.removeEventListener("waiting", handlePlaybackInterruption);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [isGalleryVideoActive]);
 
   function selectSlide(slideIndex) {
     setActiveSlide(slideIndex);
