@@ -59,39 +59,75 @@ const serviceItems = [
 const galleryItems = [
   {
     title: "විශේෂ බෆේ සැකසුම්",
-    category: "උත්සව භෝජන සැකසුම්",
     image: "/assets/sgl-images/hero-buffet.jpg",
     layout: "feature",
+    position: "center center",
   },
   {
-    title: "ප්‍රධාන ආහාර තේරීම්",
-    category: "රසවත් ප්‍රධාන පද",
-    image: "/assets/sgl-images/rice-plate.jpg",
+    title: "ග්‍රිල් බෆේ අයිතම",
+    image: "/assets/sgl-images/grill-buffet.jpg",
     layout: "tall",
+    position: "center center",
   },
   {
     title: "සැලඩ් ස්ටේෂන්",
-    category: "නැවුම් පිළිගැන්වීම්",
     image: "/assets/sgl-images/salad-station.jpg",
     layout: "standard",
+    position: "center center",
   },
   {
     title: "රසකැවිලි මේසය",
-    category: "අතුරුපස එකතුව",
     image: "/assets/sgl-images/traditional-sweets.jpg",
     layout: "standard",
+    position: "center center",
+  },
+  {
+    title: "උත්සව භෝජන සැකසුම",
+    image: "/assets/sgl-images/indoor-buffet.jpg",
+    layout: "wide",
+    position: "center 42%",
+  },
+  {
+    title: "ප්‍රධාන ආහාර තේරීම්",
+    image: "/assets/sgl-images/rice-plate.jpg",
+    layout: "standard",
+    position: "center center",
   },
   {
     title: "කරි හා අතුරු අයිතම",
-    category: "ශ්‍රී ලාංකික රස",
     image: "/assets/sgl-images/curry-selection.jpg",
+    layout: "standard",
+    position: "center center",
+  },
+  {
+    title: "සැලඩ් බෆේ සැකසුම්",
+    image: "/assets/sgl-images/salad-buffet.jpg",
     layout: "wide",
+    position: "center center",
   },
   {
     title: "අලංකාර අතුරුපද",
-    category: "සුවිශේෂී රස සටහන්",
     image: "/assets/sgl-images/devilled-side.jpg",
+    layout: "tall",
+    position: "center center",
+  },
+  {
+    title: "කැරට් සම්බෝලය",
+    image: "/assets/sgl-images/carrot-sambol.jpg",
     layout: "standard",
+    position: "center center",
+  },
+  {
+    title: "බෆේ පිළිගැන්වීම්",
+    image: "/assets/hero-buffet.jpg",
+    layout: "standard",
+    position: "22% center",
+  },
+  {
+    title: "උත්සව සූදානම් කිරීම",
+    image: "/assets/sgl-images/indoor-buffet.jpg",
+    layout: "standard",
+    position: "78% center",
   },
 ];
 
@@ -334,12 +370,7 @@ export function HomePage() {
                 className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
                 data-reveal
               >
-                <img src={item.image} alt={item.title} />
-
-                <div className="premium-gallery-card-overlay">
-                  <span>{item.category}</span>
-                  <h3>{item.title}</h3>
-                </div>
+                <img src={item.image} alt={item.title} style={{ objectPosition: item.position }} />
               </article>
             ))}
           </div>
