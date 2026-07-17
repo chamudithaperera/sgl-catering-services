@@ -40,7 +40,7 @@ const navItems = [
   { label: "මුල් පිටුව", href: "#home" },
   { label: "අප ගැන", href: "#about" },
   { label: "අපගේ සේවාවන්", href: "#services" },
-  { label: "මිල පැකේජ", href: "#services" },
+  { label: "මිල පැකේජ", to: "/catering" },
   { label: "ඡායාරූප", href: "#gallery" },
   { label: "අප අමතන්න", href: "#contact" },
 ];
@@ -511,14 +511,25 @@ export function HomePage() {
         <div className="premium-nav-right">
           <nav className={`premium-nav-links ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
             {navItems.map((item, index) => (
-              <a
-                key={item.label}
-                className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.label}
-              </a>
+              item.to ? (
+                <Link
+                  key={item.label}
+                  className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
+                  to={item.to}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.label}
+                  className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              )
             ))}
           </nav>
 
