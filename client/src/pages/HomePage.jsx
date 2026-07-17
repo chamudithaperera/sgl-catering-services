@@ -231,6 +231,7 @@ export function HomePage() {
   const [isNavPinned, setIsNavPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const heroBoundaryRef = useRef(null);
+  const galleryVideoRef = useRef(null);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -289,6 +290,68 @@ export function HomePage() {
     revealItems.forEach((item) => observer.observe(item));
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const galleryVideo = galleryVideoRef.current;
+
+    if (!galleryVideo) {
+      return undefined;
+    }
+
+    const attemptPlayback = () => {
+      galleryVideo.setAttribute("autoplay", "");
+      galleryVideo.setAttribute("muted", "");
+      galleryVideo.setAttribute("playsinline", "");
+      galleryVideo.setAttribute("webkit-playsinline", "");
+      galleryVideo.setAttribute("loop", "");
+      galleryVideo.autoplay = true;
+      galleryVideo.loop = true;
+      galleryVideo.muted = true;
+      galleryVideo.defaultMuted = true;
+      galleryVideo.playsInline = true;
+
+      if (galleryVideo.readyState === 0) {
+        galleryVideo.load();
+      }
+
+      const playPromise = galleryVideo.play();
+
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    };
+
+    const handlePlaybackInterruption = () => {
+      if (document.visibilityState === "visible") {
+        window.setTimeout(attemptPlayback, 120);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        attemptPlayback();
+      }
+    };
+
+    attemptPlayback();
+    galleryVideo.addEventListener("loadeddata", attemptPlayback);
+    galleryVideo.addEventListener("canplay", attemptPlayback);
+    galleryVideo.addEventListener("pause", handlePlaybackInterruption);
+    galleryVideo.addEventListener("stalled", handlePlaybackInterruption);
+    galleryVideo.addEventListener("suspend", handlePlaybackInterruption);
+    galleryVideo.addEventListener("waiting", handlePlaybackInterruption);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      galleryVideo.removeEventListener("loadeddata", attemptPlayback);
+      galleryVideo.removeEventListener("canplay", attemptPlayback);
+      galleryVideo.removeEventListener("pause", handlePlaybackInterruption);
+      galleryVideo.removeEventListener("stalled", handlePlaybackInterruption);
+      galleryVideo.removeEventListener("suspend", handlePlaybackInterruption);
+      galleryVideo.removeEventListener("waiting", handlePlaybackInterruption);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   function selectSlide(slideIndex) {
@@ -468,6 +531,24 @@ export function HomePage() {
       </section>
 
       <section className="premium-gallery" id="gallery">
+        <div className="premium-gallery-background" aria-hidden="true">
+          <video
+            ref={galleryVideoRef}
+            className="premium-gallery-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            defaultMuted
+            preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
+          >
+            <source src="/assets/sgl-videos/gallery-background.mp4?v=2" type="video/mp4" />
+          </video>
+          <div className="premium-gallery-veil" />
+        </div>
+
         <div className="premium-gallery-shell">
           <div className="premium-gallery-heading premium-reveal premium-reveal-heading" data-reveal>
             <span>Curated Event Moments</span>
