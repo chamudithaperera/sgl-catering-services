@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronRight, Menu, PhoneCall, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import "./HomePage.css";
 
 const contactPhone = "+94712345678";
@@ -40,6 +41,7 @@ const serviceItems = [
   {
     title: "ආහාර පාන සැපයීම",
     label: "Signature Catering",
+    href: "/catering",
     image: "/assets/sgl-images/hero-buffet.jpg",
     description:
       "මංගල උත්සව, ආයතනික හමුවීම්, දාන පිංකම් සහ පවුල් සැමරුම් සඳහා ඔබේ අවස්ථාවට ගැළපෙන ලෙස රසවත්, සෞඛ්‍යාරක්ෂිත සහ වෘත්තීයමය ආහාර සැපයීමක් අපි සකස් කරමු.",
@@ -47,6 +49,7 @@ const serviceItems = [
   {
     title: "උත්සව භාණ්ඩ සැපයීම",
     label: "Event Rentals",
+    href: "/renting",
     image: "/assets/sgl-images/indoor-buffet.jpg",
     description:
       "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
@@ -261,12 +264,12 @@ export function HomePage() {
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
 
-                  <a className="premium-service-button" href="#contact">
+                  <Link className="premium-service-button" to={service.href}>
                     <span>වැඩි විස්තර</span>
                     <span className="premium-service-button-icon" aria-hidden="true">
                       <ChevronRight size={18} />
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}
