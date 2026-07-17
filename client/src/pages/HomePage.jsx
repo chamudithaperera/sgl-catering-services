@@ -56,6 +56,45 @@ const serviceItems = [
   },
 ];
 
+const galleryItems = [
+  {
+    title: "විශේෂ බෆේ සැකසුම්",
+    category: "උත්සව භෝජන සැකසුම්",
+    image: "/assets/sgl-images/hero-buffet.jpg",
+    layout: "feature",
+  },
+  {
+    title: "ප්‍රධාන ආහාර තේරීම්",
+    category: "රසවත් ප්‍රධාන පද",
+    image: "/assets/sgl-images/rice-plate.jpg",
+    layout: "tall",
+  },
+  {
+    title: "සැලඩ් ස්ටේෂන්",
+    category: "නැවුම් පිළිගැන්වීම්",
+    image: "/assets/sgl-images/salad-station.jpg",
+    layout: "standard",
+  },
+  {
+    title: "රසකැවිලි මේසය",
+    category: "අතුරුපස එකතුව",
+    image: "/assets/sgl-images/traditional-sweets.jpg",
+    layout: "standard",
+  },
+  {
+    title: "කරි හා අතුරු අයිතම",
+    category: "ශ්‍රී ලාංකික රස",
+    image: "/assets/sgl-images/curry-selection.jpg",
+    layout: "wide",
+  },
+  {
+    title: "අලංකාර අතුරුපද",
+    category: "සුවිශේෂී රස සටහන්",
+    image: "/assets/sgl-images/devilled-side.jpg",
+    layout: "standard",
+  },
+];
+
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isNavPinned, setIsNavPinned] = useState(false);
@@ -270,6 +309,36 @@ export function HomePage() {
                       <ChevronRight size={18} />
                     </span>
                   </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="premium-gallery" id="gallery">
+        <div className="premium-gallery-shell">
+          <div className="premium-gallery-heading premium-reveal premium-reveal-heading" data-reveal>
+            <span>Curated Event Moments</span>
+            <h2>ඡායාරූප</h2>
+            <p>
+              අප විසින් සකස් කළ උත්සව භෝජන සැකසුම්, රසවත් ආහාර තේරීම් සහ අලංකාර සේවා අවස්ථා අතරින්
+              තෝරාගත් රූප කිහිපයක් මෙහි නරඹන්න.
+            </p>
+          </div>
+
+          <div className="premium-gallery-grid">
+            {galleryItems.map((item) => (
+              <article
+                key={item.title}
+                className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
+                data-reveal
+              >
+                <img src={item.image} alt={item.title} />
+
+                <div className="premium-gallery-card-overlay">
+                  <span>{item.category}</span>
+                  <h3>{item.title}</h3>
                 </div>
               </article>
             ))}
