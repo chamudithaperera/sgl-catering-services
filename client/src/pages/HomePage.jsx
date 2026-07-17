@@ -43,7 +43,6 @@ const serviceItems = [
     image: "/assets/sgl-images/hero-buffet.jpg",
     description:
       "මංගල උත්සව, ආයතනික හමුවීම්, දාන පිංකම් සහ පවුල් සැමරුම් සඳහා ඔබේ අවස්ථාවට ගැළපෙන ලෙස රසවත්, සෞඛ්‍යාරක්ෂිත සහ වෘත්තීයමය ආහාර සැපයීමක් අපි සකස් කරමු.",
-    highlights: ["මංගල හා විශේෂ උත්සව", "අභිරුචි මෙනු සැලසුම්", "පිළිවෙළට සේවා සපයීම"],
   },
   {
     title: "උත්සව භාණ්ඩ සැපයීම",
@@ -51,7 +50,6 @@ const serviceItems = [
     image: "/assets/sgl-images/indoor-buffet.jpg",
     description:
       "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
-    highlights: ["බෆේ හා සේවනාංග උපකරණ", "උත්සව සැකසුම් භාණ්ඩ", "විශ්වාසනීය ලබාදීම"],
   },
 ];
 
@@ -263,11 +261,12 @@ export function HomePage() {
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
 
-                  <div className="premium-service-highlights">
-                    {service.highlights.map((highlight) => (
-                      <span key={highlight}>{highlight}</span>
-                    ))}
-                  </div>
+                  <a className="premium-service-button" href="#contact">
+                    <span>වැඩි විස්තර</span>
+                    <span className="premium-service-button-icon" aria-hidden="true">
+                      <ChevronRight size={18} />
+                    </span>
+                  </a>
                 </div>
               </article>
             ))}
