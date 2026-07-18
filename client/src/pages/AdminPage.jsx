@@ -944,7 +944,7 @@ export function AdminPage() {
               <p>Secure content control</p>
             </div>
           </div>
-          <form onSubmit={handleLogin}>
+          <form autoComplete="off" className="sgla-login-form" onSubmit={handleLogin}>
             <div className="sgla-login-copy">
               <p>Admin Panel</p>
               <h1>Sign in to manage the website</h1>
@@ -953,15 +953,19 @@ export function AdminPage() {
               <span>Username</span>
               <input
                 autoComplete="username"
+                name="admin-username"
                 onChange={(event) => setLoginForm((current) => ({ ...current, email: event.target.value }))}
+                placeholder="Enter username"
                 value={loginForm.email}
               />
             </label>
             <label className="sgla-field">
               <span>Password</span>
               <input
-                autoComplete="current-password"
+                autoComplete="new-password"
+                name="admin-access-code"
                 onChange={(event) => setLoginForm((current) => ({ ...current, password: event.target.value }))}
+                placeholder="Enter password"
                 type="password"
                 value={loginForm.password}
               />
