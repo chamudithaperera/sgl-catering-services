@@ -379,6 +379,7 @@ export function AdminPage() {
   const [records, setRecords] = useState(buildInitialRecords);
   const [forms, setForms] = useState(buildInitialForms);
   const [editingIds, setEditingIds] = useState({});
+  const [contactEditing, setContactEditing] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -547,6 +548,9 @@ export function AdminPage() {
 
       await loadAdminData(token);
       if (!config.singleton) resetForm(config);
+      if (config.key === "siteConfig") {
+        setContactEditing(false);
+      }
       if (crudModalKey === config.key) {
         setCrudModalKey("");
       }
@@ -751,6 +755,48 @@ export function AdminPage() {
           ) : null}
         </div>
       </form>
+    );
+  }
+
+  function renderContactProfile(config) {
+    const contact = forms[config.key] || {};
+    const profileItems = [
+      { label: "Phone", value: contact.phone },
+      { label: "WhatsApp", value: contact.whatsapp },
+      { label: "Email", value: contact.email },
+      { label: "Address", value: contact.address },
+      { label: "Business hours", value: contact.businessHours },
+      { label: "Map URL", value: contact.mapUrl },
+      { label: "Facebook", value: contact.facebookUrl },
+      { label: "Instagram", value: contact.instagramUrl },
+    ];
+
+    if (contactEditing) {
+      return renderCrudForm(config);
+    }
+
+    return (
+      <section className="sgla-contact-profile">
+        <div className="sgla-contact-hero">
+          <div>
+            <p>Contact Profile</p>
+            <h2>{contact.companyName || "SGL Catering Services"}</h2>
+            <span>{contact.email || "No email added"}</span>
+          </div>
+          <button className="sgla-primary-button" onClick={() => setContactEditing(true)} type="button">
+            <Pencil size={17} />
+            Edit details
+          </button>
+        </div>
+        <div className="sgla-contact-grid">
+          {profileItems.map((item) => (
+            <article key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value || "-"}</strong>
+            </article>
+          ))}
+        </div>
+      </section>
     );
   }
 
@@ -981,7 +1027,9 @@ export function AdminPage() {
           </div>
         ) : null}
 
-        {activeConfig ? (
+        {activeConfig?.key === "siteConfig" ? renderContactProfile(activeConfig) : null}
+
+        {activeConfig && activeConfig.key !== "siteConfig" ? (
           <section className={`sgla-crud-grid ${activeConfig.readOnly || usesPopupCrud ? "is-full" : ""}`}>
             {!activeConfig.readOnly && !usesPopupCrud ? renderCrudForm(activeConfig) : null}
 
