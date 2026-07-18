@@ -280,7 +280,7 @@ const groupedSections = {
   },
 };
 
-const popupCrudKeys = ["cateringCategories", "foodPackages", "rentalPackages", "rentalItems"];
+const popupCrudKeys = ["cateringCategories", "foodPackages", "rentalPackages", "rentalItems", "galleryItems"];
 
 const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -800,6 +800,44 @@ export function AdminPage() {
     );
   }
 
+  function renderGalleryCards(config) {
+    return (
+      <div className="sgla-gallery-grid">
+        {(records[config.key] || []).map((item) => (
+          <article className="sgla-gallery-card" key={item.id}>
+            <div className="sgla-gallery-media">
+              <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async" />
+              <span className={`sgla-status-chip ${item.featured ? "is-unread" : "is-read"}`}>
+                {item.featured ? "Featured" : "Normal"}
+              </span>
+            </div>
+            <div className="sgla-gallery-body">
+              <div>
+                <p>{item.category}</p>
+                <h3>{item.title}</h3>
+                <span>{item.imageUrl}</span>
+              </div>
+              <div className="sgla-table-actions">
+                <button onClick={() => beginEdit(config, item)} title="Edit" type="button">
+                  <Pencil size={16} />
+                </button>
+                <button onClick={() => handleDelete(config, item)} title="Delete" type="button">
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
+        {!records[config.key]?.length ? (
+          <div className="sgla-empty sgla-gallery-empty">
+            <PackageCheck size={20} />
+            <span>No gallery images found.</span>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   if (!token) {
     return (
       <main className="sgla-login-page">
@@ -1052,63 +1090,67 @@ export function AdminPage() {
                   <GalleryHorizontalEnd size={20} />
                 )}
               </div>
-              <div className="sgla-table-wrap">
-                <table className="sgla-table">
-                  <thead>
-                    <tr>
-                      {activeConfig.columns.map((column) => (
-                        <th key={column.name}>{column.label}</th>
-                      ))}
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(records[activeConfig.key] || []).map((item) => (
-                      <tr key={item.id || activeConfig.key}>
-                        {activeConfig.columns.map((column) => (
-                          <td className={column.name === "message" ? "sgla-message-cell" : ""} key={column.name}>
-                            {renderCell(item, column)}
-                          </td>
-                        ))}
-                        <td>
-                          <div className="sgla-table-actions">
-                            {activeConfig.key === "contactMessages" ? (
-                              <button
-                                className="sgla-text-action"
-                                onClick={() => handleToggleMessageRead(item)}
-                                title={item.isRead ? "Mark unread" : "Mark read"}
-                                type="button"
-                              >
-                                {item.isRead ? "Unread" : "Read"}
-                              </button>
-                            ) : null}
-                            {!activeConfig.readOnly && !activeConfig.singleton ? (
-                              <button onClick={() => beginEdit(activeConfig, item)} title="Edit" type="button">
-                                <Pencil size={16} />
-                              </button>
-                            ) : null}
-                            {!activeConfig.singleton ? (
-                              <button onClick={() => handleDelete(activeConfig, item)} title="Delete" type="button">
-                                <Trash2 size={16} />
-                              </button>
-                            ) : null}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                    {!records[activeConfig.key]?.length ? (
+              {activeConfig.key === "galleryItems" ? (
+                renderGalleryCards(activeConfig)
+              ) : (
+                <div className="sgla-table-wrap">
+                  <table className="sgla-table">
+                    <thead>
                       <tr>
-                        <td colSpan={activeConfig.columns.length + 1}>
-                          <div className="sgla-empty">
-                            <PackageCheck size={20} />
-                            <span>{activeConfig.key === "contactMessages" ? "No messages found." : "No records found."}</span>
-                          </div>
-                        </td>
+                        {activeConfig.columns.map((column) => (
+                          <th key={column.name}>{column.label}</th>
+                        ))}
+                        <th>Actions</th>
                       </tr>
-                    ) : null}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {(records[activeConfig.key] || []).map((item) => (
+                        <tr key={item.id || activeConfig.key}>
+                          {activeConfig.columns.map((column) => (
+                            <td className={column.name === "message" ? "sgla-message-cell" : ""} key={column.name}>
+                              {renderCell(item, column)}
+                            </td>
+                          ))}
+                          <td>
+                            <div className="sgla-table-actions">
+                              {activeConfig.key === "contactMessages" ? (
+                                <button
+                                  className="sgla-text-action"
+                                  onClick={() => handleToggleMessageRead(item)}
+                                  title={item.isRead ? "Mark unread" : "Mark read"}
+                                  type="button"
+                                >
+                                  {item.isRead ? "Unread" : "Read"}
+                                </button>
+                              ) : null}
+                              {!activeConfig.readOnly && !activeConfig.singleton ? (
+                                <button onClick={() => beginEdit(activeConfig, item)} title="Edit" type="button">
+                                  <Pencil size={16} />
+                                </button>
+                              ) : null}
+                              {!activeConfig.singleton ? (
+                                <button onClick={() => handleDelete(activeConfig, item)} title="Delete" type="button">
+                                  <Trash2 size={16} />
+                                </button>
+                              ) : null}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                      {!records[activeConfig.key]?.length ? (
+                        <tr>
+                          <td colSpan={activeConfig.columns.length + 1}>
+                            <div className="sgla-empty">
+                              <PackageCheck size={20} />
+                              <span>{activeConfig.key === "contactMessages" ? "No messages found." : "No records found."}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : null}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </section>
           </section>
         ) : null}
