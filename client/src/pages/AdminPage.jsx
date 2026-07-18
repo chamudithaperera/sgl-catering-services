@@ -280,6 +280,8 @@ const groupedSections = {
   },
 };
 
+const popupCrudKeys = ["cateringCategories", "foodPackages", "rentalPackages", "rentalItems"];
+
 const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   ...resourceConfigs.filter((config) => config.key === "contactMessages"),
@@ -369,6 +371,7 @@ export function AdminPage() {
     catering: "cateringCategories",
     rental: "rentalPackages",
   });
+  const [crudModalKey, setCrudModalKey] = useState("");
   const [bundleDraft, setBundleDraft] = useState({ itemId: "", count: 1, price: "" });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -383,6 +386,8 @@ export function AdminPage() {
   const activeResourceKey = groupedSections[activeKey]?.tabs.find((tab) => tab.key === activeGroupTabs[activeKey])?.key || activeKey;
   const activeGroup = groupedSections[activeKey];
   const activeConfig = useMemo(() => resourceConfigs.find((config) => config.key === activeResourceKey), [activeResourceKey]);
+  const crudModalConfig = useMemo(() => resourceConfigs.find((config) => config.key === crudModalKey), [crudModalKey]);
+  const usesPopupCrud = Boolean(activeConfig && popupCrudKeys.includes(activeConfig.key));
   const activeTitle = activeGroup?.label || activeConfig?.label || "Dashboard";
   const activeEyebrow = activeGroup?.eyebrow || activeConfig?.eyebrow || "Control room for editable website content";
   const totalRecords = useMemo(
@@ -465,6 +470,22 @@ export function AdminPage() {
     setForms((current) => ({ ...current, [config.key]: { ...config.form } }));
   }
 
+  function openCreateModal(config) {
+    resetForm(config);
+    setBundleDraft({ itemId: "", count: 1, price: "" });
+    setCrudModalKey(config.key);
+    setStatusMessage("");
+    setErrorMessage("");
+  }
+
+  function closeCrudModal() {
+    if (crudModalConfig) {
+      resetForm(crudModalConfig);
+    }
+    setCrudModalKey("");
+    setBundleDraft({ itemId: "", count: 1, price: "" });
+  }
+
   function beginEdit(config, item) {
     if (["cateringCategories", "foodPackages"].includes(config.key)) {
       setActiveKey("catering");
@@ -477,6 +498,9 @@ export function AdminPage() {
     }
     setEditingIds((current) => ({ ...current, [config.key]: item.id }));
     setForms((current) => ({ ...current, [config.key]: normalizeForForm(config, item) }));
+    if (popupCrudKeys.includes(config.key)) {
+      setCrudModalKey(config.key);
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -523,6 +547,9 @@ export function AdminPage() {
 
       await loadAdminData(token);
       if (!config.singleton) resetForm(config);
+      if (crudModalKey === config.key) {
+        setCrudModalKey("");
+      }
       setStatusMessage(`${config.label} saved successfully.`);
     } catch (error) {
       console.error(error);
