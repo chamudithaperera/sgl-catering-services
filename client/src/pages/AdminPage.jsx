@@ -281,6 +281,7 @@ const groupedSections = {
 };
 
 const popupCrudKeys = ["cateringCategories", "foodPackages", "rentalPackages", "rentalItems", "galleryItems", "reviews"];
+const sortableKeys = popupCrudKeys;
 
 const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -372,6 +373,7 @@ export function AdminPage() {
     rental: "rentalPackages",
   });
   const [crudModalKey, setCrudModalKey] = useState("");
+  const [draggedItem, setDraggedItem] = useState(null);
   const [bundleDraft, setBundleDraft] = useState({ itemId: "", count: 1, price: "" });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -592,6 +594,40 @@ export function AdminPage() {
     }
   }
 
+  async function handleReorder(config, sourceId, targetId) {
+    if (!sortableKeys.includes(config.key) || sourceId === targetId) return;
+
+    const currentRows = records[config.key] || [];
+    const sourceIndex = currentRows.findIndex((item) => item.id === sourceId);
+    const targetIndex = currentRows.findIndex((item) => item.id === targetId);
+
+    if (sourceIndex < 0 || targetIndex < 0) return;
+
+    const nextRows = [...currentRows];
+    const [movedItem] = nextRows.splice(sourceIndex, 1);
+    nextRows.splice(targetIndex, 0, movedItem);
+    const reorderedRows = nextRows.map((item, index) => ({ ...item, sortOrder: index + 1 }));
+
+    setRecords((current) => ({ ...current, [config.key]: reorderedRows }));
+    setDraggedItem(null);
+
+    try {
+      await api.patch(
+        "/admin/reorder",
+        {
+          resource: config.key,
+          orderedIds: reorderedRows.map((item) => item.id),
+        },
+        adminRequest(token),
+      );
+      setStatusMessage(`${config.label} order updated.`);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(`Could not update ${config.label.toLowerCase()} order.`);
+      await loadAdminData(token);
+    }
+  }
+
   async function handleFileChange(config, field, file) {
     if (!file) return;
 
@@ -804,7 +840,18 @@ export function AdminPage() {
     return (
       <div className="sgla-gallery-grid">
         {(records[config.key] || []).map((item) => (
-          <article className="sgla-gallery-card" key={item.id}>
+          <article
+            className={`sgla-gallery-card ${draggedItem?.resource === config.key && draggedItem.id === item.id ? "is-dragging" : ""}`}
+            draggable
+            key={item.id}
+            onDragEnd={() => setDraggedItem(null)}
+            onDragOver={(event) => event.preventDefault()}
+            onDragStart={() => setDraggedItem({ resource: config.key, id: item.id })}
+            onDrop={(event) => {
+              event.preventDefault();
+              handleReorder(config, draggedItem?.id, item.id);
+            }}
+          >
             <div className="sgla-gallery-media">
               <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async" />
               <span className={`sgla-status-chip ${item.featured ? "is-unread" : "is-read"}`}>
@@ -818,6 +865,9 @@ export function AdminPage() {
                 <span>{item.imageUrl}</span>
               </div>
               <div className="sgla-table-actions">
+                <button className="sgla-drag-handle" title="Drag to reorder" type="button">
+                  Move
+                </button>
                 <button onClick={() => beginEdit(config, item)} title="Edit" type="button">
                   <Pencil size={16} />
                 </button>
@@ -1097,6 +1147,7 @@ export function AdminPage() {
                   <table className="sgla-table">
                     <thead>
                       <tr>
+                        {sortableKeys.includes(activeConfig.key) ? <th>Move</th> : null}
                         {activeConfig.columns.map((column) => (
                           <th key={column.name}>{column.label}</th>
                         ))}
@@ -1105,7 +1156,31 @@ export function AdminPage() {
                     </thead>
                     <tbody>
                       {(records[activeConfig.key] || []).map((item) => (
-                        <tr key={item.id || activeConfig.key}>
+                        <tr
+                          className={draggedItem?.resource === activeConfig.key && draggedItem.id === item.id ? "is-dragging" : ""}
+                          draggable={sortableKeys.includes(activeConfig.key)}
+                          key={item.id || activeConfig.key}
+                          onDragEnd={() => setDraggedItem(null)}
+                          onDragOver={(event) => {
+                            if (sortableKeys.includes(activeConfig.key)) event.preventDefault();
+                          }}
+                          onDragStart={() => {
+                            if (sortableKeys.includes(activeConfig.key)) {
+                              setDraggedItem({ resource: activeConfig.key, id: item.id });
+                            }
+                          }}
+                          onDrop={(event) => {
+                            event.preventDefault();
+                            handleReorder(activeConfig, draggedItem?.id, item.id);
+                          }}
+                        >
+                          {sortableKeys.includes(activeConfig.key) ? (
+                            <td>
+                              <button className="sgla-drag-handle" title="Drag this row to reorder" type="button">
+                                Move
+                              </button>
+                            </td>
+                          ) : null}
                           {activeConfig.columns.map((column) => (
                             <td className={column.name === "message" ? "sgla-message-cell" : ""} key={column.name}>
                               {renderCell(item, column)}
@@ -1139,7 +1214,7 @@ export function AdminPage() {
                       ))}
                       {!records[activeConfig.key]?.length ? (
                         <tr>
-                          <td colSpan={activeConfig.columns.length + 1}>
+                          <td colSpan={activeConfig.columns.length + 1 + (sortableKeys.includes(activeConfig.key) ? 1 : 0)}>
                             <div className="sgla-empty">
                               <PackageCheck size={20} />
                               <span>{activeConfig.key === "contactMessages" ? "No messages found." : "No records found."}</span>

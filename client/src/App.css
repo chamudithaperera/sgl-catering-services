@@ -654,6 +654,11 @@
   border: 1px solid var(--sgla-line);
 }
 
+.sgla-gallery-card.is-dragging,
+.sgla-table tr.is-dragging {
+  opacity: 0.48;
+}
+
 .sgla-gallery-media {
   position: relative;
   aspect-ratio: 4 / 3;
@@ -783,6 +788,27 @@
   flex-wrap: wrap;
 }
 
+.sgla-drag-handle {
+  width: auto;
+  min-width: 66px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 6px;
+  color: var(--sgla-muted);
+  background: var(--sgla-surface-soft);
+  border: 1px dashed #aeb7c4;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: grab;
+}
+
+.sgla-drag-handle:active {
+  cursor: grabbing;
+}
+
 .sgla-table-actions button {
   width: 34px;
   height: 34px;
@@ -792,6 +818,13 @@
   color: var(--sgla-text);
   background: var(--sgla-surface-soft);
   border: 1px solid var(--sgla-line);
+}
+
+.sgla-table-actions .sgla-drag-handle {
+  width: auto;
+  min-width: 66px;
+  padding: 0 10px;
+  border-style: dashed;
 }
 
 .sgla-table-actions .sgla-text-action {

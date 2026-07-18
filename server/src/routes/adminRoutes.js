@@ -38,6 +38,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const router = express.Router();
 
+const reorderModels = {
+  cateringCategories: prisma.eventCategory,
+  foodPackages: prisma.foodPackage,
+  rentalItems: prisma.rentalItem,
+  rentalPackages: prisma.rentalPackage,
+  galleryItems: prisma.galleryItem,
+  reviews: prisma.review,
+};
+
 router.use(requireAuth);
 
 router.get("/dashboard", async (request, response) => {
@@ -93,6 +102,26 @@ router.post("/upload", upload.single("image"), (request, response) => {
     url: fileUrl,
     filename: request.file.filename,
   });
+});
+
+router.patch("/reorder", async (request, response) => {
+  const { resource, orderedIds } = request.body;
+  const model = reorderModels[resource];
+
+  if (!model || !Array.isArray(orderedIds)) {
+    return response.status(400).json({ message: "Invalid reorder request" });
+  }
+
+  await prisma.$transaction(
+    orderedIds.map((id, index) =>
+      model.update({
+        where: { id: Number(id) },
+        data: { sortOrder: index + 1 },
+      }),
+    ),
+  );
+
+  response.json({ ok: true });
 });
 
 router.get("/site-config", async (request, response) => {
