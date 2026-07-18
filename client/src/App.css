@@ -551,6 +551,13 @@
   overflow-wrap: anywhere;
 }
 
+.sgla-table td.sgla-message-cell {
+  min-width: 260px;
+  max-width: 420px;
+  white-space: normal;
+  line-height: 1.55;
+}
+
 .sgla-table-actions {
   gap: 8px;
 }

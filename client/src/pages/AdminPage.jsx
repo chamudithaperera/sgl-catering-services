@@ -284,6 +284,10 @@ const resourceConfigs = [
       { name: "customerName", label: "Name" },
       { name: "phone", label: "Phone" },
       { name: "eventType", label: "Event" },
+      { name: "message", label: "Message" },
+      { name: "serviceNeeded", label: "Service" },
+      { name: "guestCount", label: "Guests" },
+      { name: "location", label: "Location" },
       { name: "createdAt", label: "Received" },
     ],
   },
@@ -392,6 +396,18 @@ export function AdminPage() {
       console.error(error);
       setErrorMessage("Could not load admin content. Please try again.");
     });
+  }, [loadAdminData, token]);
+
+  useEffect(() => {
+    if (!token) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      loadAdminData(token).catch((error) => {
+        console.error(error);
+      });
+    }, 30000);
+
+    return () => window.clearInterval(intervalId);
   }, [loadAdminData, token]);
 
   async function handleLogin(event) {
@@ -801,7 +817,13 @@ export function AdminPage() {
                   <p>{activeConfig.readOnly ? "Read and clear" : "Manage records"}</p>
                   <h2>{activeConfig.readOnly ? "Website inquiries" : `Existing ${activeConfig.label}`}</h2>
                 </div>
-                <GalleryHorizontalEnd size={20} />
+                {activeConfig.readOnly ? (
+                  <button className="sgla-light-button" onClick={() => loadAdminData(token)} type="button">
+                    Refresh
+                  </button>
+                ) : (
+                  <GalleryHorizontalEnd size={20} />
+                )}
               </div>
               <div className="sgla-table-wrap">
                 <table className="sgla-table">
@@ -817,7 +839,7 @@ export function AdminPage() {
                     {(records[activeConfig.key] || []).map((item) => (
                       <tr key={item.id || activeConfig.key}>
                         {activeConfig.columns.map((column) => (
-                          <td key={column.name}>
+                          <td className={column.name === "message" ? "sgla-message-cell" : ""} key={column.name}>
                             {column.name === "title" || column.name === "name" || column.name === "customerName" ? (
                               <strong>{formatCell(item[column.name])}</strong>
                             ) : (
