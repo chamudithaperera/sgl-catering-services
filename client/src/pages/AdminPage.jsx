@@ -346,7 +346,7 @@ async function uploadImage(token, file) {
 
 export function AdminPage() {
   const [token, setToken] = useState(() => window.localStorage.getItem("sgl-admin-token") || "");
-  const [loginForm, setLoginForm] = useState({ email: "sgladmin", password: "Admin@1234" });
+  const [loginForm, setLoginForm] = useState({ email: "sgladmin", password: "" });
   const [activeKey, setActiveKey] = useState("dashboard");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -406,7 +406,7 @@ export function AdminPage() {
       setStatusMessage("Welcome back. Admin access is active.");
     } catch (error) {
       console.error(error);
-      setErrorMessage("Login failed. Use username sgladmin and password Admin@1234.");
+      setErrorMessage("Login failed. Please check your username and password.");
     } finally {
       setBusy(false);
     }
