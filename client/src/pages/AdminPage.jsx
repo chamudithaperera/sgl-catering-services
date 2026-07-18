@@ -710,6 +710,50 @@ export function AdminPage() {
     );
   }
 
+  function renderCrudForm(config, { isModal = false } = {}) {
+    return (
+      <form className={`sgla-panel sgla-form-panel${isModal ? " sgla-modal-form" : ""}`} onSubmit={(event) => handleSave(config, event)}>
+        <div className="sgla-panel-head">
+          <div>
+            <p>{editingIds[config.key] || config.singleton ? "Update record" : "Create record"}</p>
+            <h2>{config.label}</h2>
+          </div>
+          {isModal ? (
+            <button className="sgla-icon-button" onClick={closeCrudModal} type="button" aria-label="Close popup">
+              <X size={18} />
+            </button>
+          ) : editingIds[config.key] ? (
+            <Pencil size={20} />
+          ) : (
+            <Plus size={20} />
+          )}
+        </div>
+        <div className="sgla-form-grid">
+          {config.fields.map((field) => (
+            <label
+              className={`sgla-field ${["textarea", "lines", "bundleItems"].includes(field.type) ? "is-wide" : ""}`}
+              key={field.name}
+            >
+              <span>{field.label}</span>
+              {renderField(config, field)}
+            </label>
+          ))}
+        </div>
+        <div className="sgla-form-actions">
+          <button className="sgla-primary-button" disabled={busy} type="submit">
+            <Save size={17} />
+            {busy ? "Saving..." : config.singleton ? "Save settings" : editingIds[config.key] ? "Update" : "Create"}
+          </button>
+          {!config.singleton ? (
+            <button className="sgla-light-button" onClick={() => (isModal ? closeCrudModal() : resetForm(config))} type="button">
+              {isModal ? "Cancel" : "Reset"}
+            </button>
+          ) : null}
+        </div>
+      </form>
+    );
+  }
+
   if (!token) {
     return (
       <main className="sgla-login-page">
@@ -938,50 +982,23 @@ export function AdminPage() {
         ) : null}
 
         {activeConfig ? (
-          <section className={`sgla-crud-grid ${activeConfig.readOnly ? "is-full" : ""}`}>
-            {!activeConfig.readOnly ? (
-              <form className="sgla-panel sgla-form-panel" onSubmit={(event) => handleSave(activeConfig, event)}>
-                <div className="sgla-panel-head">
-                  <div>
-                    <p>{editingIds[activeConfig.key] || activeConfig.singleton ? "Update record" : "Create record"}</p>
-                    <h2>{activeConfig.label}</h2>
-                  </div>
-                  {editingIds[activeConfig.key] ? <Pencil size={20} /> : <Plus size={20} />}
-                </div>
-                <div className="sgla-form-grid">
-                  {activeConfig.fields.map((field) => (
-                    <label
-                      className={`sgla-field ${field.type === "textarea" || field.type === "lines" ? "is-wide" : ""}`}
-                      key={field.name}
-                    >
-                      <span>{field.label}</span>
-                      {renderField(activeConfig, field)}
-                    </label>
-                  ))}
-                </div>
-                <div className="sgla-form-actions">
-                  <button className="sgla-primary-button" disabled={busy} type="submit">
-                    <Save size={17} />
-                    {busy ? "Saving..." : activeConfig.singleton ? "Save settings" : editingIds[activeConfig.key] ? "Update" : "Create"}
-                  </button>
-                  {!activeConfig.singleton ? (
-                    <button className="sgla-light-button" onClick={() => resetForm(activeConfig)} type="button">
-                      Reset
-                    </button>
-                  ) : null}
-                </div>
-              </form>
-            ) : null}
+          <section className={`sgla-crud-grid ${activeConfig.readOnly || usesPopupCrud ? "is-full" : ""}`}>
+            {!activeConfig.readOnly && !usesPopupCrud ? renderCrudForm(activeConfig) : null}
 
             <section className="sgla-panel sgla-table-panel">
               <div className="sgla-panel-head">
                 <div>
-                  <p>{activeConfig.readOnly ? "Read and clear" : "Manage records"}</p>
-                  <h2>{activeConfig.readOnly ? "Website messages" : `Existing ${activeConfig.label}`}</h2>
+                  <p>{activeConfig.readOnly ? "Read and clear" : "Created records"}</p>
+                  <h2>{activeConfig.readOnly ? "Website messages" : `Created ${activeConfig.label}`}</h2>
                 </div>
                 {activeConfig.readOnly ? (
                   <button className="sgla-light-button" onClick={() => loadAdminData(token)} type="button">
                     Refresh
+                  </button>
+                ) : usesPopupCrud ? (
+                  <button className="sgla-primary-button" onClick={() => openCreateModal(activeConfig)} type="button">
+                    <Plus size={17} />
+                    Add new {activeConfig.label.toLowerCase()}
                   </button>
                 ) : (
                   <GalleryHorizontalEnd size={20} />
@@ -1048,6 +1065,13 @@ export function AdminPage() {
           </section>
         ) : null}
       </section>
+      {crudModalConfig ? (
+        <div className="sgla-modal-backdrop" role="presentation">
+          <div className="sgla-modal-shell" role="dialog" aria-modal="true" aria-label={`${crudModalConfig.label} popup`}>
+            {renderCrudForm(crudModalConfig, { isModal: true })}
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
