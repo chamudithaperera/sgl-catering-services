@@ -336,6 +336,10 @@
   margin-top: 16px;
 }
 
+.sgla-crud-grid.is-full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .sgla-panel {
   min-width: 0;
   padding: 20px;
@@ -553,13 +557,34 @@
 
 .sgla-table td.sgla-message-cell {
   min-width: 260px;
-  max-width: 420px;
+  max-width: 560px;
   white-space: normal;
   line-height: 1.55;
 }
 
+.sgla-status-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.sgla-status-chip.is-unread {
+  color: #0f4d26;
+  background: #dff8e8;
+}
+
+.sgla-status-chip.is-read {
+  color: #596270;
+  background: #edf0f4;
+}
+
 .sgla-table-actions {
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .sgla-table-actions button {
@@ -571,6 +596,14 @@
   color: var(--sgla-text);
   background: var(--sgla-surface-soft);
   border: 1px solid var(--sgla-line);
+}
+
+.sgla-table-actions .sgla-text-action {
+  width: auto;
+  min-width: 88px;
+  padding: 0 12px;
+  color: var(--sgla-accent);
+  font-weight: 800;
 }
 
 .sgla-table-actions button:last-child {

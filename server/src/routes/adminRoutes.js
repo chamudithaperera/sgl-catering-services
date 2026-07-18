@@ -50,6 +50,7 @@ router.get("/dashboard", async (request, response) => {
     galleryItems,
     reviews,
     contactMessages,
+    unreadMessages,
   ] = await Promise.all([
     prisma.benefit.count(),
     prisma.service.count(),
@@ -60,6 +61,7 @@ router.get("/dashboard", async (request, response) => {
     prisma.galleryItem.count(),
     prisma.review.count(),
     prisma.contactMessage.count(),
+    prisma.contactMessage.count({ where: { isRead: false } }),
   ]);
 
   response.json({
@@ -72,6 +74,7 @@ router.get("/dashboard", async (request, response) => {
     galleryItems,
     reviews,
     contactMessages,
+    unreadMessages,
   });
 });
 
@@ -307,8 +310,18 @@ router.delete("/reviews/:id", async (request, response) => {
 });
 
 router.get("/contact-messages", async (request, response) => {
-  const items = await prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" } });
+  const items = await prisma.contactMessage.findMany({
+    orderBy: [{ isRead: "asc" }, { createdAt: "desc" }],
+  });
   response.json(items);
+});
+
+router.patch("/contact-messages/:id/read", async (request, response) => {
+  const item = await prisma.contactMessage.update({
+    where: { id: Number(request.params.id) },
+    data: { isRead: Boolean(request.body.isRead) },
+  });
+  response.json(item);
 });
 
 router.delete("/contact-messages/:id", async (request, response) => {

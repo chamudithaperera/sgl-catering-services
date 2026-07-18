@@ -385,6 +385,7 @@ export function HomePage() {
     message: "",
   });
   const [contactStatus, setContactStatus] = useState("");
+  const [contactStatusType, setContactStatusType] = useState("success");
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
   const gallerySectionRef = useRef(null);
@@ -539,9 +540,11 @@ export function HomePage() {
         message: contactForm.message,
       });
       setContactForm({ name: "", phone: "", eventType: "", message: "" });
+      setContactStatusType("success");
       setContactStatus("ඔබගේ පණිවිඩය ලැබුණා. අපි ඉක්මනින් සම්බන්ධ වෙන්නම්.");
     } catch (error) {
       console.error(error);
+      setContactStatusType("error");
       setContactStatus("පණිවිඩය යැවීමේදී දෝෂයක් ඇතිවිය. කරුණාකර දුරකථනයෙන් සම්බන්ධවන්න.");
     }
   }
@@ -977,7 +980,11 @@ export function HomePage() {
                     <Send size={18} />
                   </span>
                 </button>
-                {contactStatus ? <p className="premium-contact-status">{contactStatus}</p> : null}
+                {contactStatus ? (
+                  <div className={`premium-contact-alert is-${contactStatusType}`} role="alert">
+                    {contactStatus}
+                  </div>
+                ) : null}
               </form>
             </div>
           </div>

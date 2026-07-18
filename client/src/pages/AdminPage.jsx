@@ -281,6 +281,7 @@ const resourceConfigs = [
     form: {},
     fields: [],
     columns: [
+      { name: "isRead", label: "Status" },
       { name: "customerName", label: "Name" },
       { name: "phone", label: "Phone" },
       { name: "eventType", label: "Event" },
@@ -345,6 +346,20 @@ function formatCell(value) {
   return value ?? "-";
 }
 
+function renderCell(item, column) {
+  if (column.name === "isRead") {
+    return <span className={`sgla-status-chip ${item.isRead ? "is-read" : "is-unread"}`}>{item.isRead ? "Read" : "Unread"}</span>;
+  }
+
+  const value = formatCell(item[column.name]);
+
+  if (column.name === "title" || column.name === "name" || column.name === "customerName") {
+    return <strong>{value}</strong>;
+  }
+
+  return value;
+}
+
 async function uploadImage(token, file) {
   const formData = new FormData();
   formData.append("image", file);
@@ -368,7 +383,10 @@ export function AdminPage() {
 
   const activeConfig = useMemo(() => resourceConfigs.find((config) => config.key === activeKey), [activeKey]);
   const totalRecords = useMemo(
-    () => Object.values(dashboard || {}).reduce((total, value) => total + Number(value || 0), 0),
+    () =>
+      Object.entries(dashboard || {})
+        .filter(([key]) => key !== "unreadMessages")
+        .reduce((total, [, value]) => total + Number(value || 0), 0),
     [dashboard],
   );
 
@@ -499,6 +517,21 @@ export function AdminPage() {
     } catch (error) {
       console.error(error);
       setErrorMessage(`Could not delete ${config.label.toLowerCase()} item.`);
+    }
+  }
+
+  async function handleToggleMessageRead(item) {
+    try {
+      await api.patch(
+        `/admin/contact-messages/${item.id}/read`,
+        { isRead: !item.isRead },
+        adminRequest(token),
+      );
+      await loadAdminData(token);
+      setStatusMessage(`Message marked as ${item.isRead ? "unread" : "read"}.`);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Could not update message status.");
     }
   }
 
@@ -655,7 +688,7 @@ export function AdminPage() {
               >
                 <Icon size={19} />
                 <span>{item.label}</span>
-                {item.key === "contactMessages" && dashboard?.contactMessages ? <b>{dashboard.contactMessages}</b> : null}
+                {item.key === "contactMessages" && dashboard?.unreadMessages ? <b>{dashboard.unreadMessages}</b> : null}
               </button>
             );
           })}
@@ -690,7 +723,7 @@ export function AdminPage() {
             </a>
             <button type="button">
               <Bell size={17} />
-              <span>{dashboard?.contactMessages || 0}</span>
+              <span>{dashboard?.unreadMessages || 0}</span>
             </button>
           </div>
         </header>
@@ -729,7 +762,7 @@ export function AdminPage() {
               <article>
                 <MessageSquareText size={22} />
                 <span>New messages</span>
-                <strong>{dashboard?.contactMessages ?? "-"}</strong>
+                <strong>{dashboard?.unreadMessages ?? "-"}</strong>
               </article>
             </div>
             <div className="sgla-dashboard-grid">
@@ -780,7 +813,7 @@ export function AdminPage() {
         ) : null}
 
         {activeConfig ? (
-          <section className="sgla-crud-grid">
+          <section className={`sgla-crud-grid ${activeConfig.readOnly ? "is-full" : ""}`}>
             {!activeConfig.readOnly ? (
               <form className="sgla-panel sgla-form-panel" onSubmit={(event) => handleSave(activeConfig, event)}>
                 <div className="sgla-panel-head">
@@ -844,15 +877,21 @@ export function AdminPage() {
                       <tr key={item.id || activeConfig.key}>
                         {activeConfig.columns.map((column) => (
                           <td className={column.name === "message" ? "sgla-message-cell" : ""} key={column.name}>
-                            {column.name === "title" || column.name === "name" || column.name === "customerName" ? (
-                              <strong>{formatCell(item[column.name])}</strong>
-                            ) : (
-                              formatCell(item[column.name])
-                            )}
+                            {renderCell(item, column)}
                           </td>
                         ))}
                         <td>
                           <div className="sgla-table-actions">
+                            {activeConfig.key === "contactMessages" ? (
+                              <button
+                                className="sgla-text-action"
+                                onClick={() => handleToggleMessageRead(item)}
+                                title={item.isRead ? "Mark unread" : "Mark read"}
+                                type="button"
+                              >
+                                {item.isRead ? "Unread" : "Read"}
+                              </button>
+                            ) : null}
                             {!activeConfig.readOnly && !activeConfig.singleton ? (
                               <button onClick={() => beginEdit(activeConfig, item)} title="Edit" type="button">
                                 <Pencil size={16} />

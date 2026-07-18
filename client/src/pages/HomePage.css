@@ -1357,11 +1357,25 @@
   justify-content: center;
 }
 
-.premium-contact-status {
+.premium-contact-alert {
   margin: 14px 0 0;
-  color: rgba(245, 241, 232, 0.82);
+  padding: 14px 16px;
+  border-radius: 18px;
   font-size: 0.94rem;
   line-height: 1.55;
+  font-weight: 700;
+}
+
+.premium-contact-alert.is-success {
+  color: #052d20;
+  background: rgba(38, 255, 233, 0.9);
+  border: 1px solid rgba(38, 255, 233, 0.58);
+}
+
+.premium-contact-alert.is-error {
+  color: #ffecec;
+  background: rgba(174, 44, 55, 0.32);
+  border: 1px solid rgba(255, 130, 139, 0.42);
 }
 
 .premium-footer {
