@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BadgeDollarSign,
   Bell,
@@ -364,15 +364,7 @@ export function AdminPage() {
     [dashboard],
   );
 
-  useEffect(() => {
-    if (!token) return;
-    loadAdminData(token).catch((error) => {
-      console.error(error);
-      setErrorMessage("Could not load admin content. Please try again.");
-    });
-  }, [token]);
-
-  async function loadAdminData(activeToken) {
+  const loadAdminData = useCallback(async (activeToken) => {
     const requestConfig = adminRequest(activeToken);
     const [dashboardResponse, ...resourceResponses] = await Promise.all([
       api.get("/admin/dashboard", requestConfig),
@@ -386,13 +378,21 @@ export function AdminPage() {
       const data = resourceResponses[index].data;
       const rows = config.singleton ? (data ? [data] : []) : data;
       nextRecords[config.key] = rows;
-      nextForms[config.key] = config.singleton && data ? normalizeForForm(config, data) : forms[config.key] || { ...config.form };
+      nextForms[config.key] = config.singleton && data ? normalizeForForm(config, data) : { ...config.form };
     });
 
     setDashboard(dashboardResponse.data);
     setRecords(nextRecords);
     setForms((current) => ({ ...current, ...nextForms }));
-  }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+    loadAdminData(token).catch((error) => {
+      console.error(error);
+      setErrorMessage("Could not load admin content. Please try again.");
+    });
+  }, [loadAdminData, token]);
 
   async function handleLogin(event) {
     event.preventDefault();
