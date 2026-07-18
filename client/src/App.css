@@ -419,6 +419,32 @@
   border: 1px solid #ffd3d7;
 }
 
+.sgla-subtabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 6px;
+  border-radius: 8px;
+  background: var(--sgla-surface);
+  border: 1px solid var(--sgla-line);
+}
+
+.sgla-subtabs button {
+  min-height: 38px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 6px;
+  color: var(--sgla-muted);
+  background: transparent;
+  font-weight: 800;
+}
+
+.sgla-subtabs button.is-active {
+  color: #fff;
+  background: var(--sgla-accent);
+}
+
 .sgla-field {
   display: grid;
   gap: 8px;
@@ -515,6 +541,21 @@
   border-radius: 6px;
   object-fit: cover;
   border: 1px solid var(--sgla-line);
+}
+
+.sgla-bundle-builder {
+  display: grid;
+  gap: 10px;
+}
+
+.sgla-bundle-picker {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) 90px minmax(140px, 0.8fr) auto;
+  gap: 10px;
+}
+
+.sgla-bundle-picker .sgla-light-button {
+  min-height: 44px;
 }
 
 .sgla-table-panel {
@@ -721,6 +762,10 @@
   }
 
   .sgla-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sgla-bundle-picker {
     grid-template-columns: minmax(0, 1fr);
   }
 

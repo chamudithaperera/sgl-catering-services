@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  BadgeDollarSign,
   Bell,
   Boxes,
   Camera,
@@ -54,23 +53,13 @@ const siteConfigForm = {
 const resourceConfigs = [
   {
     key: "siteConfig",
-    label: "Site Settings",
-    eyebrow: "Contact details, hero copy, about copy, and social links",
+    label: "Contact Details",
+    eyebrow: "Phone, WhatsApp, email, address, hours, map, and social links",
     endpoint: "/admin/site-config",
     icon: Settings2,
     singleton: true,
     form: siteConfigForm,
     fields: [
-      { name: "companyName", label: "Company name" },
-      { name: "heroBadge", label: "Hero badge" },
-      { name: "heroTitleLineOne", label: "Hero title line 1" },
-      { name: "heroTitleLineTwo", label: "Hero title line 2" },
-      { name: "heroDescription", label: "Hero description", type: "textarea" },
-      { name: "aboutHeading", label: "About heading" },
-      { name: "aboutIntro", label: "About intro", type: "textarea" },
-      { name: "aboutBody", label: "About body", type: "textarea" },
-      { name: "contactHeading", label: "Contact heading" },
-      { name: "contactDescription", label: "Contact description", type: "textarea" },
       { name: "phone", label: "Phone" },
       { name: "whatsapp", label: "WhatsApp" },
       { name: "email", label: "Email", type: "email" },
@@ -87,50 +76,41 @@ const resourceConfigs = [
     ],
   },
   {
-    key: "benefits",
-    label: "Benefits",
-    eyebrow: "Homepage trust and value cards",
-    endpoint: "/admin/benefits",
-    icon: ShieldCheck,
-    form: { title: "", description: "", icon: "ShieldCheck", sortOrder: 0 },
-    fields: [
-      { name: "title", label: "Title" },
-      { name: "description", label: "Description", type: "textarea" },
-      { name: "icon", label: "Lucide icon key" },
-      { name: "sortOrder", label: "Sort order", type: "number" },
-    ],
-    columns: [
-      { name: "title", label: "Title" },
-      { name: "icon", label: "Icon" },
-      { name: "sortOrder", label: "Order" },
-    ],
-  },
-  {
-    key: "services",
-    label: "Services",
-    eyebrow: "Website service cards and offer categories",
-    endpoint: "/admin/services",
+    key: "cateringCategories",
+    label: "Categories",
+    eyebrow: "Event categories such as weddings and home functions",
+    endpoint: "/admin/catering-categories",
     icon: Grid2X2,
-    form: { title: "", description: "", icon: "Sparkles", sortOrder: 0 },
+    form: {
+      title: "",
+      shortLabel: "",
+      description: "",
+      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
+      highlights: "",
+      sortOrder: 0,
+    },
     fields: [
-      { name: "title", label: "Service name" },
+      { name: "title", label: "Title" },
+      { name: "shortLabel", label: "Short label" },
       { name: "description", label: "Description", type: "textarea" },
-      { name: "icon", label: "Lucide icon key" },
+      { name: "imageUrl", label: "Image URL", type: "image" },
+      { name: "highlights", label: "Highlights", type: "lines" },
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [
-      { name: "title", label: "Service" },
-      { name: "icon", label: "Icon" },
+      { name: "title", label: "Title" },
+      { name: "shortLabel", label: "Short label" },
       { name: "sortOrder", label: "Order" },
     ],
   },
   {
     key: "foodPackages",
-    label: "Food Packages",
-    eyebrow: "Catering package names, items, CTAs, and pricing labels",
+    label: "Menus",
+    eyebrow: "Food menus assigned to event categories",
     endpoint: "/admin/food-packages",
     icon: Utensils,
     form: {
+      categoryId: "",
       name: "",
       summary: "",
       priceLabel: "",
@@ -140,7 +120,8 @@ const resourceConfigs = [
       sortOrder: 0,
     },
     fields: [
-      { name: "name", label: "Package name" },
+      { name: "categoryId", label: "Show under category", type: "select", optionsKey: "cateringCategories", optionLabel: "title" },
+      { name: "name", label: "Menu name" },
       { name: "summary", label: "Summary", type: "textarea" },
       { name: "priceLabel", label: "Price label" },
       { name: "includedItems", label: "Included items", type: "lines" },
@@ -149,14 +130,15 @@ const resourceConfigs = [
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [
-      { name: "name", label: "Package" },
+      { name: "name", label: "Menu" },
+      { name: "categoryId", label: "Category" },
       { name: "priceLabel", label: "Price" },
       { name: "featured", label: "Featured" },
     ],
   },
   {
     key: "rentalItems",
-    label: "Rental Items",
+    label: "Items",
     eyebrow: "Equipment inventory, categories, quantities, and images",
     endpoint: "/admin/rental-items",
     icon: Boxes,
@@ -188,41 +170,24 @@ const resourceConfigs = [
     ],
   },
   {
-    key: "rentalPrices",
-    label: "Pricing",
-    eyebrow: "Quick price list rows for rental equipment",
-    endpoint: "/admin/rental-prices",
-    icon: BadgeDollarSign,
-    form: { item: "", priceLabel: "", sortOrder: 0 },
-    fields: [
-      { name: "item", label: "Item" },
-      { name: "priceLabel", label: "Price label" },
-      { name: "sortOrder", label: "Sort order", type: "number" },
-    ],
-    columns: [
-      { name: "item", label: "Item" },
-      { name: "priceLabel", label: "Price" },
-      { name: "sortOrder", label: "Order" },
-    ],
-  },
-  {
     key: "rentalPackages",
-    label: "Rental Packages",
-    eyebrow: "Bundle offers for event equipment rental",
+    label: "Bundles",
+    eyebrow: "Rental bundles built from created rental items",
     endpoint: "/admin/rental-packages",
     icon: PackageCheck,
-    form: { name: "", summary: "", items: "", ctaLabel: "Ask price", sortOrder: 0 },
+    form: { name: "", summary: "", priceLabel: "", items: "", ctaLabel: "Ask price", sortOrder: 0 },
     fields: [
-      { name: "name", label: "Package name" },
+      { name: "name", label: "Bundle name" },
       { name: "summary", label: "Summary", type: "textarea" },
-      { name: "items", label: "Included items", type: "lines" },
+      { name: "priceLabel", label: "Bundle price" },
+      { name: "items", label: "Selected items", type: "bundleItems" },
       { name: "ctaLabel", label: "CTA label" },
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [
-      { name: "name", label: "Package" },
+      { name: "name", label: "Bundle" },
+      { name: "priceLabel", label: "Price" },
       { name: "items", label: "Items" },
-      { name: "sortOrder", label: "Order" },
     ],
   },
   {
@@ -294,10 +259,34 @@ const resourceConfigs = [
   },
 ];
 
+const groupedSections = {
+  catering: {
+    label: "Catering",
+    eyebrow: "Manage event categories and food menus",
+    icon: Utensils,
+    tabs: [
+      { key: "cateringCategories", label: "Categories" },
+      { key: "foodPackages", label: "Menus" },
+    ],
+  },
+  rental: {
+    label: "Rental",
+    eyebrow: "Manage rental bundles and inventory items",
+    icon: Boxes,
+    tabs: [
+      { key: "rentalPackages", label: "Bundles" },
+      { key: "rentalItems", label: "Items" },
+    ],
+  },
+};
+
 const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   ...resourceConfigs.filter((config) => config.key === "contactMessages"),
-  ...resourceConfigs.filter((config) => config.key !== "contactMessages"),
+  ...resourceConfigs.filter((config) => config.key === "siteConfig"),
+  { key: "catering", label: "Catering", icon: Utensils },
+  { key: "rental", label: "Rental", icon: Boxes },
+  ...resourceConfigs.filter((config) => ["galleryItems", "reviews"].includes(config.key)),
 ];
 
 function buildInitialForms() {
@@ -323,16 +312,17 @@ function adminRequest(token) {
 }
 
 function normalizeForForm(config, item) {
-  return config.fields.reduce((form, field) => {
-    const value = item?.[field.name] ?? config.form[field.name] ?? "";
-    form[field.name] = field.type === "lines" && Array.isArray(value) ? value.join("\n") : value;
+  return Object.keys(config.form).reduce((form, fieldName) => {
+    const field = config.fields.find((candidate) => candidate.name === fieldName);
+    const value = item?.[fieldName] ?? config.form[fieldName] ?? "";
+    form[fieldName] = (field?.type === "lines" || field?.type === "bundleItems") && Array.isArray(value) ? value.join("\n") : value;
     return form;
   }, {});
 }
 
 function normalizePayload(config, form) {
-  return config.fields.reduce((payload, field) => {
-    payload[field.name] = form[field.name];
+  return Object.keys(config.form).reduce((payload, fieldName) => {
+    payload[fieldName] = form[fieldName];
     return payload;
   }, {});
 }
@@ -349,6 +339,10 @@ function formatCell(value) {
 function renderCell(item, column) {
   if (column.name === "isRead") {
     return <span className={`sgla-status-chip ${item.isRead ? "is-read" : "is-unread"}`}>{item.isRead ? "Read" : "Unread"}</span>;
+  }
+
+  if (column.name === "categoryId") {
+    return item.category?.title || "-";
   }
 
   const value = formatCell(item[column.name]);
@@ -371,6 +365,11 @@ export function AdminPage() {
   const [token, setToken] = useState(() => window.localStorage.getItem("sgl-admin-token") || "");
   const [loginForm, setLoginForm] = useState({ email: "sgladmin", password: "" });
   const [activeKey, setActiveKey] = useState("dashboard");
+  const [activeGroupTabs, setActiveGroupTabs] = useState({
+    catering: "cateringCategories",
+    rental: "rentalPackages",
+  });
+  const [bundleDraft, setBundleDraft] = useState({ itemId: "", count: 1, price: "" });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [dashboard, setDashboard] = useState(null);
@@ -381,11 +380,15 @@ export function AdminPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const activeConfig = useMemo(() => resourceConfigs.find((config) => config.key === activeKey), [activeKey]);
+  const activeResourceKey = groupedSections[activeKey]?.tabs.find((tab) => tab.key === activeGroupTabs[activeKey])?.key || activeKey;
+  const activeGroup = groupedSections[activeKey];
+  const activeConfig = useMemo(() => resourceConfigs.find((config) => config.key === activeResourceKey), [activeResourceKey]);
+  const activeTitle = activeGroup?.label || activeConfig?.label || "Dashboard";
+  const activeEyebrow = activeGroup?.eyebrow || activeConfig?.eyebrow || "Control room for editable website content";
   const totalRecords = useMemo(
     () =>
       Object.entries(dashboard || {})
-        .filter(([key]) => key !== "unreadMessages")
+        .filter(([key]) => !["unreadMessages", "benefits", "services", "rentalPrices"].includes(key))
         .reduce((total, [, value]) => total + Number(value || 0), 0),
     [dashboard],
   );
@@ -463,7 +466,15 @@ export function AdminPage() {
   }
 
   function beginEdit(config, item) {
-    setActiveKey(config.key);
+    if (["cateringCategories", "foodPackages"].includes(config.key)) {
+      setActiveKey("catering");
+      setActiveGroupTabs((current) => ({ ...current, catering: config.key }));
+    } else if (["rentalPackages", "rentalItems"].includes(config.key)) {
+      setActiveKey("rental");
+      setActiveGroupTabs((current) => ({ ...current, rental: config.key }));
+    } else {
+      setActiveKey(config.key);
+    }
     setEditingIds((current) => ({ ...current, [config.key]: item.id }));
     setForms((current) => ({ ...current, [config.key]: normalizeForForm(config, item) }));
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -477,6 +488,21 @@ export function AdminPage() {
         [field.name]: field.type === "boolean" ? value === "true" : value,
       },
     }));
+  }
+
+  function addBundleItem(config, field) {
+    const selectedItem = records.rentalItems.find((item) => String(item.id) === String(bundleDraft.itemId));
+
+    if (!selectedItem) {
+      setErrorMessage("Select a rental item before adding it to the bundle.");
+      return;
+    }
+
+    const line = `${selectedItem.name} x ${bundleDraft.count || 1}${bundleDraft.price ? ` - ${bundleDraft.price}` : ""}`;
+    const currentValue = forms[config.key]?.[field.name] || "";
+    updateField(config, field, [currentValue, line].filter(Boolean).join("\n"));
+    setBundleDraft({ itemId: "", count: 1, price: "" });
+    setErrorMessage("");
   }
 
   async function handleSave(config, event) {
@@ -562,6 +588,45 @@ export function AdminPage() {
   function renderField(config, field) {
     const value = forms[config.key]?.[field.name] ?? "";
 
+    if (field.type === "bundleItems") {
+      return (
+        <div className="sgla-bundle-builder">
+          <div className="sgla-bundle-picker">
+            <select
+              onChange={(event) => setBundleDraft((current) => ({ ...current, itemId: event.target.value }))}
+              value={bundleDraft.itemId}
+            >
+              <option value="">Select created item</option>
+              {records.rentalItems.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+            <input
+              min="1"
+              onChange={(event) => setBundleDraft((current) => ({ ...current, count: event.target.value }))}
+              type="number"
+              value={bundleDraft.count}
+            />
+            <input
+              onChange={(event) => setBundleDraft((current) => ({ ...current, price: event.target.value }))}
+              placeholder="Item price"
+              value={bundleDraft.price}
+            />
+            <button className="sgla-light-button" onClick={() => addBundleItem(config, field)} type="button">
+              Add item
+            </button>
+          </div>
+          <textarea
+            onChange={(event) => updateField(config, field, event.target.value)}
+            placeholder="Selected bundle items will appear here"
+            value={value}
+          />
+        </div>
+      );
+    }
+
     if (field.type === "textarea" || field.type === "lines") {
       return (
         <textarea
@@ -577,6 +642,20 @@ export function AdminPage() {
         <select onChange={(event) => updateField(config, field, event.target.value)} value={String(value)}>
           <option value="false">No</option>
           <option value="true">Yes</option>
+        </select>
+      );
+    }
+
+    if (field.type === "select") {
+      const options = records[field.optionsKey] || [];
+      return (
+        <select onChange={(event) => updateField(config, field, event.target.value)} value={value || ""}>
+          <option value="">Select {field.label.toLowerCase()}</option>
+          {options.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option[field.optionLabel || "name"] || option.title || option.name}
+            </option>
+          ))}
         </select>
       );
     }
@@ -713,8 +792,8 @@ export function AdminPage() {
       <section className="sgla-workspace">
         <header className="sgla-topbar">
           <div>
-            <p>{activeConfig?.eyebrow || "Control room for editable website content"}</p>
-            <h1>{activeConfig?.label || "Dashboard"}</h1>
+            <p>{activeEyebrow}</p>
+            <h1>{activeTitle}</h1>
           </div>
           <div className="sgla-topbar-actions">
             <a href="/" target="_blank" rel="noreferrer">
@@ -751,7 +830,7 @@ export function AdminPage() {
               </article>
               <article>
                 <Utensils size={22} />
-                <span>Food packages</span>
+                <span>Catering menus</span>
                 <strong>{dashboard?.foodPackages ?? "-"}</strong>
               </article>
               <article>
@@ -775,15 +854,15 @@ export function AdminPage() {
                   <ClipboardList size={20} />
                 </div>
                 <div className="sgla-section-list">
-                  {resourceConfigs
-                    .filter((config) => !config.readOnly)
-                    .map((config) => {
-                      const Icon = config.icon;
+                  {navItems
+                    .filter((item) => !["dashboard", "contactMessages"].includes(item.key))
+                    .map((item) => {
+                      const Icon = item.icon;
                       return (
-                        <button key={config.key} onClick={() => selectSection(config.key)} type="button">
+                        <button key={item.key} onClick={() => selectSection(item.key)} type="button">
                           <Icon size={18} />
-                          <span>{config.label}</span>
-                          <b>{config.singleton ? "Edit" : dashboard?.[config.key] ?? records[config.key]?.length ?? 0}</b>
+                          <span>{item.label}</span>
+                          <b>{item.key === "siteConfig" ? "Edit" : item.key === "catering" ? dashboard?.foodPackages ?? 0 : item.key === "rental" ? dashboard?.rentalItems ?? 0 : dashboard?.[item.key] ?? 0}</b>
                         </button>
                       );
                     })}
@@ -810,6 +889,25 @@ export function AdminPage() {
               </section>
             </div>
           </section>
+        ) : null}
+
+        {activeGroup ? (
+          <div className="sgla-subtabs" role="tablist" aria-label={`${activeGroup.label} tabs`}>
+            {activeGroup.tabs.map((tab) => (
+              <button
+                className={activeGroupTabs[activeKey] === tab.key ? "is-active" : ""}
+                key={tab.key}
+                onClick={() => {
+                  setActiveGroupTabs((current) => ({ ...current, [activeKey]: tab.key }));
+                  setStatusMessage("");
+                  setErrorMessage("");
+                }}
+                type="button"
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         ) : null}
 
         {activeConfig ? (

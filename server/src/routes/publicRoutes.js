@@ -13,6 +13,7 @@ router.get("/content", async (request, response) => {
     siteConfig,
     benefits,
     services,
+    cateringCategories,
     foodPackages,
     rentalItems,
     rentalPrices,
@@ -23,7 +24,8 @@ router.get("/content", async (request, response) => {
     prisma.siteConfig.findUnique({ where: { id: 1 } }),
     prisma.benefit.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.service.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.foodPackage.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.eventCategory.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.foodPackage.findMany({ include: { category: true }, orderBy: { sortOrder: "asc" } }),
     prisma.rentalItem.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.rentalPrice.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.rentalPackage.findMany({ orderBy: { sortOrder: "asc" } }),
@@ -35,6 +37,7 @@ router.get("/content", async (request, response) => {
     siteConfig,
     benefits,
     services,
+    cateringCategories,
     foodPackages,
     rentalItems,
     rentalPrices,
@@ -56,4 +59,3 @@ router.post("/inquiries", async (request, response) => {
 });
 
 module.exports = { publicRoutes: router };
-

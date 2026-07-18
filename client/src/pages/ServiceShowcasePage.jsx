@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
+import { api } from "../lib/api";
 import "./ServiceShowcasePage.css";
 
 const contactPhone = "+94703324500";
@@ -269,6 +270,87 @@ function RentingSections({ page }) {
   );
 }
 
+function buildManagedCateringPage(page, content) {
+  if (!content?.cateringCategories?.length) {
+    return page;
+  }
+
+  const categories = content.cateringCategories.map((category) => ({
+    id: String(category.id),
+    title: category.title,
+    shortLabel: category.shortLabel,
+    iconKey: "utensils",
+    image: category.imageUrl,
+    description: category.description,
+    highlights: category.highlights?.length ? category.highlights : ["අවස්ථාවට ගැළපෙන මෙනු", "අයවැය අනුව සැකසුම්"],
+    packages: (content.foodPackages || [])
+      .filter((item) => item.categoryId === category.id)
+      .map((item) => ({
+        name: item.name,
+        summary: item.summary,
+        priceLabel: item.priceLabel,
+        featured: item.featured,
+        includedItems: item.includedItems,
+      })),
+  }));
+
+  return {
+    ...page,
+    heroStats: [
+      { label: "උත්සව කාණ්ඩ", value: String(categories.length).padStart(2, "0"), note: "අවස්ථා වර්ග" },
+      {
+        label: "මෙනු තේරීම්",
+        value: `${(content.foodPackages || []).length}+`,
+        note: "විවිධ මෙනු",
+      },
+      page.heroStats[2],
+    ],
+    categories,
+  };
+}
+
+function buildManagedRentalPage(page, content) {
+  const hasRentalContent = content?.rentalItems?.length || content?.rentalPackages?.length;
+
+  if (!hasRentalContent) {
+    return page;
+  }
+
+  const groupedItems = (content.rentalItems || []).reduce((groups, item) => {
+    const category = item.category || "Rental Items";
+    groups[category] = groups[category] || [];
+    groups[category].push({
+      name: item.name,
+      imageUrl: item.imageUrl,
+      priceLabel: item.priceLabel,
+      quantity: `${item.availableQuantity} available`,
+      status: item.status,
+    });
+    return groups;
+  }, {});
+
+  return {
+    ...page,
+    heroStats: [
+      { label: "කුලී පැකේජ", value: String((content.rentalPackages || []).length).padStart(2, "0"), note: "සූදානම් පැකේජ" },
+      { label: "භාණ්ඩ වර්ග", value: `${(content.rentalItems || []).length}+`, note: "තේරීම් රැසක්" },
+      page.heroStats[2],
+    ],
+    packages: (content.rentalPackages || []).map((item) => ({
+      name: item.name,
+      summary: item.summary,
+      priceLabel: item.priceLabel,
+      featured: false,
+      includedItems: item.items,
+    })),
+    itemGroups: Object.entries(groupedItems).map(([title, items]) => ({
+      title,
+      description: "Admin-managed rental inventory.",
+      items,
+    })),
+  };
+}
+
 function ContactBand({ page, anchorId }) {
   return (
     <section className="service-band service-band-footer" id={anchorId}>
@@ -306,10 +388,29 @@ function ContactBand({ page, anchorId }) {
 }
 
 export function ServiceShowcasePage({ page }) {
-  const anchorId = page.type === "catering" ? "consultation" : "booking";
+  const [managedPage, setManagedPage] = useState(page);
+  const anchorId = managedPage.type === "catering" ? "consultation" : "booking";
+
+  useEffect(() => {
+    let ignore = false;
+
+    api
+      .get("/public/content")
+      .then((response) => {
+        if (ignore) return;
+        setManagedPage(page.type === "catering" ? buildManagedCateringPage(page, response.data) : buildManagedRentalPage(page, response.data));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [page]);
 
   return (
-    <main className={`service-page service-page-${page.type}`}>
+    <main className={`service-page service-page-${managedPage.type}`}>
       <header className="service-page-topbar">
         <Link className="service-page-brand" to="/">
           <span>SGL කේටරින් සර්විස්</span>
@@ -318,7 +419,7 @@ export function ServiceShowcasePage({ page }) {
 
         <nav className="service-page-primary-nav" aria-label="Primary">
           {primaryLinks.map((item) => (
-            <Link className={item.type === page.type ? "is-active" : ""} key={item.href} to={item.href}>
+            <Link className={item.type === managedPage.type ? "is-active" : ""} key={item.href} to={item.href}>
               {item.label}
             </Link>
           ))}
@@ -337,11 +438,11 @@ export function ServiceShowcasePage({ page }) {
         </div>
       </header>
 
-      <BannerSection anchorId={anchorId} page={page} />
+      <BannerSection anchorId={anchorId} page={managedPage} />
 
-      {page.type === "catering" ? <CateringSections page={page} /> : <RentingSections page={page} />}
+      {managedPage.type === "catering" ? <CateringSections page={managedPage} /> : <RentingSections page={managedPage} />}
 
-      <ContactBand anchorId={anchorId} page={page} />
+      <ContactBand anchorId={anchorId} page={managedPage} />
     </main>
   );
 }

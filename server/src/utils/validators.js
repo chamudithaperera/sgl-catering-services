@@ -35,7 +35,28 @@ const benefitSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
+const eventCategorySchema = z.object({
+  title: z.string().min(2),
+  shortLabel: z.string().min(2),
+  description: z.string().min(10),
+  imageUrl: z.string().min(2),
+  highlights: z
+    .union([z.array(z.string().min(1)), z.string()])
+    .transform((value) =>
+      Array.isArray(value)
+        ? value.map((item) => item.trim()).filter(Boolean)
+        : value
+            .split("\n")
+            .map((item) => item.trim())
+            .filter(Boolean),
+    ),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
 const foodPackageSchema = z.object({
+  categoryId: z
+    .union([z.coerce.number().int().positive(), z.literal(""), z.null(), z.undefined()])
+    .transform((value) => (value === "" || value === null || value === undefined ? null : value)),
   name: z.string().min(2),
   summary: z.string().min(10),
   priceLabel: z.string().min(2),
@@ -74,6 +95,7 @@ const rentalPriceSchema = z.object({
 const rentalPackageSchema = z.object({
   name: z.string().min(2),
   summary: z.string().min(10),
+  priceLabel: z.string().min(2),
   items: z
     .union([z.array(z.string().min(1)), z.string()])
     .transform((value) =>
@@ -119,6 +141,7 @@ module.exports = {
   siteConfigSchema,
   benefitSchema,
   serviceSchema,
+  eventCategorySchema,
   foodPackageSchema,
   rentalItemSchema,
   rentalPriceSchema,

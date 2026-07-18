@@ -8,6 +8,7 @@ const {
   siteConfigSchema,
   benefitSchema,
   serviceSchema,
+  eventCategorySchema,
   foodPackageSchema,
   rentalItemSchema,
   rentalPriceSchema,
@@ -43,6 +44,7 @@ router.get("/dashboard", async (request, response) => {
   const [
     benefits,
     services,
+    cateringCategories,
     foodPackages,
     rentalItems,
     rentalPrices,
@@ -54,6 +56,7 @@ router.get("/dashboard", async (request, response) => {
   ] = await Promise.all([
     prisma.benefit.count(),
     prisma.service.count(),
+    prisma.eventCategory.count(),
     prisma.foodPackage.count(),
     prisma.rentalItem.count(),
     prisma.rentalPrice.count(),
@@ -67,6 +70,7 @@ router.get("/dashboard", async (request, response) => {
   response.json({
     benefits,
     services,
+    cateringCategories,
     foodPackages,
     rentalItems,
     rentalPrices,
@@ -159,8 +163,36 @@ router.delete("/services/:id", async (request, response) => {
   response.status(204).send();
 });
 
+router.get("/catering-categories", async (request, response) => {
+  const items = await prisma.eventCategory.findMany({ orderBy: { sortOrder: "asc" } });
+  response.json(items);
+});
+
+router.post("/catering-categories", async (request, response) => {
+  const data = eventCategorySchema.parse(request.body);
+  const item = await prisma.eventCategory.create({ data });
+  response.status(201).json(item);
+});
+
+router.put("/catering-categories/:id", async (request, response) => {
+  const data = eventCategorySchema.parse(request.body);
+  const item = await prisma.eventCategory.update({
+    where: { id: Number(request.params.id) },
+    data,
+  });
+  response.json(item);
+});
+
+router.delete("/catering-categories/:id", async (request, response) => {
+  await prisma.eventCategory.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
+});
+
 router.get("/food-packages", async (request, response) => {
-  const items = await prisma.foodPackage.findMany({ orderBy: { sortOrder: "asc" } });
+  const items = await prisma.foodPackage.findMany({
+    include: { category: true },
+    orderBy: { sortOrder: "asc" },
+  });
   response.json(items);
 });
 

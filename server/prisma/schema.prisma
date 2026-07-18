@@ -61,8 +61,23 @@ model Service {
   updatedAt   DateTime @updatedAt
 }
 
+model EventCategory {
+  id           Int           @id @default(autoincrement())
+  title        String
+  shortLabel   String
+  description  String        @db.Text
+  imageUrl     String
+  highlights   String[]
+  sortOrder    Int           @default(0)
+  foodPackages FoodPackage[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
 model FoodPackage {
   id            Int      @id @default(autoincrement())
+  categoryId    Int?
+  category      EventCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   name          String
   summary       String   @db.Text
   priceLabel    String
@@ -101,6 +116,7 @@ model RentalPackage {
   id         Int      @id @default(autoincrement())
   name       String
   summary    String
+  priceLabel String   @default("මිල විමසන්න")
   items      String[]
   ctaLabel   String
   sortOrder  Int      @default(0)
