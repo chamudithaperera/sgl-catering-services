@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Globe2, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { api } from "../lib/api";
 import "./HomePage.css";
 
 const contactPhone = "+94703324500";
-const secondaryContactPhone = "+94717394581";
 const contactPhoneLabel = "070 33 24 500";
 const secondaryContactPhoneLabel = "071 73 94 581";
 const contactEmail = "sudathjayathilakabs@gmail.com";
@@ -378,12 +378,14 @@ function useAutoplayVideo(videoRef, isActive) {
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeReview, setActiveReview] = useState(0);
+  const [content, setContent] = useState(null);
   const [contactForm, setContactForm] = useState({
     name: "",
     phone: "",
     eventType: "",
     message: "",
   });
+  const [contactStatus, setContactStatus] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
   const gallerySectionRef = useRef(null);
@@ -391,6 +393,53 @@ export function HomePage() {
   const isGalleryVideoActive = useActivateOnIntersect(gallerySectionRef, { rootMargin: "240px 0px", threshold: 0.08 });
 
   useAutoplayVideo(galleryVideoRef, isGalleryVideoActive);
+
+  const siteConfig = content?.siteConfig;
+  const homepageServices =
+    content?.services?.length > 0
+      ? content.services.slice(0, 2).map((service, index) => ({
+          title: service.title,
+          label: index === 0 ? "Signature Catering" : "Event Rentals",
+          href: index === 0 ? "/catering" : "/renting",
+          image: index === 0 ? "/assets/sgl-images/hero-buffet.jpg" : "/assets/sgl-images/indoor-buffet.jpg",
+          description: service.description,
+        }))
+      : serviceItems;
+  const homepageGallery =
+    content?.gallery?.length > 0
+      ? content.gallery.map((item, index) => ({
+          title: item.title,
+          image: item.imageUrl,
+          layout: ["hero", "portrait", "compact", "square", "landscape"][index % 5],
+          position: "center center",
+        }))
+      : galleryItems;
+  const homepageReviews =
+    content?.reviews?.length > 0
+      ? content.reviews.map((review) => ({
+          name: review.customerName,
+          event: review.eventType,
+          score: Number(review.rating || 5).toFixed(1),
+          quote: review.quote,
+        }))
+      : reviewItems;
+  const homepagePhone = siteConfig?.phone || contactPhone;
+  const homepagePhoneLabel = siteConfig?.phone || contactPhoneLabel;
+  const homepageWhatsApp = siteConfig?.whatsapp || homepagePhone;
+  const homepageWhatsAppHref = `https://wa.me/${homepageWhatsApp.replace(/[^\d]/g, "")}`;
+  const homepageEmail = siteConfig?.email || contactEmail;
+  const homepageFacebookUrl = siteConfig?.facebookUrl || facebookUrl;
+  const homepageLocation = siteConfig?.address || contactLocation;
+  const homepageTagline = siteConfig?.heroBadge || brandTagline;
+
+  useEffect(() => {
+    api
+      .get("/public/content")
+      .then((response) => setContent(response.data))
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -454,11 +503,11 @@ export function HomePage() {
   }
 
   function showPreviousReview() {
-    setActiveReview((currentReview) => (currentReview === 0 ? reviewItems.length - 1 : currentReview - 1));
+    setActiveReview((currentReview) => (currentReview === 0 ? homepageReviews.length - 1 : currentReview - 1));
   }
 
   function showNextReview() {
-    setActiveReview((currentReview) => (currentReview + 1) % reviewItems.length);
+    setActiveReview((currentReview) => (currentReview + 1) % homepageReviews.length);
   }
 
   function handleContactFormChange(event) {
@@ -470,24 +519,30 @@ export function HomePage() {
     }));
   }
 
-  function handleContactFormSubmit(event) {
+  async function handleContactFormSubmit(event) {
     event.preventDefault();
 
-    const subject = `${contactForm.eventType || "Catering Inquiry"} - ${contactForm.name || "SGL Website"}`;
-    const body = [
-      `නම: ${contactForm.name}`,
-      `දුරකථන අංකය: ${contactForm.phone}`,
-      `උත්සව වර්ගය: ${contactForm.eventType || "-"}`,
-      "",
-      "පණිවිඩය:",
-      contactForm.message,
-    ].join("\n");
-
-    window.location.href = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      await api.post("/public/inquiries", {
+        customerName: contactForm.name,
+        phone: contactForm.phone,
+        eventType: contactForm.eventType || "Website inquiry",
+        serviceNeeded: "Website inquiry",
+        eventDate: "Not specified",
+        guestCount: "Not specified",
+        location: "Not specified",
+        message: contactForm.message,
+      });
+      setContactForm({ name: "", phone: "", eventType: "", message: "" });
+      setContactStatus("ඔබගේ පණිවිඩය ලැබුණා. අපි ඉක්මනින් සම්බන්ධ වෙන්නම්.");
+    } catch (error) {
+      console.error(error);
+      setContactStatus("පණිවිඩය යැවීමේදී දෝෂයක් ඇතිවිය. කරුණාකර දුරකථනයෙන් සම්බන්ධවන්න.");
+    }
   }
 
-  const previousReviewIndex = activeReview === 0 ? reviewItems.length - 1 : activeReview - 1;
-  const nextReviewIndex = (activeReview + 1) % reviewItems.length;
+  const previousReviewIndex = activeReview === 0 ? homepageReviews.length - 1 : activeReview - 1;
+  const nextReviewIndex = (activeReview + 1) % homepageReviews.length;
 
   function getInitials(name) {
     return name
@@ -567,11 +622,13 @@ export function HomePage() {
 
         <div className="premium-hero-content">
           <div className="premium-hero-panel">
-            <h1>SGL කේටරින් සර්විස්</h1>
-            <span className="premium-hero-subtitle">SGL Catering Service</span>
+            <h1>{siteConfig?.companyName || "SGL කේටරින් සර්විස්"}</h1>
+            <span className="premium-hero-subtitle">
+              {siteConfig ? `${siteConfig.heroTitleLineOne} ${siteConfig.heroTitleLineTwo}` : "SGL Catering Service"}
+            </span>
             <p>
-              විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන
-              සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.
+              {siteConfig?.heroDescription ||
+                "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු."}
             </p>
 
             <div className="premium-hero-actions">
@@ -579,7 +636,7 @@ export function HomePage() {
                 වැඩි විස්තර
                 <ChevronRight size={18} />
               </button>
-              <a className="premium-button premium-button-secondary" href={`tel:${contactPhone}`}>
+              <a className="premium-button premium-button-secondary" href={`tel:${homepagePhone}`}>
                 <PhoneCall size={18} />
                 අප අමතන්න
               </a>
@@ -614,12 +671,10 @@ export function HomePage() {
           </div>
 
           <div className="premium-about-card premium-reveal premium-reveal-card" data-reveal>
-            <h2>SGL කේටරින් සර්විස් යනු:</h2>
+            <h2>{siteConfig?.aboutHeading || "SGL කේටරින් සර්විස් යනු:"}</h2>
             <p>
-              වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා
-              ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත්
-              සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට
-              අප සූදානම්.
+              {siteConfig?.aboutBody ||
+                "වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත් සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට අප සූදානම්."}
             </p>
           </div>
         </div>
@@ -637,7 +692,7 @@ export function HomePage() {
           </div>
 
           <div className="premium-services-grid">
-            {serviceItems.map((service, index) => (
+            {homepageServices.map((service, index) => (
               <article key={service.title} className="premium-service-card premium-reveal premium-reveal-service" data-reveal>
                 <div className="premium-service-media">
                   <img src={service.image} alt={service.title} loading="lazy" decoding="async" />
@@ -697,7 +752,7 @@ export function HomePage() {
           </div>
 
           <div className="premium-gallery-grid">
-            {galleryItems.map((item) => (
+            {homepageGallery.map((item) => (
               <article
                 key={item.title}
                 className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
@@ -730,7 +785,7 @@ export function HomePage() {
 
           <div className="premium-reviews-stage premium-reveal premium-reveal-review" data-reveal>
             <div className="premium-reviews-carousel">
-              {reviewItems.map((review, index) => {
+              {homepageReviews.map((review, index) => {
                 let positionClass = "is-hidden";
 
                 if (index === activeReview) {
@@ -774,7 +829,7 @@ export function HomePage() {
                 <ChevronLeft size={20} />
               </button>
 
-              <span className="premium-review-count">{`${String(activeReview + 1).padStart(2, "0")} / ${String(reviewItems.length).padStart(2, "0")}`}</span>
+              <span className="premium-review-count">{`${String(activeReview + 1).padStart(2, "0")} / ${String(homepageReviews.length).padStart(2, "0")}`}</span>
 
               <button type="button" className="premium-review-arrow is-active" aria-label="Next review" onClick={showNextReview}>
                 <ChevronRight size={20} />
@@ -788,10 +843,10 @@ export function HomePage() {
         <div className="premium-contact-shell">
           <div className="premium-contact-heading premium-reveal premium-reveal-heading" data-reveal>
             <span>Reach Out To SGL</span>
-            <h2>අප අමතන්න</h2>
+            <h2>{siteConfig?.contactHeading || "අප අමතන්න"}</h2>
             <p>
-              ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න.
-              ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු.
+              {siteConfig?.contactDescription ||
+                "ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න. ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු."}
             </p>
           </div>
 
@@ -799,31 +854,31 @@ export function HomePage() {
             <div className="premium-contact-info premium-reveal premium-reveal-card" data-reveal>
               <div className="premium-contact-intro">
                 <h3>SGL කේටරින් සර්විස්</h3>
-                <p>{brandTagline}</p>
+                <p>{homepageTagline}</p>
               </div>
 
               <div className="premium-contact-cards">
-                <a className="premium-contact-card" href={`tel:${contactPhone}`}>
+                <a className="premium-contact-card" href={`tel:${homepagePhone}`}>
                   <span className="premium-contact-card-icon" aria-hidden="true">
                     <PhoneCall size={18} />
                   </span>
                   <div>
                     <strong>දුරකථනය</strong>
-                    <span>{`${contactPhoneLabel} / ${secondaryContactPhoneLabel}`}</span>
+                    <span>{`${homepagePhoneLabel} / ${secondaryContactPhoneLabel}`}</span>
                   </div>
                 </a>
 
-                <a className="premium-contact-card" href={`mailto:${contactEmail}`}>
+                <a className="premium-contact-card" href={`mailto:${homepageEmail}`}>
                   <span className="premium-contact-card-icon" aria-hidden="true">
                     <Mail size={18} />
                   </span>
                   <div>
                     <strong>විද්‍යුත් තැපෑල</strong>
-                    <span>{contactEmail}</span>
+                    <span>{homepageEmail}</span>
                   </div>
                 </a>
 
-                <a className="premium-contact-card" href={facebookUrl} target="_blank" rel="noreferrer">
+                <a className="premium-contact-card" href={homepageFacebookUrl} target="_blank" rel="noreferrer">
                   <span className="premium-contact-card-icon" aria-hidden="true">
                     <Globe2 size={18} />
                   </span>
@@ -833,7 +888,7 @@ export function HomePage() {
                   </div>
                 </a>
 
-                <a className="premium-contact-card" href={whatsappHref} target="_blank" rel="noreferrer">
+                <a className="premium-contact-card" href={homepageWhatsAppHref} target="_blank" rel="noreferrer">
                   <span className="premium-contact-card-icon" aria-hidden="true">
                     <MessageCircle size={18} />
                   </span>
@@ -849,7 +904,7 @@ export function HomePage() {
                   </span>
                   <div>
                     <strong>ස්ථානය</strong>
-                    <span>{contactLocation}</span>
+                    <span>{homepageLocation}</span>
                   </div>
                 </div>
 
@@ -917,6 +972,7 @@ export function HomePage() {
                     <Send size={18} />
                   </span>
                 </button>
+                {contactStatus ? <p className="premium-contact-status">{contactStatus}</p> : null}
               </form>
             </div>
           </div>
@@ -926,7 +982,7 @@ export function HomePage() {
       <footer className="premium-footer">
         <div className="premium-footer-shell">
           <p className="premium-footer-info">
-            {contactLocation} | {contactPhoneLabel} / {secondaryContactPhoneLabel} | {contactEmail}
+            {homepageLocation} | {homepagePhoneLabel} / {secondaryContactPhoneLabel} | {homepageEmail}
           </p>
           <p>
             © 2026 sglcateringservice.lk by{" "}
