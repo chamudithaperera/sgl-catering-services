@@ -8,7 +8,6 @@ const contactPhone = "+94703324500";
 const contactPhoneLabel = "070 33 24 500";
 const secondaryContactPhoneLabel = "071 73 94 581";
 const contactEmail = "sudathjayathilakabs@gmail.com";
-const whatsappHref = `https://wa.me/${contactPhone.replace(/[^\d]/g, "")}`;
 const facebookUrl = "https://www.facebook.com/100032894391854/";
 const contactLocation = "No.360, National Housing, Stage II, Anuradhapura.";
 const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
@@ -463,6 +462,12 @@ export function HomePage() {
       return nextSlides;
     });
   }, [activeSlide]);
+
+  useEffect(() => {
+    if (activeReview >= homepageReviews.length) {
+      setActiveReview(0);
+    }
+  }, [activeReview, homepageReviews.length]);
 
   useEffect(() => {
     const revealItems = Array.from(document.querySelectorAll("[data-reveal]"));
