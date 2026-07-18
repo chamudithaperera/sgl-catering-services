@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Bell,
   Boxes,
@@ -385,6 +385,7 @@ export function AdminPage() {
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const dragStateRef = useRef({ completed: false, originalRows: [] });
 
   const activeResourceKey = groupedSections[activeKey]?.tabs.find((tab) => tab.key === activeGroupTabs[activeKey])?.key || activeKey;
   const activeGroup = groupedSections[activeKey];
@@ -594,21 +595,46 @@ export function AdminPage() {
     }
   }
 
-  async function handleReorder(config, sourceId, targetId) {
-    if (!sortableKeys.includes(config.key) || sourceId === targetId) return;
-
-    const currentRows = records[config.key] || [];
+  function reorderRows(currentRows, sourceId, targetId) {
     const sourceIndex = currentRows.findIndex((item) => item.id === sourceId);
     const targetIndex = currentRows.findIndex((item) => item.id === targetId);
 
-    if (sourceIndex < 0 || targetIndex < 0) return;
+    if (sourceIndex < 0 || targetIndex < 0 || sourceIndex === targetIndex) return currentRows;
 
     const nextRows = [...currentRows];
     const [movedItem] = nextRows.splice(sourceIndex, 1);
     nextRows.splice(targetIndex, 0, movedItem);
-    const reorderedRows = nextRows.map((item, index) => ({ ...item, sortOrder: index + 1 }));
+    return nextRows.map((item, index) => ({ ...item, sortOrder: index + 1 }));
+  }
 
-    setRecords((current) => ({ ...current, [config.key]: reorderedRows }));
+  function handleDragStart(config, item) {
+    if (!sortableKeys.includes(config.key)) return;
+
+    dragStateRef.current = {
+      completed: false,
+      originalRows: records[config.key] || [],
+    };
+    setDraggedItem({ resource: config.key, id: item.id });
+  }
+
+  function handleDragPreview(config, targetId) {
+    if (!sortableKeys.includes(config.key) || draggedItem?.resource !== config.key || draggedItem.id === targetId) return;
+
+    setRecords((current) => {
+      const currentRows = current[config.key] || [];
+      const reorderedRows = reorderRows(currentRows, draggedItem.id, targetId);
+
+      if (reorderedRows === currentRows) return current;
+      return { ...current, [config.key]: reorderedRows };
+    });
+  }
+
+  async function saveReorder(config) {
+    if (!sortableKeys.includes(config.key) || draggedItem?.resource !== config.key) return;
+
+    dragStateRef.current.completed = true;
+    const reorderedRows = records[config.key] || [];
+
     setDraggedItem(null);
 
     try {
@@ -626,6 +652,20 @@ export function AdminPage() {
       setErrorMessage(`Could not update ${config.label.toLowerCase()} order.`);
       await loadAdminData(token);
     }
+  }
+
+  function handleDragEnd(config) {
+    if (dragStateRef.current.completed) {
+      dragStateRef.current = { completed: false, originalRows: [] };
+      return;
+    }
+
+    if (draggedItem?.resource === config.key && dragStateRef.current.originalRows.length) {
+      setRecords((current) => ({ ...current, [config.key]: dragStateRef.current.originalRows }));
+    }
+
+    setDraggedItem(null);
+    dragStateRef.current = { completed: false, originalRows: [] };
   }
 
   async function handleFileChange(config, field, file) {
@@ -844,12 +884,15 @@ export function AdminPage() {
             className={`sgla-gallery-card ${draggedItem?.resource === config.key && draggedItem.id === item.id ? "is-dragging" : ""}`}
             draggable
             key={item.id}
-            onDragEnd={() => setDraggedItem(null)}
-            onDragOver={(event) => event.preventDefault()}
-            onDragStart={() => setDraggedItem({ resource: config.key, id: item.id })}
+            onDragEnd={() => handleDragEnd(config)}
+            onDragOver={(event) => {
+              event.preventDefault();
+              handleDragPreview(config, item.id);
+            }}
+            onDragStart={() => handleDragStart(config, item)}
             onDrop={(event) => {
               event.preventDefault();
-              handleReorder(config, draggedItem?.id, item.id);
+              saveReorder(config);
             }}
           >
             <div className="sgla-gallery-media">
@@ -866,7 +909,7 @@ export function AdminPage() {
               </div>
               <div className="sgla-table-actions">
                 <button className="sgla-drag-handle" title="Drag to reorder" type="button">
-                  Move
+                  <img alt="" src="/assets/admin-move-icon.png" />
                 </button>
                 <button onClick={() => beginEdit(config, item)} title="Edit" type="button">
                   <Pencil size={16} />
@@ -1160,24 +1203,27 @@ export function AdminPage() {
                           className={draggedItem?.resource === activeConfig.key && draggedItem.id === item.id ? "is-dragging" : ""}
                           draggable={sortableKeys.includes(activeConfig.key)}
                           key={item.id || activeConfig.key}
-                          onDragEnd={() => setDraggedItem(null)}
+                          onDragEnd={() => handleDragEnd(activeConfig)}
                           onDragOver={(event) => {
-                            if (sortableKeys.includes(activeConfig.key)) event.preventDefault();
+                            if (sortableKeys.includes(activeConfig.key)) {
+                              event.preventDefault();
+                              handleDragPreview(activeConfig, item.id);
+                            }
                           }}
                           onDragStart={() => {
                             if (sortableKeys.includes(activeConfig.key)) {
-                              setDraggedItem({ resource: activeConfig.key, id: item.id });
+                              handleDragStart(activeConfig, item);
                             }
                           }}
                           onDrop={(event) => {
                             event.preventDefault();
-                            handleReorder(activeConfig, draggedItem?.id, item.id);
+                            saveReorder(activeConfig);
                           }}
                         >
                           {sortableKeys.includes(activeConfig.key) ? (
                             <td>
                               <button className="sgla-drag-handle" title="Drag this row to reorder" type="button">
-                                Move
+                                <img alt="" src="/assets/admin-move-icon.png" />
                               </button>
                             </td>
                           ) : null}
