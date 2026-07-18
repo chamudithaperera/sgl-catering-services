@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import { FloatingContact } from "./components/FloatingContact";
 import { servicePageContent } from "./data/servicePageContent";
@@ -7,6 +7,9 @@ import { HomePage } from "./pages/HomePage";
 import { ServiceShowcasePage } from "./pages/ServiceShowcasePage";
 
 function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
     <>
       <Routes>
@@ -16,7 +19,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <FloatingContact />
+      {!isAdminRoute ? <FloatingContact /> : null}
     </>
   );
 }
