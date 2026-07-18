@@ -5,10 +5,15 @@ const multer = require("multer");
 const { prisma } = require("../config/prisma");
 const { requireAuth } = require("../middleware/auth");
 const {
+  siteConfigSchema,
+  benefitSchema,
   serviceSchema,
   foodPackageSchema,
   rentalItemSchema,
+  rentalPriceSchema,
+  rentalPackageSchema,
   galleryItemSchema,
+  reviewSchema,
 } = require("../utils/validators");
 
 const uploadsDirectory = path.resolve(__dirname, "../../uploads");
@@ -35,18 +40,38 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.get("/dashboard", async (request, response) => {
-  const [services, foodPackages, rentalItems, galleryItems] = await Promise.all([
-    prisma.service.count(),
-    prisma.foodPackage.count(),
-    prisma.rentalItem.count(),
-    prisma.galleryItem.count(),
-  ]);
-
-  response.json({
+  const [
+    benefits,
     services,
     foodPackages,
     rentalItems,
+    rentalPrices,
+    rentalPackages,
     galleryItems,
+    reviews,
+    contactMessages,
+  ] = await Promise.all([
+    prisma.benefit.count(),
+    prisma.service.count(),
+    prisma.foodPackage.count(),
+    prisma.rentalItem.count(),
+    prisma.rentalPrice.count(),
+    prisma.rentalPackage.count(),
+    prisma.galleryItem.count(),
+    prisma.review.count(),
+    prisma.contactMessage.count(),
+  ]);
+
+  response.json({
+    benefits,
+    services,
+    foodPackages,
+    rentalItems,
+    rentalPrices,
+    rentalPackages,
+    galleryItems,
+    reviews,
+    contactMessages,
   });
 });
 
@@ -61,6 +86,49 @@ router.post("/upload", upload.single("image"), (request, response) => {
     url: fileUrl,
     filename: request.file.filename,
   });
+});
+
+router.get("/site-config", async (request, response) => {
+  const item = await prisma.siteConfig.findUnique({ where: { id: 1 } });
+  response.json(item);
+});
+
+router.put("/site-config", async (request, response) => {
+  const data = siteConfigSchema.parse(request.body);
+  const item = await prisma.siteConfig.upsert({
+    where: { id: 1 },
+    update: data,
+    create: {
+      id: 1,
+      ...data,
+    },
+  });
+  response.json(item);
+});
+
+router.get("/benefits", async (request, response) => {
+  const items = await prisma.benefit.findMany({ orderBy: { sortOrder: "asc" } });
+  response.json(items);
+});
+
+router.post("/benefits", async (request, response) => {
+  const data = benefitSchema.parse(request.body);
+  const item = await prisma.benefit.create({ data });
+  response.status(201).json(item);
+});
+
+router.put("/benefits/:id", async (request, response) => {
+  const data = benefitSchema.parse(request.body);
+  const item = await prisma.benefit.update({
+    where: { id: Number(request.params.id) },
+    data,
+  });
+  response.json(item);
+});
+
+router.delete("/benefits/:id", async (request, response) => {
+  await prisma.benefit.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
 });
 
 router.get("/services", async (request, response) => {
@@ -138,6 +206,56 @@ router.delete("/rental-items/:id", async (request, response) => {
   response.status(204).send();
 });
 
+router.get("/rental-prices", async (request, response) => {
+  const items = await prisma.rentalPrice.findMany({ orderBy: { sortOrder: "asc" } });
+  response.json(items);
+});
+
+router.post("/rental-prices", async (request, response) => {
+  const data = rentalPriceSchema.parse(request.body);
+  const item = await prisma.rentalPrice.create({ data });
+  response.status(201).json(item);
+});
+
+router.put("/rental-prices/:id", async (request, response) => {
+  const data = rentalPriceSchema.parse(request.body);
+  const item = await prisma.rentalPrice.update({
+    where: { id: Number(request.params.id) },
+    data,
+  });
+  response.json(item);
+});
+
+router.delete("/rental-prices/:id", async (request, response) => {
+  await prisma.rentalPrice.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
+});
+
+router.get("/rental-packages", async (request, response) => {
+  const items = await prisma.rentalPackage.findMany({ orderBy: { sortOrder: "asc" } });
+  response.json(items);
+});
+
+router.post("/rental-packages", async (request, response) => {
+  const data = rentalPackageSchema.parse(request.body);
+  const item = await prisma.rentalPackage.create({ data });
+  response.status(201).json(item);
+});
+
+router.put("/rental-packages/:id", async (request, response) => {
+  const data = rentalPackageSchema.parse(request.body);
+  const item = await prisma.rentalPackage.update({
+    where: { id: Number(request.params.id) },
+    data,
+  });
+  response.json(item);
+});
+
+router.delete("/rental-packages/:id", async (request, response) => {
+  await prisma.rentalPackage.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
+});
+
 router.get("/gallery-items", async (request, response) => {
   const items = await prisma.galleryItem.findMany({ orderBy: { sortOrder: "asc" } });
   response.json(items);
@@ -163,5 +281,39 @@ router.delete("/gallery-items/:id", async (request, response) => {
   response.status(204).send();
 });
 
-module.exports = { adminRoutes: router };
+router.get("/reviews", async (request, response) => {
+  const items = await prisma.review.findMany({ orderBy: { sortOrder: "asc" } });
+  response.json(items);
+});
 
+router.post("/reviews", async (request, response) => {
+  const data = reviewSchema.parse(request.body);
+  const item = await prisma.review.create({ data });
+  response.status(201).json(item);
+});
+
+router.put("/reviews/:id", async (request, response) => {
+  const data = reviewSchema.parse(request.body);
+  const item = await prisma.review.update({
+    where: { id: Number(request.params.id) },
+    data,
+  });
+  response.json(item);
+});
+
+router.delete("/reviews/:id", async (request, response) => {
+  await prisma.review.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
+});
+
+router.get("/contact-messages", async (request, response) => {
+  const items = await prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" } });
+  response.json(items);
+});
+
+router.delete("/contact-messages/:id", async (request, response) => {
+  await prisma.contactMessage.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
+});
+
+module.exports = { adminRoutes: router };
