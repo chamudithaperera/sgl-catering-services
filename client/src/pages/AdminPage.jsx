@@ -280,7 +280,7 @@ const groupedSections = {
   },
 };
 
-const popupCrudKeys = ["cateringCategories", "foodPackages", "rentalPackages", "rentalItems", "galleryItems"];
+const popupCrudKeys = ["cateringCategories", "foodPackages", "rentalPackages", "rentalItems", "galleryItems", "reviews"];
 
 const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
