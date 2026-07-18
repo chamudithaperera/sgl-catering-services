@@ -273,7 +273,7 @@ const resourceConfigs = [
   },
   {
     key: "contactMessages",
-    label: "Inquiries",
+    label: "Messages",
     eyebrow: "Messages submitted from the website contact form",
     endpoint: "/admin/contact-messages",
     icon: MessageSquareText,
@@ -293,7 +293,11 @@ const resourceConfigs = [
   },
 ];
 
-const navItems = [{ key: "dashboard", label: "Dashboard", icon: LayoutDashboard }, ...resourceConfigs];
+const navItems = [
+  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  ...resourceConfigs.filter((config) => config.key === "contactMessages"),
+  ...resourceConfigs.filter((config) => config.key !== "contactMessages"),
+];
 
 function buildInitialForms() {
   return resourceConfigs.reduce((forms, config) => {
@@ -724,7 +728,7 @@ export function AdminPage() {
               </article>
               <article>
                 <MessageSquareText size={22} />
-                <span>New inquiries</span>
+                <span>New messages</span>
                 <strong>{dashboard?.contactMessages ?? "-"}</strong>
               </article>
             </div>
@@ -756,7 +760,7 @@ export function AdminPage() {
                 <div className="sgla-panel-head">
                   <div>
                     <p>Latest Messages</p>
-                    <h2>Inquiries</h2>
+                    <h2>Messages</h2>
                   </div>
                   <MessageSquareText size={20} />
                 </div>
@@ -768,7 +772,7 @@ export function AdminPage() {
                       <p>{message.message}</p>
                     </button>
                   ))}
-                  {!records.contactMessages?.length ? <p className="sgla-muted">No inquiries yet.</p> : null}
+                  {!records.contactMessages?.length ? <p className="sgla-muted">No messages yet.</p> : null}
                 </div>
               </section>
             </div>
@@ -815,7 +819,7 @@ export function AdminPage() {
               <div className="sgla-panel-head">
                 <div>
                   <p>{activeConfig.readOnly ? "Read and clear" : "Manage records"}</p>
-                  <h2>{activeConfig.readOnly ? "Website inquiries" : `Existing ${activeConfig.label}`}</h2>
+                  <h2>{activeConfig.readOnly ? "Website messages" : `Existing ${activeConfig.label}`}</h2>
                 </div>
                 {activeConfig.readOnly ? (
                   <button className="sgla-light-button" onClick={() => loadAdminData(token)} type="button">
@@ -868,7 +872,7 @@ export function AdminPage() {
                         <td colSpan={activeConfig.columns.length + 1}>
                           <div className="sgla-empty">
                             <PackageCheck size={20} />
-                            <span>No records found.</span>
+                            <span>{activeConfig.key === "contactMessages" ? "No messages found." : "No records found."}</span>
                           </div>
                         </td>
                       </tr>
