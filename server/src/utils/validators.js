@@ -7,6 +7,34 @@ const serviceSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
+const siteConfigSchema = z.object({
+  companyName: z.string().min(2),
+  heroBadge: z.string().min(2),
+  heroTitleLineOne: z.string().min(2),
+  heroTitleLineTwo: z.string().min(2),
+  heroDescription: z.string().min(10),
+  aboutHeading: z.string().min(2),
+  aboutIntro: z.string().min(10),
+  aboutBody: z.string().min(10),
+  contactHeading: z.string().min(2),
+  contactDescription: z.string().min(10),
+  phone: z.string().min(2),
+  whatsapp: z.string().min(2),
+  email: z.string().email(),
+  address: z.string().min(2),
+  businessHours: z.string().min(2),
+  mapUrl: z.string().min(2),
+  facebookUrl: z.string().min(2),
+  instagramUrl: z.string().min(2),
+});
+
+const benefitSchema = z.object({
+  title: z.string().min(2),
+  description: z.string().min(5),
+  icon: z.string().min(2),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
 const foodPackageSchema = z.object({
   name: z.string().min(2),
   summary: z.string().min(10),
@@ -37,11 +65,42 @@ const rentalItemSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
+const rentalPriceSchema = z.object({
+  item: z.string().min(2),
+  priceLabel: z.string().min(2),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
+const rentalPackageSchema = z.object({
+  name: z.string().min(2),
+  summary: z.string().min(10),
+  items: z
+    .union([z.array(z.string().min(1)), z.string()])
+    .transform((value) =>
+      Array.isArray(value)
+        ? value.map((item) => item.trim()).filter(Boolean)
+        : value
+            .split("\n")
+            .map((item) => item.trim())
+            .filter(Boolean),
+    ),
+  ctaLabel: z.string().min(2),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
 const galleryItemSchema = z.object({
   title: z.string().min(2),
   category: z.string().min(2),
   imageUrl: z.string().min(2),
   featured: z.coerce.boolean().default(false),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
+const reviewSchema = z.object({
+  customerName: z.string().min(2),
+  eventType: z.string().min(2),
+  rating: z.coerce.number().int().min(1).max(5),
+  quote: z.string().min(10),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
@@ -57,10 +116,14 @@ const contactMessageSchema = z.object({
 });
 
 module.exports = {
+  siteConfigSchema,
+  benefitSchema,
   serviceSchema,
   foodPackageSchema,
   rentalItemSchema,
+  rentalPriceSchema,
+  rentalPackageSchema,
   galleryItemSchema,
+  reviewSchema,
   contactMessageSchema,
 };
-
