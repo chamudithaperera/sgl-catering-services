@@ -413,8 +413,13 @@ export function ServiceShowcasePage({ page }) {
     <main className={`service-page service-page-${managedPage.type}`}>
       <header className="service-page-topbar">
         <Link className="service-page-brand" to="/">
-          <span>SGL කේටරින් සර්විස්</span>
-          <small>Premium Event Catering</small>
+          <span className="service-page-brand-logo">
+            <img src="/assets/sgl-logo.png" alt="SGL Catering" />
+          </span>
+          <span className="service-page-brand-copy">
+            <strong>SGL කේටරින් සර්විස්</strong>
+            <small>Premium Event Catering</small>
+          </span>
         </Link>
 
         <nav className="service-page-primary-nav" aria-label="Primary">

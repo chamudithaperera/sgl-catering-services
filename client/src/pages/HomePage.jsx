@@ -565,6 +565,9 @@ export function HomePage() {
     <main className="premium-home">
       <header className="premium-nav">
         <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
+          <span className="premium-brand-logo">
+            <img src="/assets/sgl-logo.png" alt="SGL Catering" />
+          </span>
           <span className="premium-brand-copy">
             <strong>SGL කේටරින් සර්විස්</strong>
             <small>Premium Event Catering</small>
@@ -861,6 +864,7 @@ export function HomePage() {
           <div className="premium-contact-layout">
             <div className="premium-contact-info premium-reveal premium-reveal-card" data-reveal>
               <div className="premium-contact-intro">
+                <img className="premium-contact-logo" src="/assets/sgl-logo.png" alt="SGL Catering" />
                 <h3>SGL කේටරින් සර්විස්</h3>
                 <p>{homepageTagline}</p>
               </div>
