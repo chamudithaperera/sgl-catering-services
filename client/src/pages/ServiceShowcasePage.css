@@ -754,6 +754,29 @@
   color: var(--accent-luxury);
 }
 
+.service-page-footer {
+  border-top: 1px solid rgba(245, 241, 232, 0.08);
+  background: #0c0706;
+}
+
+.service-page-footer-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 22px 24px 28px;
+}
+
+.service-page-footer-shell p {
+  margin: 0;
+  color: var(--text-soft);
+  text-align: center;
+  font-size: 0.94rem;
+  letter-spacing: 0.02em;
+}
+
+.service-page-footer-shell a {
+  color: var(--accent-primary);
+}
+
 @media (max-width: 1120px) {
   .service-page-topbar {
     gap: 10px;

@@ -986,9 +986,6 @@ export function HomePage() {
 
       <footer className="premium-footer">
         <div className="premium-footer-shell">
-          <p className="premium-footer-info">
-            {homepageLocation} | {homepagePhoneLabel} / {secondaryContactPhoneLabel} | {homepageEmail}
-          </p>
           <p>
             © 2026 sglcateringservice.lk by{" "}
             <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">

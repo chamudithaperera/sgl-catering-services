@@ -439,6 +439,17 @@ export function ServiceShowcasePage({ page }) {
       {managedPage.type === "catering" ? <CateringSections page={managedPage} /> : <RentingSections page={managedPage} />}
 
       <ContactBand anchorId={anchorId} page={managedPage} />
+
+      <footer className="service-page-footer">
+        <div className="service-page-footer-shell">
+          <p>
+            © 2026 sglcateringservice.lk by{" "}
+            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
+              chamudithaperera.online
+            </a>
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }
