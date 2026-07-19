@@ -740,7 +740,6 @@ export function HomePage() {
             muted
             loop
             playsInline
-            defaultMuted
             preload="metadata"
             disablePictureInPicture
             disableRemotePlayback
