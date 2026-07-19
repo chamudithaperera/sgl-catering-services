@@ -243,10 +243,10 @@
 .premium-hero-subtitle {
   margin-top: -14px;
   color: var(--accent-luxury);
-  font-size: 1.22rem;
+  font-size: clamp(1.08rem, 2vw, 1.34rem);
   font-weight: 600;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-transform: none;
 }
 
 .premium-hero-panel p {
@@ -1641,8 +1641,8 @@
 
   .premium-hero-subtitle {
     margin-top: -10px;
-    font-size: 0.96rem;
-    letter-spacing: 0.24em;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
   }
 
   .premium-hero-panel p {

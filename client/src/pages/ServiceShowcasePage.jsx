@@ -416,10 +416,6 @@ export function ServiceShowcasePage({ page }) {
           <span className="service-page-brand-logo">
             <img src="/assets/sgl-logo.png" alt="SGL Catering" />
           </span>
-          <span className="service-page-brand-copy">
-            <strong>SGL කේටරින් සර්විස්</strong>
-            <small>Premium Event Catering</small>
-          </span>
         </Link>
 
         <nav className="service-page-primary-nav" aria-label="Primary">

@@ -568,10 +568,6 @@ export function HomePage() {
           <span className="premium-brand-logo">
             <img src="/assets/sgl-logo.png" alt="SGL Catering" />
           </span>
-          <span className="premium-brand-copy">
-            <strong>SGL කේටරින් සර්විස්</strong>
-            <small>Premium Event Catering</small>
-          </span>
         </a>
 
         <div className="premium-nav-right">
@@ -633,10 +629,8 @@ export function HomePage() {
 
         <div className="premium-hero-content">
           <div className="premium-hero-panel">
-            <h1>{siteConfig?.companyName || "SGL කේටරින් සර්විස්"}</h1>
-            <span className="premium-hero-subtitle">
-              {siteConfig ? `${siteConfig.heroTitleLineOne} ${siteConfig.heroTitleLineTwo}` : "SGL Catering Service"}
-            </span>
+            <h1>SGL කේටරින් සර්විස්</h1>
+            <span className="premium-hero-subtitle">SGL Catering Service</span>
             <p>
               {siteConfig?.heroDescription ||
                 "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු."}
