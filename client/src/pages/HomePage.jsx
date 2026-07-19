@@ -395,16 +395,7 @@ export function HomePage() {
   useAutoplayVideo(galleryVideoRef, isGalleryVideoActive);
 
   const siteConfig = content?.siteConfig;
-  const homepageServices =
-    content?.services?.length > 0
-      ? content.services.slice(0, 2).map((service, index) => ({
-          title: service.title,
-          label: index === 0 ? "Signature Catering" : "Event Rentals",
-          href: index === 0 ? "/catering" : "/renting",
-          image: index === 0 ? "/assets/sgl-images/hero-buffet.jpg" : "/assets/sgl-images/indoor-buffet.jpg",
-          description: service.description,
-        }))
-      : serviceItems;
+  const homepageServices = serviceItems;
   const homepageGallery =
     content?.gallery?.length > 0
       ? content.gallery.map((item, index) => ({
@@ -471,7 +462,7 @@ export function HomePage() {
   }, [activeReview, homepageReviews.length]);
 
   useEffect(() => {
-    const revealItems = Array.from(document.querySelectorAll("[data-reveal]"));
+    const revealItems = Array.from(document.querySelectorAll("[data-reveal]:not(.is-visible)"));
 
     if (revealItems.length === 0) {
       return undefined;
@@ -497,7 +488,7 @@ export function HomePage() {
     revealItems.forEach((item) => observer.observe(item));
 
     return () => observer.disconnect();
-  }, []);
+  }, [content]);
 
   function selectSlide(slideIndex) {
     setActiveSlide(slideIndex);
