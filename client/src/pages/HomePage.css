@@ -52,14 +52,14 @@
 .premium-nav {
   position: fixed;
   top: 16px;
-  left: clamp(14px, 3vw, 34px);
-  right: clamp(14px, 3vw, 34px);
+  left: clamp(10px, 2vw, 24px);
+  right: clamp(10px, 2vw, 24px);
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  max-width: 1320px;
+  max-width: 1400px;
   margin-inline: auto;
   padding: 9px 10px 9px 12px;
   border: 1px solid rgba(255, 248, 239, 0.16);

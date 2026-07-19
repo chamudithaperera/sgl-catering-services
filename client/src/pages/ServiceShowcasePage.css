@@ -12,14 +12,14 @@
 .service-page-topbar {
   position: fixed;
   top: 16px;
-  left: clamp(14px, 3vw, 34px);
-  right: clamp(14px, 3vw, 34px);
+  left: clamp(10px, 2vw, 24px);
+  right: clamp(10px, 2vw, 24px);
   z-index: 40;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 14px;
-  max-width: 1320px;
+  max-width: 1400px;
   margin-inline: auto;
   padding: 9px 10px 9px 12px;
   border: 1px solid rgba(255, 248, 239, 0.16);
