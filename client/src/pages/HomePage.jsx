@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Globe2, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Mail, MapPin, Menu, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import "./HomePage.css";
@@ -8,9 +8,25 @@ const contactPhone = "+94703324500";
 const contactPhoneLabel = "070 33 24 500";
 const secondaryContactPhoneLabel = "071 73 94 581";
 const contactEmail = "sudathjayathilakabs@gmail.com";
-const facebookUrl = "https://www.facebook.com/100032894391854/";
 const contactLocation = "No.360, National Housing, Stage II, Anuradhapura.";
 const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
+const contactMapEmbedUrl =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4934.785252954407!2d80.40432687591523!3d8.319864291715861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afcf5005cd65e2d%3A0x378ef91fdb3a6052!2sSGL%20Catering%20Service!5e1!3m2!1sen!2slk!4v1784484566797!5m2!1sen!2slk";
+
+function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
+  const iframeSrcMatch = mapUrl?.match(/src=["']([^"']+)["']/i);
+  const resolvedMapUrl = iframeSrcMatch?.[1] || mapUrl;
+
+  if (!resolvedMapUrl) {
+    return fallbackEmbedUrl;
+  }
+
+  if (resolvedMapUrl.includes("/maps/embed")) {
+    return resolvedMapUrl;
+  }
+
+  return fallbackEmbedUrl;
+}
 
 const heroSlides = [
   {
@@ -416,11 +432,10 @@ export function HomePage() {
       : reviewItems;
   const homepagePhone = siteConfig?.phone || contactPhone;
   const homepagePhoneLabel = siteConfig?.phone || contactPhoneLabel;
-  const homepageWhatsApp = siteConfig?.whatsapp || homepagePhone;
-  const homepageWhatsAppHref = `https://wa.me/${homepageWhatsApp.replace(/[^\d]/g, "")}`;
   const homepageEmail = siteConfig?.email || contactEmail;
-  const homepageFacebookUrl = siteConfig?.facebookUrl || facebookUrl;
   const homepageLocation = siteConfig?.address || contactLocation;
+  const homepageMapUrl = siteConfig?.mapUrl || "";
+  const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl, contactMapEmbedUrl);
   const homepageTagline = siteConfig?.heroBadge || brandTagline;
 
   useEffect(() => {
@@ -879,26 +894,6 @@ export function HomePage() {
                   </div>
                 </a>
 
-                <a className="premium-contact-card" href={homepageFacebookUrl} target="_blank" rel="noreferrer">
-                  <span className="premium-contact-card-icon" aria-hidden="true">
-                    <Globe2 size={18} />
-                  </span>
-                  <div>
-                    <strong>Facebook</strong>
-                    <span>SGL Catering Service</span>
-                  </div>
-                </a>
-
-                <a className="premium-contact-card" href={homepageWhatsAppHref} target="_blank" rel="noreferrer">
-                  <span className="premium-contact-card-icon" aria-hidden="true">
-                    <MessageCircle size={18} />
-                  </span>
-                  <div>
-                    <strong>WhatsApp</strong>
-                    <span>ක්ෂණික සම්බන්ධතා සහ වෙන්කරවා ගැනීම්</span>
-                  </div>
-                </a>
-
                 <div className="premium-contact-card">
                   <span className="premium-contact-card-icon" aria-hidden="true">
                     <MapPin size={18} />
@@ -909,6 +904,15 @@ export function HomePage() {
                   </div>
                 </div>
 
+              </div>
+
+              <div className="premium-contact-map" aria-label="SGL Catering location map">
+                <iframe
+                  title="SGL Catering location in Anuradhapura"
+                  src={homepageMapEmbedUrl}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
             </div>
 
