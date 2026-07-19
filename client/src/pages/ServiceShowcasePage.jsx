@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import "./ServiceShowcasePage.css";
@@ -428,14 +428,9 @@ export function ServiceShowcasePage({ page }) {
 
         <div className="service-page-topbar-actions">
           <a className="service-page-call-link" href={`tel:${contactPhone}`}>
-            <PhoneCall size={16} />
-            <span>අමතන්න</span>
+            <PhoneCall size={17} />
+            <span>Call Now</span>
           </a>
-
-          <Link className="service-page-back" to="/">
-            <ArrowLeft size={18} />
-            <span>මුල් පිටුවට</span>
-          </Link>
         </div>
       </header>
 
