@@ -290,13 +290,12 @@
 
 .premium-button-primary {
   background: var(--accent-primary);
-  color: var(--bg-main);
   color: var(--text-main);
   box-shadow: 0 14px 28px rgba(var(--accent-rgb), 0.28);
 }
 
 .premium-button-secondary {
-  background: rgba(11, 15, 16, 0.42);
+  background: rgba(34, 18, 13, 0.42);
   color: var(--text-main);
   border-color: var(--border-soft);
 }
