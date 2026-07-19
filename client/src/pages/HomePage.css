@@ -110,6 +110,14 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+@media (min-width: 901px) {
+  .premium-nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .premium-nav-link {
   display: inline-flex;
   align-items: center;
