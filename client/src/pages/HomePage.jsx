@@ -595,6 +595,11 @@ export function HomePage() {
             ))}
           </nav>
 
+          <a className="premium-nav-cta" href={`tel:${homepagePhone}`}>
+            <PhoneCall size={17} />
+            <span>Call Now</span>
+          </a>
+
           <button
             type="button"
             className="premium-nav-toggle"
