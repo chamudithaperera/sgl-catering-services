@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Mail, MapPin, Menu, PhoneCall, Send, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Mail, MapPin, Menu, MessageCircle, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import galleryBackgroundPoster from "../assets/gallery-background-poster.jpg";
 import galleryBackgroundVideo from "../assets/gallery-background-silent.mp4";
@@ -35,6 +35,24 @@ function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
   }
 
   return fallbackEmbedUrl;
+}
+
+function buildWhatsappUrl(phoneNumber) {
+  const digits = phoneNumber?.replace(/[^\d]/g, "");
+
+  return digits ? `https://wa.me/${digits}` : "#contact";
+}
+
+function buildExternalUrl(url) {
+  if (!url) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+
+  return `https://${url}`;
 }
 
 const heroSlides = [
@@ -190,10 +208,16 @@ export function HomePage() {
   }));
   const homepagePhone = siteConfig?.phone || contactPhone;
   const homepagePhoneLabel = siteConfig?.phone || contactPhoneLabel;
+  const homepageWhatsapp = siteConfig?.whatsapp || homepagePhone;
+  const homepageWhatsappUrl = buildWhatsappUrl(homepageWhatsapp);
   const homepageEmail = siteConfig?.email || contactEmail;
   const homepageLocation = siteConfig?.address || contactLocation;
   const homepageMapUrl = siteConfig?.mapUrl || "";
   const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl, contactMapEmbedUrl);
+  const homepageFacebookUrl = buildExternalUrl(siteConfig?.facebookUrl);
+  const facebookActionProps = homepageFacebookUrl
+    ? { href: homepageFacebookUrl, target: "_blank", rel: "noreferrer" }
+    : { href: "#contact" };
 
   useAutoplayVideo(galleryVideoRef, true);
 
@@ -694,16 +718,6 @@ export function HomePage() {
                   </div>
                 </a>
 
-                <a className="premium-contact-card" href={`mailto:${homepageEmail}`}>
-                  <span className="premium-contact-card-icon" aria-hidden="true">
-                    <Mail size={18} />
-                  </span>
-                  <div>
-                    <strong>විද්‍යුත් තැපෑල</strong>
-                    <span>{homepageEmail}</span>
-                  </div>
-                </a>
-
                 <div className="premium-contact-card">
                   <span className="premium-contact-card-icon" aria-hidden="true">
                     <MapPin size={18} />
@@ -713,16 +727,33 @@ export function HomePage() {
                     <span>{homepageLocation}</span>
                   </div>
                 </div>
-
               </div>
 
-              <div className="premium-contact-map" aria-label="SGL Catering location map">
-                <iframe
-                  title="SGL Catering location in Anuradhapura"
-                  src={homepageMapEmbedUrl}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
+              <div className="premium-contact-actions" aria-label="Contact options">
+                <a className="premium-contact-action" href={`tel:${homepagePhone}`} aria-label="Call SGL Catering" title="Call">
+                  <PhoneCall size={22} />
+                </a>
+                <a
+                  className="premium-contact-action is-whatsapp"
+                  href={homepageWhatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Message SGL Catering on WhatsApp"
+                  title="WhatsApp"
+                >
+                  <MessageCircle size={23} />
+                </a>
+                <a
+                  className="premium-contact-action is-facebook"
+                  {...facebookActionProps}
+                  aria-label="Open SGL Catering on Facebook"
+                  title="Facebook"
+                >
+                  <span aria-hidden="true">f</span>
+                </a>
+                <a className="premium-contact-action" href={`mailto:${homepageEmail}`} aria-label="Email SGL Catering" title="Email">
+                  <Mail size={22} />
+                </a>
               </div>
             </div>
 
@@ -794,6 +825,15 @@ export function HomePage() {
                 ) : null}
               </form>
             </div>
+          </div>
+
+          <div className="premium-contact-map premium-reveal premium-reveal-card" data-reveal aria-label="SGL Catering location map">
+            <iframe
+              title="SGL Catering location in Anuradhapura"
+              src={homepageMapEmbedUrl}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </div>
       </section>
