@@ -1,33 +1,33 @@
 # SGL Catering Services
 
-Local-first full-stack website for SGL Catering Services built with React, Node.js, and PostgreSQL.
+Local-first full-stack website for SGL Catering Services built with React, Node.js, and MySQL.
 
 ## Stack
 
 - React + Vite
 - Node.js + Express
 - Prisma ORM
-- PostgreSQL via Docker
+- MySQL via cPanel or a local database
 
 ## Local setup
 
 1. Copy environment files:
    - `cp server/.env.example server/.env`
    - `cp client/.env.example client/.env`
-2. Choose one PostgreSQL option:
-   - Docker: `npm run db:up`
-   - Existing local PostgreSQL: update `server/.env` with your local connection string.
+2. Configure MySQL:
+   - Namecheap/cPanel: update `server/.env` with the cPanel MySQL connection string.
+   - Local MySQL: update `server/.env` with your local connection string.
 3. Sync the schema and seed the database:
    - `npm run prisma:push`
    - `npm run prisma:seed`
 4. Start the frontend and backend together:
    - `npm run dev`
 
-## Current machine note
+## Production database
 
-This local build was verified on July 16, 2026 against an existing Homebrew PostgreSQL instance running on port `5435`, using:
+Namecheap cPanel database URLs should use this shape:
 
-- `DATABASE_URL=postgresql://chamudithaperera@localhost:5435/sgl_catering?schema=public`
+- `DATABASE_URL=mysql://cpaneluser_sgl_user:password@localhost:3306/cpaneluser_sgl_catering`
 
 ## URLs
 

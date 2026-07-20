@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -67,7 +67,7 @@ model EventCategory {
   shortLabel   String
   description  String        @db.Text
   imageUrl     String
-  highlights   String[]
+  highlights   Json
   sortOrder    Int           @default(0)
   foodPackages FoodPackage[]
   createdAt    DateTime      @default(now())
@@ -81,7 +81,7 @@ model FoodPackage {
   name          String
   summary       String   @db.Text
   priceLabel    String
-  includedItems String[]
+  includedItems Json
   featured      Boolean  @default(false)
   ctaLabel      String
   sortOrder     Int      @default(0)
@@ -117,7 +117,7 @@ model RentalPackage {
   name       String
   summary    String
   priceLabel String   @default("මිල විමසන්න")
-  items      String[]
+  items      Json
   ctaLabel   String
   sortOrder  Int      @default(0)
   createdAt  DateTime @default(now())
