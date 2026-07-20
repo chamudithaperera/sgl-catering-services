@@ -6,7 +6,6 @@ import "./HomePage.css";
 
 const contactPhone = "+94703324500";
 const contactPhoneLabel = "070 33 24 500";
-const secondaryContactPhoneLabel = "071 73 94 581";
 const contactEmail = "sudathjayathilakabs@gmail.com";
 const contactLocation = "No.360, National Housing, Stage II, Anuradhapura.";
 const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
@@ -733,7 +732,7 @@ export function HomePage() {
                   </span>
                   <div>
                     <strong>දුරකථනය</strong>
-                    <span>{`${homepagePhoneLabel} / ${secondaryContactPhoneLabel}`}</span>
+                    <span>{homepagePhoneLabel}</span>
                   </div>
                 </a>
 
