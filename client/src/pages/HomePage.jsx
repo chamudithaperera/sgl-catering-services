@@ -196,6 +196,7 @@ function useAutoplayVideo(videoRef, isActive) {
 export function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeReview, setActiveReview] = useState(0);
+  const [activeSectionId, setActiveSectionId] = useState("home");
   const [content, setContent] = useState(null);
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -301,9 +302,52 @@ export function HomePage() {
     return () => observer.disconnect();
   }, [content]);
 
+  useEffect(() => {
+    const sectionIds = navItems.map((item) => item.href?.slice(1)).filter(Boolean);
+    const sections = sectionIds.map((sectionId) => document.getElementById(sectionId)).filter(Boolean);
+
+    if (sections.length === 0) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((firstEntry, secondEntry) => secondEntry.intersectionRatio - firstEntry.intersectionRatio)[0];
+
+        if (visibleEntry?.target?.id) {
+          setActiveSectionId(visibleEntry.target.id);
+        }
+      },
+      {
+        rootMargin: "-28% 0px -58% 0px",
+        threshold: [0.12, 0.25, 0.45, 0.65],
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [content, homepageGallery.length, homepageReviews.length]);
+
   function selectSlide(slideIndex) {
     setActiveSlide(slideIndex);
     setMenuOpen(false);
+  }
+
+  function handleNavAnchorClick(event, href) {
+    const section = document.getElementById(href.slice(1));
+
+    if (!section) {
+      return;
+    }
+
+    event.preventDefault();
+    setActiveSectionId(section.id);
+    setMenuOpen(false);
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", href);
   }
 
   function showNextSlide() {
@@ -376,11 +420,11 @@ export function HomePage() {
 
         <div className="premium-nav-right">
           <nav className={`premium-nav-links ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               item.to ? (
                 <Link
                   key={item.label}
-                  className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
+                  className="premium-nav-link"
                   to={item.to}
                   onClick={() => setMenuOpen(false)}
                 >
@@ -389,9 +433,9 @@ export function HomePage() {
               ) : (
                 <a
                   key={item.label}
-                  className={`premium-nav-link ${index === 0 ? "is-active" : ""}`}
+                  className={`premium-nav-link ${activeSectionId === item.href.slice(1) ? "is-active" : ""}`}
                   href={item.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={(event) => handleNavAnchorClick(event, item.href)}
                 >
                   {item.label}
                 </a>
