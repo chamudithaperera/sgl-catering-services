@@ -1,0 +1,101 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Build frontend
+        working-directory: client
+        run: |
+          npm ci
+          VITE_API_URL=https://api.sglcateringservice.lk/api npm run build
+
+      - name: Create deployment archives
+        run: |
+          tar -C client/dist -czf frontend.tar.gz .
+          tar -C server \
+            --exclude='.env' \
+            --exclude='node_modules' \
+            --exclude='uploads' \
+            --exclude='tmp' \
+            -czf server.tar.gz .
+
+      - name: Configure SSH
+        env:
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
+          CPANEL_SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+        run: |
+          SSH_PORT="${CPANEL_PORT:-22}"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$CPANEL_SSH_KEY" > ~/.ssh/cpanel_deploy_key
+          chmod 600 ~/.ssh/cpanel_deploy_key
+          ssh-keyscan -p "$SSH_PORT" "$CPANEL_HOST" >> ~/.ssh/known_hosts
+
+      - name: Upload deployment archives
+        env:
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+        run: |
+          SSH_PORT="${CPANEL_PORT:-22}"
+          scp -i ~/.ssh/cpanel_deploy_key -P "$SSH_PORT" frontend.tar.gz server.tar.gz "$CPANEL_USER@$CPANEL_HOST:/home/$CPANEL_USER/"
+
+      - name: Deploy on cPanel
+        env:
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+        run: |
+          SSH_PORT="${CPANEL_PORT:-22}"
+          ssh -i ~/.ssh/cpanel_deploy_key -p "$SSH_PORT" "$CPANEL_USER@$CPANEL_HOST" "CPANEL_USER='$CPANEL_USER' bash -s" <<'EOF'
+          set -e
+
+          APP_ROOT="/home/$CPANEL_USER/sgl-project-git/server"
+          PUBLIC_HTML="/home/$CPANEL_USER/public_html"
+          NODE_ACTIVATE="/home/$CPANEL_USER/nodevenv/sgl-project-git/server/20/bin/activate"
+
+          mkdir -p "$APP_ROOT" "$PUBLIC_HTML" "$APP_ROOT/uploads" "$APP_ROOT/tmp"
+
+          tar -xzf "/home/$CPANEL_USER/server.tar.gz" -C "$APP_ROOT"
+          tar -xzf "/home/$CPANEL_USER/frontend.tar.gz" -C "$PUBLIC_HTML"
+
+          cat > "$PUBLIC_HTML/.htaccess" <<'HTACCESS'
+          Options -MultiViews
+          RewriteEngine On
+
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule ^ index.html [L]
+          HTACCESS
+
+          source "$NODE_ACTIVATE"
+          cd "$APP_ROOT"
+          npm install --include=dev
+          npx prisma generate
+          npx prisma db push
+          touch tmp/restart.txt
+
+          rm -f "/home/$CPANEL_USER/frontend.tar.gz" "/home/$CPANEL_USER/server.tar.gz"
+          EOF
