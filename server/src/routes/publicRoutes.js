@@ -10,38 +10,32 @@ router.get("/health", (request, response) => {
 
 router.get("/content", async (request, response) => {
   const [
-    siteConfig,
-    benefits,
-    services,
+    contactDetails,
     cateringCategories,
-    foodPackages,
+    cateringMenus,
     rentalItems,
-    rentalPrices,
-    rentalPackages,
+    rentalBundles,
     gallery,
     reviews,
   ] = await Promise.all([
-    prisma.siteConfig.findUnique({ where: { id: 1 } }),
-    prisma.benefit.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.service.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.eventCategory.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.foodPackage.findMany({ include: { category: true }, orderBy: { sortOrder: "asc" } }),
+    prisma.contactDetails.findUnique({ where: { id: 1 } }),
+    prisma.cateringCatergory.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.cateringMenu.findMany({ include: { category: true }, orderBy: { sortOrder: "asc" } }),
     prisma.rentalItem.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.rentalPrice.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.rentalPackage.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.galleryItem.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.rentalBundle.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.gallery.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
 
   response.json({
-    siteConfig,
-    benefits,
-    services,
+    siteConfig: contactDetails,
+    contactDetails,
     cateringCategories,
-    foodPackages,
+    foodPackages: cateringMenus,
+    cateringMenus,
     rentalItems,
-    rentalPrices,
-    rentalPackages,
+    rentalPackages: rentalBundles,
+    rentalBundles,
     gallery,
     reviews,
   });
@@ -50,7 +44,7 @@ router.get("/content", async (request, response) => {
 router.post("/inquiries", async (request, response) => {
   const data = contactMessageSchema.parse(request.body);
 
-  const inquiry = await prisma.contactMessage.create({ data });
+  const inquiry = await prisma.message.create({ data });
 
   response.status(201).json({
     message: "Inquiry received successfully",

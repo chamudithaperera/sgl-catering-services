@@ -6,12 +6,9 @@ const { prisma } = require("../config/prisma");
 const { requireAuth } = require("../middleware/auth");
 const {
   siteConfigSchema,
-  benefitSchema,
-  serviceSchema,
   eventCategorySchema,
   foodPackageSchema,
   rentalItemSchema,
-  rentalPriceSchema,
   rentalPackageSchema,
   galleryItemSchema,
   reviewSchema,
@@ -39,11 +36,11 @@ const upload = multer({ storage });
 const router = express.Router();
 
 const reorderModels = {
-  cateringCategories: prisma.eventCategory,
-  foodPackages: prisma.foodPackage,
+  cateringCategories: prisma.cateringCatergory,
+  foodPackages: prisma.cateringMenu,
   rentalItems: prisma.rentalItem,
-  rentalPackages: prisma.rentalPackage,
-  galleryItems: prisma.galleryItem,
+  rentalPackages: prisma.rentalBundle,
+  galleryItems: prisma.gallery,
   reviews: prisma.review,
 };
 
@@ -51,38 +48,29 @@ router.use(requireAuth);
 
 router.get("/dashboard", async (request, response) => {
   const [
-    benefits,
-    services,
     cateringCategories,
     foodPackages,
     rentalItems,
-    rentalPrices,
     rentalPackages,
     galleryItems,
     reviews,
     contactMessages,
     unreadMessages,
   ] = await Promise.all([
-    prisma.benefit.count(),
-    prisma.service.count(),
-    prisma.eventCategory.count(),
-    prisma.foodPackage.count(),
+    prisma.cateringCatergory.count(),
+    prisma.cateringMenu.count(),
     prisma.rentalItem.count(),
-    prisma.rentalPrice.count(),
-    prisma.rentalPackage.count(),
-    prisma.galleryItem.count(),
+    prisma.rentalBundle.count(),
+    prisma.gallery.count(),
     prisma.review.count(),
-    prisma.contactMessage.count(),
-    prisma.contactMessage.count({ where: { isRead: false } }),
+    prisma.message.count(),
+    prisma.message.count({ where: { isRead: false } }),
   ]);
 
   response.json({
-    benefits,
-    services,
     cateringCategories,
     foodPackages,
     rentalItems,
-    rentalPrices,
     rentalPackages,
     galleryItems,
     reviews,
@@ -125,13 +113,13 @@ router.patch("/reorder", async (request, response) => {
 });
 
 router.get("/site-config", async (request, response) => {
-  const item = await prisma.siteConfig.findUnique({ where: { id: 1 } });
+  const item = await prisma.contactDetails.findUnique({ where: { id: 1 } });
   response.json(item);
 });
 
 router.put("/site-config", async (request, response) => {
   const data = siteConfigSchema.parse(request.body);
-  const item = await prisma.siteConfig.upsert({
+  const item = await prisma.contactDetails.upsert({
     where: { id: 1 },
     update: data,
     create: {
@@ -142,70 +130,20 @@ router.put("/site-config", async (request, response) => {
   response.json(item);
 });
 
-router.get("/benefits", async (request, response) => {
-  const items = await prisma.benefit.findMany({ orderBy: { sortOrder: "asc" } });
-  response.json(items);
-});
-
-router.post("/benefits", async (request, response) => {
-  const data = benefitSchema.parse(request.body);
-  const item = await prisma.benefit.create({ data });
-  response.status(201).json(item);
-});
-
-router.put("/benefits/:id", async (request, response) => {
-  const data = benefitSchema.parse(request.body);
-  const item = await prisma.benefit.update({
-    where: { id: Number(request.params.id) },
-    data,
-  });
-  response.json(item);
-});
-
-router.delete("/benefits/:id", async (request, response) => {
-  await prisma.benefit.delete({ where: { id: Number(request.params.id) } });
-  response.status(204).send();
-});
-
-router.get("/services", async (request, response) => {
-  const items = await prisma.service.findMany({ orderBy: { sortOrder: "asc" } });
-  response.json(items);
-});
-
-router.post("/services", async (request, response) => {
-  const data = serviceSchema.parse(request.body);
-  const item = await prisma.service.create({ data });
-  response.status(201).json(item);
-});
-
-router.put("/services/:id", async (request, response) => {
-  const data = serviceSchema.parse(request.body);
-  const item = await prisma.service.update({
-    where: { id: Number(request.params.id) },
-    data,
-  });
-  response.json(item);
-});
-
-router.delete("/services/:id", async (request, response) => {
-  await prisma.service.delete({ where: { id: Number(request.params.id) } });
-  response.status(204).send();
-});
-
 router.get("/catering-categories", async (request, response) => {
-  const items = await prisma.eventCategory.findMany({ orderBy: { sortOrder: "asc" } });
+  const items = await prisma.cateringCatergory.findMany({ orderBy: { sortOrder: "asc" } });
   response.json(items);
 });
 
 router.post("/catering-categories", async (request, response) => {
   const data = eventCategorySchema.parse(request.body);
-  const item = await prisma.eventCategory.create({ data });
+  const item = await prisma.cateringCatergory.create({ data });
   response.status(201).json(item);
 });
 
 router.put("/catering-categories/:id", async (request, response) => {
   const data = eventCategorySchema.parse(request.body);
-  const item = await prisma.eventCategory.update({
+  const item = await prisma.cateringCatergory.update({
     where: { id: Number(request.params.id) },
     data,
   });
@@ -213,12 +151,12 @@ router.put("/catering-categories/:id", async (request, response) => {
 });
 
 router.delete("/catering-categories/:id", async (request, response) => {
-  await prisma.eventCategory.delete({ where: { id: Number(request.params.id) } });
+  await prisma.cateringCatergory.delete({ where: { id: Number(request.params.id) } });
   response.status(204).send();
 });
 
 router.get("/food-packages", async (request, response) => {
-  const items = await prisma.foodPackage.findMany({
+  const items = await prisma.cateringMenu.findMany({
     include: { category: true },
     orderBy: { sortOrder: "asc" },
   });
@@ -227,13 +165,13 @@ router.get("/food-packages", async (request, response) => {
 
 router.post("/food-packages", async (request, response) => {
   const data = foodPackageSchema.parse(request.body);
-  const item = await prisma.foodPackage.create({ data });
+  const item = await prisma.cateringMenu.create({ data });
   response.status(201).json(item);
 });
 
 router.put("/food-packages/:id", async (request, response) => {
   const data = foodPackageSchema.parse(request.body);
-  const item = await prisma.foodPackage.update({
+  const item = await prisma.cateringMenu.update({
     where: { id: Number(request.params.id) },
     data,
   });
@@ -241,7 +179,7 @@ router.put("/food-packages/:id", async (request, response) => {
 });
 
 router.delete("/food-packages/:id", async (request, response) => {
-  await prisma.foodPackage.delete({ where: { id: Number(request.params.id) } });
+  await prisma.cateringMenu.delete({ where: { id: Number(request.params.id) } });
   response.status(204).send();
 });
 
@@ -270,45 +208,20 @@ router.delete("/rental-items/:id", async (request, response) => {
   response.status(204).send();
 });
 
-router.get("/rental-prices", async (request, response) => {
-  const items = await prisma.rentalPrice.findMany({ orderBy: { sortOrder: "asc" } });
-  response.json(items);
-});
-
-router.post("/rental-prices", async (request, response) => {
-  const data = rentalPriceSchema.parse(request.body);
-  const item = await prisma.rentalPrice.create({ data });
-  response.status(201).json(item);
-});
-
-router.put("/rental-prices/:id", async (request, response) => {
-  const data = rentalPriceSchema.parse(request.body);
-  const item = await prisma.rentalPrice.update({
-    where: { id: Number(request.params.id) },
-    data,
-  });
-  response.json(item);
-});
-
-router.delete("/rental-prices/:id", async (request, response) => {
-  await prisma.rentalPrice.delete({ where: { id: Number(request.params.id) } });
-  response.status(204).send();
-});
-
 router.get("/rental-packages", async (request, response) => {
-  const items = await prisma.rentalPackage.findMany({ orderBy: { sortOrder: "asc" } });
+  const items = await prisma.rentalBundle.findMany({ orderBy: { sortOrder: "asc" } });
   response.json(items);
 });
 
 router.post("/rental-packages", async (request, response) => {
   const data = rentalPackageSchema.parse(request.body);
-  const item = await prisma.rentalPackage.create({ data });
+  const item = await prisma.rentalBundle.create({ data });
   response.status(201).json(item);
 });
 
 router.put("/rental-packages/:id", async (request, response) => {
   const data = rentalPackageSchema.parse(request.body);
-  const item = await prisma.rentalPackage.update({
+  const item = await prisma.rentalBundle.update({
     where: { id: Number(request.params.id) },
     data,
   });
@@ -316,24 +229,24 @@ router.put("/rental-packages/:id", async (request, response) => {
 });
 
 router.delete("/rental-packages/:id", async (request, response) => {
-  await prisma.rentalPackage.delete({ where: { id: Number(request.params.id) } });
+  await prisma.rentalBundle.delete({ where: { id: Number(request.params.id) } });
   response.status(204).send();
 });
 
 router.get("/gallery-items", async (request, response) => {
-  const items = await prisma.galleryItem.findMany({ orderBy: { sortOrder: "asc" } });
+  const items = await prisma.gallery.findMany({ orderBy: { sortOrder: "asc" } });
   response.json(items);
 });
 
 router.post("/gallery-items", async (request, response) => {
   const data = galleryItemSchema.parse(request.body);
-  const item = await prisma.galleryItem.create({ data });
+  const item = await prisma.gallery.create({ data });
   response.status(201).json(item);
 });
 
 router.put("/gallery-items/:id", async (request, response) => {
   const data = galleryItemSchema.parse(request.body);
-  const item = await prisma.galleryItem.update({
+  const item = await prisma.gallery.update({
     where: { id: Number(request.params.id) },
     data,
   });
@@ -341,7 +254,7 @@ router.put("/gallery-items/:id", async (request, response) => {
 });
 
 router.delete("/gallery-items/:id", async (request, response) => {
-  await prisma.galleryItem.delete({ where: { id: Number(request.params.id) } });
+  await prisma.gallery.delete({ where: { id: Number(request.params.id) } });
   response.status(204).send();
 });
 
@@ -371,14 +284,14 @@ router.delete("/reviews/:id", async (request, response) => {
 });
 
 router.get("/contact-messages", async (request, response) => {
-  const items = await prisma.contactMessage.findMany({
+  const items = await prisma.message.findMany({
     orderBy: [{ isRead: "asc" }, { createdAt: "desc" }],
   });
   response.json(items);
 });
 
 router.patch("/contact-messages/:id/read", async (request, response) => {
-  const item = await prisma.contactMessage.update({
+  const item = await prisma.message.update({
     where: { id: Number(request.params.id) },
     data: { isRead: Boolean(request.body.isRead) },
   });
@@ -386,7 +299,7 @@ router.patch("/contact-messages/:id/read", async (request, response) => {
 });
 
 router.delete("/contact-messages/:id", async (request, response) => {
-  await prisma.contactMessage.delete({ where: { id: Number(request.params.id) } });
+  await prisma.message.delete({ where: { id: Number(request.params.id) } });
   response.status(204).send();
 });
 

@@ -15,7 +15,7 @@ router.post("/login", async (request, response) => {
 
   const { email, password } = schema.parse(request.body);
 
-  const adminUser = await prisma.adminUser.findFirst({
+  const adminUser = await prisma.admin.findFirst({
     where: {
       OR: [{ email }, { username: email }],
     },
@@ -29,7 +29,7 @@ router.post("/login", async (request, response) => {
 
   if (!passwordMatches && adminUser.username === "sgladmin" && password === "Admin@1234") {
     const passwordHash = await bcrypt.hash(password, 10);
-    await prisma.adminUser.update({
+    await prisma.admin.update({
       where: { id: adminUser.id },
       data: { passwordHash },
     });

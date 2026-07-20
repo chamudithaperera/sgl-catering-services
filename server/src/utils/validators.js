@@ -1,23 +1,36 @@
 const { z } = require("zod");
 
-const serviceSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(10),
-  icon: z.string().min(2),
-  sortOrder: z.coerce.number().int().min(0).default(0),
-});
+function textLines(value) {
+  return Array.isArray(value)
+    ? value.map((item) => item.trim()).filter(Boolean)
+    : String(value || "")
+        .split("\n")
+        .map((item) => item.trim())
+        .filter(Boolean);
+}
+
+function withFallback(fallback) {
+  return z
+    .string()
+    .optional()
+    .transform((value) => {
+      const trimmedValue = String(value || "").trim();
+      return trimmedValue || fallback;
+    });
+}
 
 const siteConfigSchema = z.object({
-  companyName: z.string().min(2),
-  heroBadge: z.string().min(2),
-  heroTitleLineOne: z.string().min(2),
-  heroTitleLineTwo: z.string().min(2),
-  heroDescription: z.string().min(10),
-  aboutHeading: z.string().min(2),
-  aboutIntro: z.string().min(10),
-  aboutBody: z.string().min(10),
-  contactHeading: z.string().min(2),
-  contactDescription: z.string().min(10),
+  companyName: withFallback("SGL Catering Services"),
+  heroBadge: withFallback("Rajarata Symbol of Sri Lankan Traditional Food Art........."),
+  heroDescription: withFallback(
+    "විවාහ උත්සව, උපන්දින සාද, ආයතනික උත්සව සහ ඔබගේ සෑම විශේෂ අවස්ථාවක් සඳහාම රසවත්, පිරිසිදු සහ උසස් තත්ත්වයේ ආහාර සේවාවක් අපි ලබා දෙන්නෙමු.",
+  ),
+  aboutHeading: withFallback("SGL කේටරින් සර්විස් යනු:"),
+  aboutBody: withFallback(
+    "අපගේ අරමුණ වන්නේ ඔබේ අවස්ථාවට ගැළපෙන පිරිසිදු, රසවත් සහ විශ්වාසදායක catering සේවාවක් ලබාදීමයි.",
+  ),
+  contactHeading: withFallback("අප අමතන්න"),
+  contactDescription: withFallback("ඔබගේ උත්සවය ගැන අපට දැනුම් දෙන්න. අපි ඉක්මනින් සම්බන්ධ වෙන්නම්."),
   phone: z.string().min(2),
   whatsapp: z.string().min(2),
   email: z.string().email(),
@@ -28,28 +41,12 @@ const siteConfigSchema = z.object({
   instagramUrl: z.string().min(2),
 });
 
-const benefitSchema = z.object({
-  title: z.string().min(2),
-  description: z.string().min(5),
-  icon: z.string().min(2),
-  sortOrder: z.coerce.number().int().min(0).default(0),
-});
-
 const eventCategorySchema = z.object({
   title: z.string().min(2),
   shortLabel: z.string().min(2),
   description: z.string().min(10),
   imageUrl: z.string().min(2),
-  highlights: z
-    .union([z.array(z.string().min(1)), z.string()])
-    .transform((value) =>
-      Array.isArray(value)
-        ? value.map((item) => item.trim()).filter(Boolean)
-        : value
-            .split("\n")
-            .map((item) => item.trim())
-            .filter(Boolean),
-    ),
+  highlights: z.union([z.array(z.string().min(1)), z.string()]).transform(textLines),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
@@ -60,16 +57,7 @@ const foodPackageSchema = z.object({
   name: z.string().min(2),
   summary: z.string().min(10),
   priceLabel: z.string().min(2),
-  includedItems: z
-    .union([z.array(z.string().min(1)), z.string()])
-    .transform((value) =>
-      Array.isArray(value)
-        ? value.map((item) => item.trim()).filter(Boolean)
-        : value
-            .split("\n")
-            .map((item) => item.trim())
-            .filter(Boolean),
-    ),
+  includedItems: z.union([z.array(z.string().min(1)), z.string()]).transform(textLines),
   featured: z.coerce.boolean().default(false),
   ctaLabel: z.string().min(2),
   sortOrder: z.coerce.number().int().min(0).default(0),
@@ -86,26 +74,11 @@ const rentalItemSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
-const rentalPriceSchema = z.object({
-  item: z.string().min(2),
-  priceLabel: z.string().min(2),
-  sortOrder: z.coerce.number().int().min(0).default(0),
-});
-
 const rentalPackageSchema = z.object({
   name: z.string().min(2),
   summary: z.string().min(10),
   priceLabel: z.string().min(2),
-  items: z
-    .union([z.array(z.string().min(1)), z.string()])
-    .transform((value) =>
-      Array.isArray(value)
-        ? value.map((item) => item.trim()).filter(Boolean)
-        : value
-            .split("\n")
-            .map((item) => item.trim())
-            .filter(Boolean),
-    ),
+  items: z.union([z.array(z.string().min(1)), z.string()]).transform(textLines),
   ctaLabel: z.string().min(2),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
@@ -139,12 +112,9 @@ const contactMessageSchema = z.object({
 
 module.exports = {
   siteConfigSchema,
-  benefitSchema,
-  serviceSchema,
   eventCategorySchema,
   foodPackageSchema,
   rentalItemSchema,
-  rentalPriceSchema,
   rentalPackageSchema,
   galleryItemSchema,
   reviewSchema,

@@ -7,86 +7,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AdminUser {
+model Admin {
   id           Int      @id @default(autoincrement())
   email        String   @unique
   username     String   @unique
   name         String
-  passwordHash String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("admins")
 }
 
-model SiteConfig {
-  id                Int      @id
-  companyName       String
-  heroBadge         String
-  heroTitleLineOne  String
-  heroTitleLineTwo  String
-  heroDescription   String   @db.Text
-  aboutHeading      String
-  aboutIntro        String   @db.Text
-  aboutBody         String   @db.Text
-  contactHeading    String
-  contactDescription String  @db.Text
-  phone             String
-  whatsapp          String
-  email             String
-  address           String
-  businessHours     String
-  mapUrl            String
-  facebookUrl       String
-  instagramUrl      String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-model Benefit {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  icon        String
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Service {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String   @db.Text
-  icon        String
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model EventCategory {
-  id           Int           @id @default(autoincrement())
-  title        String
-  shortLabel   String
-  description  String        @db.Text
-  imageUrl     String
-  highlights   Json
-  sortOrder    Int           @default(0)
-  foodPackages FoodPackage[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-}
-
-model FoodPackage {
+model Message {
   id            Int      @id @default(autoincrement())
-  categoryId    Int?
-  category      EventCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  customerName  String   @map("customer_name")
+  phone         String
+  eventType     String   @map("event_type")
+  serviceNeeded String   @map("service_needed")
+  eventDate     String   @map("event_date")
+  guestCount    String   @map("guest_count")
+  location      String
+  message       String   @db.Text
+  isRead        Boolean  @default(false) @map("is_read")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("messages")
+}
+
+model ContactDetails {
+  id                 Int      @id
+  companyName        String   @map("company_name")
+  heroBadge          String   @map("hero_badge")
+  heroDescription    String   @db.Text @map("hero_description")
+  aboutHeading       String   @map("about_heading")
+  aboutBody          String   @db.Text @map("about_body")
+  contactHeading     String   @map("contact_heading")
+  contactDescription String   @db.Text @map("contact_description")
+  phone              String
+  whatsapp           String
+  email              String
+  address            String
+  businessHours      String   @map("business_hours")
+  mapUrl             String   @map("map_url")
+  facebookUrl        String   @map("facebook_url")
+  instagramUrl       String   @map("instagram_url")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("contact_details")
+}
+
+model CateringCatergory {
+  id          Int             @id @default(autoincrement())
+  title       String
+  shortLabel  String          @map("short_label")
+  description String          @db.Text
+  imageUrl    String          @map("image_url")
+  highlights  Json
+  sortOrder   Int             @default(0) @map("sort_order")
+  menus       CateringMenu[]
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@map("catering_catergories")
+}
+
+model CateringMenu {
+  id            Int                  @id @default(autoincrement())
+  categoryId    Int?                 @map("category_id")
+  category      CateringCatergory?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   name          String
-  summary       String   @db.Text
-  priceLabel    String
-  includedItems Json
-  featured      Boolean  @default(false)
-  ctaLabel      String
-  sortOrder     Int      @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  summary       String               @db.Text
+  priceLabel    String               @map("price_label")
+  includedItems Json                 @map("included_items")
+  featured      Boolean              @default(false)
+  ctaLabel      String               @map("cta_label")
+  sortOrder     Int                  @default(0) @map("sort_order")
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+
+  @@map("catering_menus")
+}
+
+model RentalBundle {
+  id         Int      @id @default(autoincrement())
+  name       String
+  summary    String
+  priceLabel String   @default("මිල විමසන්න") @map("price_label")
+  items      Json
+  ctaLabel   String   @map("cta_label")
+  sortOrder  Int      @default(0) @map("sort_order")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("rental_bundles")
 }
 
 model RentalItem {
@@ -94,68 +109,39 @@ model RentalItem {
   name              String
   description       String   @db.Text
   category          String
-  imageUrl          String
-  priceLabel        String
-  availableQuantity Int
+  imageUrl          String   @map("image_url")
+  priceLabel        String   @map("price_label")
+  availableQuantity Int      @map("available_quantity")
   status            String
-  sortOrder         Int      @default(0)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  sortOrder         Int      @default(0) @map("sort_order")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("rental_items")
 }
 
-model RentalPrice {
-  id         Int      @id @default(autoincrement())
-  item       String
-  priceLabel String
-  sortOrder  Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
+model Gallery {
+  id        Int      @id @default(autoincrement())
+  title     String
+  category  String
+  imageUrl  String   @map("image_url")
+  featured  Boolean  @default(false)
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-model RentalPackage {
-  id         Int      @id @default(autoincrement())
-  name       String
-  summary    String
-  priceLabel String   @default("මිල විමසන්න")
-  items      Json
-  ctaLabel   String
-  sortOrder  Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model GalleryItem {
-  id         Int      @id @default(autoincrement())
-  title      String
-  category   String
-  imageUrl   String
-  featured   Boolean  @default(false)
-  sortOrder  Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  @@map("gallery")
 }
 
 model Review {
   id           Int      @id @default(autoincrement())
-  customerName String
-  eventType    String
+  customerName String   @map("customer_name")
+  eventType    String   @map("event_type")
   rating       Int
   quote        String   @db.Text
-  sortOrder    Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
+  sortOrder    Int      @default(0) @map("sort_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-model ContactMessage {
-  id            Int      @id @default(autoincrement())
-  customerName  String
-  phone         String
-  eventType     String
-  serviceNeeded String
-  eventDate     String
-  guestCount    String
-  location      String
-  message       String   @db.Text
-  isRead        Boolean  @default(false)
-  createdAt     DateTime @default(now())
+  @@map("reviews")
 }
