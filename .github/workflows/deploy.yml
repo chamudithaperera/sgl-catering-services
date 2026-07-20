@@ -95,6 +95,7 @@ jobs:
           npm install --include=dev
           npx prisma generate
           npx prisma db push --accept-data-loss
+          npm run prisma:seed
           touch tmp/restart.txt
 
           rm -f "/home/$CPANEL_USER/frontend.tar.gz" "/home/$CPANEL_USER/server.tar.gz"
