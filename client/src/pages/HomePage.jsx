@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import galleryBackgroundPoster from "../assets/gallery-background-poster.jpg";
 import galleryBackgroundVideo from "../assets/gallery-background-silent.mp4";
 import { api } from "../lib/api";
+import { responsiveImageProps } from "../lib/imagePerformance";
 import "./HomePage.css";
 
 const contactPhone = "+94703324500";
@@ -466,7 +467,7 @@ export function HomePage() {
               className={`premium-hero-slide ${index === activeSlide ? "is-active" : ""}`}
             >
               <img
-                src={loadedHeroSlides.has(index) ? slide.image : undefined}
+                {...responsiveImageProps(loadedHeroSlides.has(index) ? slide.image : undefined, "100vw")}
                 alt=""
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding={index === 0 ? "sync" : "async"}
@@ -516,7 +517,7 @@ export function HomePage() {
         <div className="premium-about-shell">
           <div className="premium-about-media premium-reveal premium-reveal-media" data-reveal>
             <img
-              src="/assets/sgl-images/indoor-buffet.jpg"
+              {...responsiveImageProps("/assets/sgl-images/indoor-buffet.jpg", "(max-width: 900px) 100vw, 50vw")}
               alt="SGL Catering buffet setup"
               loading="lazy"
               decoding="async"
@@ -545,7 +546,12 @@ export function HomePage() {
             {homepageServices.map((service, index) => (
               <article key={service.title} className="premium-service-card premium-reveal premium-reveal-service" data-reveal>
                 <div className="premium-service-media">
-                  <img src={service.image} alt={service.title} loading="lazy" decoding="async" />
+                  <img
+                    {...responsiveImageProps(service.image, "(max-width: 900px) 100vw, 50vw")}
+                    alt={service.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
 
                 <div className="premium-service-content">
@@ -608,7 +614,7 @@ export function HomePage() {
                   data-reveal
                 >
                   <img
-                    src={item.image}
+                    {...responsiveImageProps(item.image, "(max-width: 680px) 50vw, 25vw")}
                     alt={item.title}
                     loading="lazy"
                     decoding="async"

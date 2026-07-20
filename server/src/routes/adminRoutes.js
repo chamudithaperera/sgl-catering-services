@@ -32,7 +32,20 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  fileFilter: (request, file, callback) => {
+    if (!file.mimetype.startsWith("image/")) {
+      callback(new Error("Only image uploads are allowed"));
+      return;
+    }
+
+    callback(null, true);
+  },
+  limits: {
+    fileSize: 8 * 1024 * 1024,
+  },
+  storage,
+});
 const router = express.Router();
 
 const reorderModels = {

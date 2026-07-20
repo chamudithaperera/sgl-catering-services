@@ -23,7 +23,13 @@ app.use(
   }),
 );
 app.use(express.json({ limit: "10mb" }));
-app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
+app.use(
+  "/uploads",
+  express.static(path.resolve(__dirname, "../uploads"), {
+    immutable: true,
+    maxAge: "30d",
+  }),
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/public", publicRoutes);

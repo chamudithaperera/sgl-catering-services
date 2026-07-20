@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Check, ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
+import { responsiveImageProps } from "../lib/imagePerformance";
 import "./ServiceShowcasePage.css";
 
 const contactPhone = "+94703324500";
@@ -79,7 +80,7 @@ function BannerSection({ page, anchorId }) {
   return (
     <section className="service-banner">
       <div className="service-banner-media" aria-hidden="true">
-        <img src={page.image} alt="" loading="eager" decoding="async" fetchPriority="high" />
+        <img {...responsiveImageProps(page.image, "100vw")} alt="" loading="eager" decoding="async" fetchPriority="high" />
       </div>
       <div className="service-banner-overlay" aria-hidden="true" />
 
@@ -183,7 +184,12 @@ function CateringSections({ page }) {
             </button>
 
             <div className="service-category-feature-media">
-              <img src={activeCategory.image} alt={activeCategory.title} loading="lazy" decoding="async" />
+              <img
+                {...responsiveImageProps(activeCategory.image, "(max-width: 900px) 100vw, 44vw")}
+                alt={activeCategory.title}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
             <div className="service-category-feature-copy">
@@ -261,7 +267,12 @@ function RentingSections({ page }) {
             {itemCards.map((item) => (
               <article className="service-item-card" key={`${item.categoryTitle}-${item.name}`}>
                 <div className="service-item-card-media">
-                  <img src={item.imageUrl} alt={item.name} loading="lazy" decoding="async" />
+                  <img
+                    {...responsiveImageProps(item.imageUrl, "(max-width: 900px) 100vw, 33vw")}
+                    alt={item.name}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
 
                 <div className="service-item-card-body">

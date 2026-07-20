@@ -346,9 +346,62 @@ function renderCell(item, column) {
   return value;
 }
 
+function loadImageFromFile(file) {
+  return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file);
+    const image = new Image();
+
+    image.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Could not load image"));
+    };
+    image.src = objectUrl;
+  });
+}
+
+async function optimizeImageBeforeUpload(file) {
+  if (!file.type.startsWith("image/") || file.type === "image/gif" || file.type === "image/svg+xml") {
+    return file;
+  }
+
+  const image = await loadImageFromFile(file);
+  const largestSide = Math.max(image.naturalWidth, image.naturalHeight);
+  const scale = largestSide > 1600 ? 1600 / largestSide : 1;
+  const width = Math.round(image.naturalWidth * scale);
+  const height = Math.round(image.naturalHeight * scale);
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    return file;
+  }
+
+  canvas.width = width;
+  canvas.height = height;
+  context.drawImage(image, 0, 0, width, height);
+
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.72));
+
+  if (!blob || blob.size >= file.size) {
+    return file;
+  }
+
+  const fileName = `${file.name.replace(/\.[^.]+$/, "")}.jpg`;
+
+  return new File([blob], fileName, {
+    lastModified: Date.now(),
+    type: "image/jpeg",
+  });
+}
+
 async function uploadImage(token, file) {
+  const uploadFile = await optimizeImageBeforeUpload(file);
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append("image", uploadFile);
   const response = await api.post("/admin/upload", formData, adminRequest(token));
   return response.data.url;
 }
@@ -798,7 +851,7 @@ export function AdminPage() {
             <label>
               <ImageUp size={16} />
               <span>Upload</span>
-              <input onChange={(event) => handleFileChange(config, field, event.target.files?.[0])} type="file" />
+              <input accept="image/*" onChange={(event) => handleFileChange(config, field, event.target.files?.[0])} type="file" />
             </label>
             {value ? <img alt="" src={value} /> : null}
           </div>
