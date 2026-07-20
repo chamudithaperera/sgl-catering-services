@@ -1432,17 +1432,14 @@
   box-shadow: 0 20px 36px rgba(var(--accent-rgb), 0.28);
 }
 
+.premium-contact-action svg {
+  display: block;
+}
+
 .premium-contact-action.is-whatsapp:hover {
   border-color: rgba(37, 211, 102, 0.44);
   background: linear-gradient(180deg, #2fdf75 0%, #159947 100%);
   box-shadow: 0 20px 36px rgba(37, 211, 102, 0.2);
-}
-
-.premium-contact-action.is-facebook span {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 2rem;
-  font-weight: 800;
-  line-height: 1;
 }
 
 .premium-contact-action.is-facebook:hover {
