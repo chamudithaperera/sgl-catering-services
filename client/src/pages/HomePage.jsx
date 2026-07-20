@@ -86,46 +86,9 @@ const serviceItems = [
   },
 ];
 
-function useActivateOnIntersect(targetRef, { rootMargin = "240px 0px", threshold = 0.08 } = {}) {
-  const [isActive, setIsActive] = useState(false);
-
+function useAutoplayVideo(videoRef, shouldPlay) {
   useEffect(() => {
-    if (isActive) {
-      return undefined;
-    }
-
-    const target = targetRef.current;
-
-    if (!target) {
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        setIsActive(true);
-        observer.disconnect();
-      },
-      {
-        threshold,
-        rootMargin,
-      }
-    );
-
-    observer.observe(target);
-
-    return () => observer.disconnect();
-  }, [isActive, rootMargin, targetRef, threshold]);
-
-  return isActive;
-}
-
-function useAutoplayVideo(videoRef, isActive) {
-  useEffect(() => {
-    if (!isActive) {
+    if (!shouldPlay) {
       return undefined;
     }
 
@@ -143,7 +106,7 @@ function useAutoplayVideo(videoRef, isActive) {
       video.setAttribute("loop", "");
       video.autoplay = true;
       video.loop = true;
-      video.preload = "metadata";
+      video.preload = "auto";
       video.muted = true;
       video.defaultMuted = true;
       video.playsInline = true;
@@ -189,7 +152,7 @@ function useAutoplayVideo(videoRef, isActive) {
       video.removeEventListener("waiting", handlePlaybackInterruption);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isActive, videoRef]);
+  }, [shouldPlay, videoRef]);
 }
 
 export function HomePage() {
@@ -207,11 +170,7 @@ export function HomePage() {
   const [contactStatusType, setContactStatusType] = useState("success");
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
-  const gallerySectionRef = useRef(null);
   const galleryVideoRef = useRef(null);
-  const isGalleryVideoActive = useActivateOnIntersect(gallerySectionRef, { rootMargin: "240px 0px", threshold: 0.08 });
-
-  useAutoplayVideo(galleryVideoRef, isGalleryVideoActive);
 
   const siteConfig = content?.siteConfig;
   const homepageServices = serviceItems;
@@ -233,6 +192,8 @@ export function HomePage() {
   const homepageLocation = siteConfig?.address || contactLocation;
   const homepageMapUrl = siteConfig?.mapUrl || "";
   const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl, contactMapEmbedUrl);
+
+  useAutoplayVideo(galleryVideoRef, homepageGallery.length > 0);
 
   useEffect(() => {
     api
@@ -584,7 +545,7 @@ export function HomePage() {
       </section>
 
       {homepageGallery.length > 0 ? (
-        <section ref={gallerySectionRef} className="premium-gallery" id="gallery">
+        <section className="premium-gallery" id="gallery">
           <div className="premium-gallery-background" aria-hidden="true">
             <video
               ref={galleryVideoRef}
@@ -593,13 +554,11 @@ export function HomePage() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="auto"
               disablePictureInPicture
               disableRemotePlayback
             >
-              {isGalleryVideoActive ? (
-                <source src="/assets/sgl-videos/gallery-background.mp4?v=3" type="video/mp4" />
-              ) : null}
+              <source src="/assets/sgl-videos/gallery-background.mp4?v=4" type="video/mp4" />
             </video>
             <div className="premium-gallery-veil" />
           </div>

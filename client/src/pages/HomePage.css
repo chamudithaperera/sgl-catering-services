@@ -788,16 +788,16 @@
   backface-visibility: hidden;
   transform: translateZ(0);
   will-change: transform;
-  filter: saturate(0.86) brightness(0.44) contrast(1.04);
+  filter: saturate(0.94) brightness(0.68) contrast(1.06);
 }
 
 .premium-gallery-veil {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(6, 8, 9, 0.84) 0%, rgba(6, 8, 9, 0.7) 26%, rgba(6, 8, 9, 0.82) 100%),
-    radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.08) 0%, transparent 28%),
-    radial-gradient(circle at bottom right, rgba(184, 154, 106, 0.08) 0%, transparent 24%);
+    linear-gradient(180deg, rgba(6, 8, 9, 0.62) 0%, rgba(6, 8, 9, 0.42) 30%, rgba(6, 8, 9, 0.68) 100%),
+    radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.1) 0%, transparent 28%),
+    radial-gradient(circle at bottom right, rgba(184, 154, 106, 0.1) 0%, transparent 24%);
 }
 
 .premium-gallery-shell {
