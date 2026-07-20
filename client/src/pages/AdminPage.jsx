@@ -386,6 +386,10 @@ export function AdminPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const dragStateRef = useRef({ completed: false, originalRows: [] });
+  const dirtyFormsRef = useRef({});
+  const editingIdsRef = useRef({});
+  const crudModalKeyRef = useRef("");
+  const contactEditingRef = useRef(false);
 
   const activeResourceKey = groupedSections[activeKey]?.tabs.find((tab) => tab.key === activeGroupTabs[activeKey])?.key || activeKey;
   const activeGroup = groupedSections[activeKey];
@@ -402,7 +406,7 @@ export function AdminPage() {
     [dashboard],
   );
 
-  const loadAdminData = useCallback(async (activeToken) => {
+  const loadAdminData = useCallback(async (activeToken, { preserveActiveForms = false } = {}) => {
     const requestConfig = adminRequest(activeToken);
     const [dashboardResponse, ...resourceResponses] = await Promise.all([
       api.get("/admin/dashboard", requestConfig),
@@ -421,8 +425,28 @@ export function AdminPage() {
 
     setDashboard(dashboardResponse.data);
     setRecords(nextRecords);
-    setForms((current) => ({ ...current, ...nextForms }));
+    setForms((current) => {
+      const mergedForms = { ...current };
+
+      resourceConfigs.forEach((config) => {
+        const formIsActive =
+          dirtyFormsRef.current[config.key] ||
+          Boolean(editingIdsRef.current[config.key]) ||
+          crudModalKeyRef.current === config.key ||
+          (config.key === "siteConfig" && contactEditingRef.current);
+
+        mergedForms[config.key] = preserveActiveForms && formIsActive ? current[config.key] : nextForms[config.key];
+      });
+
+      return mergedForms;
+    });
   }, []);
+
+  useEffect(() => {
+    editingIdsRef.current = editingIds;
+    crudModalKeyRef.current = crudModalKey;
+    contactEditingRef.current = contactEditing;
+  }, [contactEditing, crudModalKey, editingIds]);
 
   useEffect(() => {
     if (!token) return;
@@ -436,7 +460,7 @@ export function AdminPage() {
     if (!token) return undefined;
 
     const intervalId = window.setInterval(() => {
-      loadAdminData(token).catch((error) => {
+      loadAdminData(token, { preserveActiveForms: true }).catch((error) => {
         console.error(error);
       });
     }, 30000);
@@ -470,6 +494,7 @@ export function AdminPage() {
   }
 
   function resetForm(config) {
+    dirtyFormsRef.current[config.key] = false;
     setEditingIds((current) => ({ ...current, [config.key]: null }));
     setForms((current) => ({ ...current, [config.key]: { ...config.form } }));
   }
@@ -500,6 +525,7 @@ export function AdminPage() {
     } else {
       setActiveKey(config.key);
     }
+    dirtyFormsRef.current[config.key] = false;
     setEditingIds((current) => ({ ...current, [config.key]: item.id }));
     setForms((current) => ({ ...current, [config.key]: normalizeForForm(config, item) }));
     if (popupCrudKeys.includes(config.key)) {
@@ -509,6 +535,7 @@ export function AdminPage() {
   }
 
   function updateField(config, field, value) {
+    dirtyFormsRef.current[config.key] = true;
     setForms((current) => ({
       ...current,
       [config.key]: {
@@ -549,6 +576,7 @@ export function AdminPage() {
         await api.post(config.endpoint, payload, adminRequest(token));
       }
 
+      dirtyFormsRef.current[config.key] = false;
       await loadAdminData(token);
       if (!config.singleton) resetForm(config);
       if (config.key === "siteConfig") {
