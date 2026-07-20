@@ -55,7 +55,7 @@ const resourceConfigs = [
       { name: "email", label: "Email", type: "email" },
       { name: "address", label: "Address", type: "textarea" },
       { name: "businessHours", label: "Business hours" },
-      { name: "mapUrl", label: "Map URL" },
+      { name: "mapUrl", label: "Map URL", type: "textarea" },
       { name: "facebookUrl", label: "Facebook URL" },
       { name: "instagramUrl", label: "Instagram URL" },
     ],

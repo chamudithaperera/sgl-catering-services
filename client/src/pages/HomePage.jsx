@@ -24,15 +24,32 @@ const contactMapEmbedUrl =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4934.785252954407!2d80.40432687591523!3d8.319864291715861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afcf5005cd65e2d%3A0x378ef91fdb3a6052!2sSGL%20Catering%20Service!5e1!3m2!1sen!2slk!4v1784484566797!5m2!1sen!2slk";
 
 function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
-  const iframeSrcMatch = mapUrl?.match(/src=["']([^"']+)["']/i);
-  const resolvedMapUrl = iframeSrcMatch?.[1] || mapUrl;
+  const rawMapUrl = String(mapUrl || "")
+    .replaceAll("&quot;", "\"")
+    .replaceAll("&#34;", "\"")
+    .replaceAll("&amp;", "&")
+    .trim();
+  const quotedSrcMatch = rawMapUrl.match(/src\s*=\s*["']([^"']+)["']/i);
+  const looseSrcMatch = rawMapUrl.match(/src\s*=\s*["']?(https?:\/\/[^\s"'>]+)/i);
+
+  if (/<iframe/i.test(rawMapUrl) && !quotedSrcMatch) {
+    return fallbackEmbedUrl;
+  }
+
+  const resolvedMapUrl = (quotedSrcMatch?.[1] || looseSrcMatch?.[1] || rawMapUrl).trim();
 
   if (!resolvedMapUrl) {
     return fallbackEmbedUrl;
   }
 
-  if (resolvedMapUrl.includes("/maps/embed")) {
-    return resolvedMapUrl;
+  try {
+    const parsedUrl = new URL(resolvedMapUrl);
+
+    if (parsedUrl.hostname.endsWith("google.com") && parsedUrl.pathname === "/maps/embed") {
+      return parsedUrl.toString();
+    }
+  } catch {
+    return fallbackEmbedUrl;
   }
 
   return fallbackEmbedUrl;

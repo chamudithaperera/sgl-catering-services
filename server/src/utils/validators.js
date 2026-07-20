@@ -9,13 +9,36 @@ function textLines(value) {
         .filter(Boolean);
 }
 
+function normalizeGoogleMapEmbedUrl(value) {
+  const rawValue = String(value || "")
+    .replaceAll("&quot;", "\"")
+    .replaceAll("&#34;", "\"")
+    .replaceAll("&amp;", "&")
+    .trim();
+  const quotedSrcMatch = rawValue.match(/src\s*=\s*["']([^"']+)["']/i);
+  const looseSrcMatch = rawValue.match(/src\s*=\s*["']?(https?:\/\/[^\s"'>]+)/i);
+  const url = (quotedSrcMatch?.[1] || looseSrcMatch?.[1] || rawValue).trim();
+
+  try {
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.hostname.endsWith("google.com") && parsedUrl.pathname === "/maps/embed") {
+      return parsedUrl.toString();
+    }
+  } catch {
+    return rawValue;
+  }
+
+  return rawValue;
+}
+
 const siteConfigSchema = z.object({
   phone: z.string().min(2),
   whatsapp: z.string().min(2),
   email: z.string().email(),
   address: z.string().min(2),
   businessHours: z.string().min(2),
-  mapUrl: z.string().min(2),
+  mapUrl: z.string().min(2).transform(normalizeGoogleMapEmbedUrl),
   facebookUrl: z.string().min(2),
   instagramUrl: z.string().min(2),
 });

@@ -25,6 +25,21 @@ async function seedIfEmpty(model, data) {
   await model.createMany({ data });
 }
 
+async function seedContactDetailsIfMissing() {
+  const existingContactDetails = await prisma.contactDetails.findUnique({ where: { id: 1 } });
+
+  if (existingContactDetails) {
+    return;
+  }
+
+  await prisma.contactDetails.create({
+    data: {
+      id: 1,
+      ...contactDetails,
+    },
+  });
+}
+
 async function main() {
   const passwordHash = await bcrypt.hash("Admin@1234", 10);
 
@@ -43,14 +58,7 @@ async function main() {
     },
   });
 
-  await prisma.contactDetails.upsert({
-    where: { id: 1 },
-    update: contactDetails,
-    create: {
-      id: 1,
-      ...contactDetails,
-    },
-  });
+  await seedContactDetailsIfMissing();
 
   await seedIfEmpty(prisma.cateringCatergory, [
     {

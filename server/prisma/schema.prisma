@@ -42,7 +42,7 @@ model ContactDetails {
   email         String
   address       String
   businessHours String   @map("business_hours")
-  mapUrl        String   @map("map_url")
+  mapUrl        String   @map("map_url") @db.Text
   facebookUrl   String   @map("facebook_url")
   instagramUrl  String   @map("instagram_url")
   createdAt     DateTime @default(now()) @map("created_at")
