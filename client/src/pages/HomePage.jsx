@@ -365,10 +365,6 @@ export function HomePage() {
     window.history.replaceState(null, "", href);
   }
 
-  function showNextSlide() {
-    setActiveSlide((currentSlide) => (currentSlide + 1) % heroSlides.length);
-  }
-
   function showPreviousReview() {
     if (homepageReviews.length === 0) return;
     setActiveReview((currentReview) => (currentReview === 0 ? homepageReviews.length - 1 : currentReview - 1));
@@ -502,7 +498,7 @@ export function HomePage() {
             <p>{heroDescription}</p>
 
             <div className="premium-hero-actions">
-              <button type="button" className="premium-button premium-button-primary" onClick={showNextSlide}>
+              <button type="button" className="premium-button premium-button-primary" onClick={(event) => handleNavAnchorClick(event, "#services")}>
                 වැඩි විස්තර
                 <ChevronRight size={18} />
               </button>
