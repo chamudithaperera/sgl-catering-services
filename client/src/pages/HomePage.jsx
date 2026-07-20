@@ -10,6 +10,14 @@ const secondaryContactPhoneLabel = "071 73 94 581";
 const contactEmail = "sudathjayathilakabs@gmail.com";
 const contactLocation = "No.360, National Housing, Stage II, Anuradhapura.";
 const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
+const heroDescription =
+  "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.";
+const aboutHeading = "SGL කේටරින් සර්විස් යනු:";
+const aboutBody =
+  "වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත් සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට අප සූදානම්.";
+const contactHeading = "අප අමතන්න";
+const contactDescription =
+  "ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න. ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු.";
 const contactMapEmbedUrl =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4934.785252954407!2d80.40432687591523!3d8.319864291715861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afcf5005cd65e2d%3A0x378ef91fdb3a6052!2sSGL%20Catering%20Service!5e1!3m2!1sen!2slk!4v1784484566797!5m2!1sen!2slk";
 
@@ -225,7 +233,6 @@ export function HomePage() {
   const homepageLocation = siteConfig?.address || contactLocation;
   const homepageMapUrl = siteConfig?.mapUrl || "";
   const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl, contactMapEmbedUrl);
-  const homepageTagline = siteConfig?.heroBadge || brandTagline;
 
   useEffect(() => {
     api
@@ -433,10 +440,7 @@ export function HomePage() {
           <div className="premium-hero-panel">
             <h1>SGL කේටරින් සර්විස්</h1>
             <span className="premium-hero-subtitle">SGL Catering Service</span>
-            <p>
-              {siteConfig?.heroDescription ||
-                "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු."}
-            </p>
+            <p>{heroDescription}</p>
 
             <div className="premium-hero-actions">
               <button type="button" className="premium-button premium-button-primary" onClick={showNextSlide}>
@@ -478,11 +482,8 @@ export function HomePage() {
           </div>
 
           <div className="premium-about-card premium-reveal premium-reveal-card" data-reveal>
-            <h2>{siteConfig?.aboutHeading || "SGL කේටරින් සර්විස් යනු:"}</h2>
-            <p>
-              {siteConfig?.aboutBody ||
-                "වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත් සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට අප සූදානම්."}
-            </p>
+            <h2>{aboutHeading}</h2>
+            <p>{aboutBody}</p>
           </div>
         </div>
       </section>
@@ -653,11 +654,8 @@ export function HomePage() {
         <div className="premium-contact-shell">
           <div className="premium-contact-heading premium-reveal premium-reveal-heading" data-reveal>
             <span>Reach Out To SGL</span>
-            <h2>{siteConfig?.contactHeading || "අප අමතන්න"}</h2>
-            <p>
-              {siteConfig?.contactDescription ||
-                "ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න. ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු."}
-            </p>
+            <h2>{contactHeading}</h2>
+            <p>{contactDescription}</p>
           </div>
 
           <div className="premium-contact-layout">
@@ -665,7 +663,7 @@ export function HomePage() {
               <div className="premium-contact-intro">
                 <img className="premium-contact-logo" src="/assets/sgl-logo.png" alt="SGL Catering" />
                 <h3>SGL කේටරින් සර්විස්</h3>
-                <p>{homepageTagline}</p>
+                <p>{brandTagline}</p>
               </div>
 
               <div className="premium-contact-cards">

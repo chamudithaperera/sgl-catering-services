@@ -30,16 +30,6 @@ import {
 import { api } from "../lib/api";
 
 const siteConfigForm = {
-  companyName: "",
-  heroBadge: "",
-  heroTitleLineOne: "",
-  heroTitleLineTwo: "",
-  heroDescription: "",
-  aboutHeading: "",
-  aboutIntro: "",
-  aboutBody: "",
-  contactHeading: "",
-  contactDescription: "",
   phone: "",
   whatsapp: "",
   email: "",
@@ -70,7 +60,6 @@ const resourceConfigs = [
       { name: "instagramUrl", label: "Instagram URL" },
     ],
     columns: [
-      { name: "companyName", label: "Company" },
       { name: "phone", label: "Phone" },
       { name: "email", label: "Email" },
     ],
@@ -884,7 +873,7 @@ export function AdminPage() {
         <div className="sgla-contact-hero">
           <div>
             <p>Contact Profile</p>
-            <h2>{contact.companyName || "SGL Catering Services"}</h2>
+            <h2>SGL Catering Services</h2>
             <span>{contact.email || "No email added"}</span>
           </div>
           <button className="sgla-primary-button" onClick={() => setContactEditing(true)} type="button">

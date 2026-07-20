@@ -9,28 +9,7 @@ function textLines(value) {
         .filter(Boolean);
 }
 
-function withFallback(fallback) {
-  return z
-    .string()
-    .optional()
-    .transform((value) => {
-      const trimmedValue = String(value || "").trim();
-      return trimmedValue || fallback;
-    });
-}
-
 const siteConfigSchema = z.object({
-  companyName: withFallback("SGL Catering Services"),
-  heroBadge: withFallback("Rajarata Symbol of Sri Lankan Traditional Food Art........."),
-  heroDescription: withFallback(
-    "විවාහ උත්සව, උපන්දින සාද, ආයතනික උත්සව සහ ඔබගේ සෑම විශේෂ අවස්ථාවක් සඳහාම රසවත්, පිරිසිදු සහ උසස් තත්ත්වයේ ආහාර සේවාවක් අපි ලබා දෙන්නෙමු.",
-  ),
-  aboutHeading: withFallback("SGL කේටරින් සර්විස් යනු:"),
-  aboutBody: withFallback(
-    "අපගේ අරමුණ වන්නේ ඔබේ අවස්ථාවට ගැළපෙන පිරිසිදු, රසවත් සහ විශ්වාසදායක catering සේවාවක් ලබාදීමයි.",
-  ),
-  contactHeading: withFallback("අප අමතන්න"),
-  contactDescription: withFallback("ඔබගේ උත්සවය ගැන අපට දැනුම් දෙන්න. අපි ඉක්මනින් සම්බන්ධ වෙන්නම්."),
   phone: z.string().min(2),
   whatsapp: z.string().min(2),
   email: z.string().email(),

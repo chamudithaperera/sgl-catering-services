@@ -36,24 +36,17 @@ model Message {
 }
 
 model ContactDetails {
-  id                 Int      @id
-  companyName        String   @map("company_name")
-  heroBadge          String   @map("hero_badge")
-  heroDescription    String   @map("hero_description") @db.Text
-  aboutHeading       String   @map("about_heading")
-  aboutBody          String   @map("about_body") @db.Text
-  contactHeading     String   @map("contact_heading")
-  contactDescription String   @map("contact_description") @db.Text
-  phone              String
-  whatsapp           String
-  email              String
-  address            String
-  businessHours      String   @map("business_hours")
-  mapUrl             String   @map("map_url")
-  facebookUrl        String   @map("facebook_url")
-  instagramUrl       String   @map("instagram_url")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+  id            Int      @id
+  phone         String
+  whatsapp      String
+  email         String
+  address       String
+  businessHours String   @map("business_hours")
+  mapUrl        String   @map("map_url")
+  facebookUrl   String   @map("facebook_url")
+  instagramUrl  String   @map("instagram_url")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("contact_details")
 }

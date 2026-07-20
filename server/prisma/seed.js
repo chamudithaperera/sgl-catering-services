@@ -4,16 +4,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const contactDetails = {
-  companyName: "SGL Catering Services",
-  heroBadge: "Rajarata Symbol of Sri Lankan Traditional Food Art.........",
-  heroDescription:
-    "විවාහ උත්සව, උපන්දින සාද, ආයතනික උත්සව සහ ඔබගේ සෑම විශේෂ අවස්ථාවක් සඳහාම රසවත්, පිරිසිදු සහ උසස් තත්ත්වයේ ආහාර සේවාවක් අපි ලබා දෙන්නෙමු.",
-  aboutHeading: "SGL කේටරින් සර්විස් යනු:",
-  aboutBody:
-    "කුඩා පවුල් උත්සවයක සිට විශාල විවාහ උත්සවයක් දක්වා ඔබගේ අවශ්‍යතාවයට ගැළපෙන catering සේවාවක් අපි සපයන්නෙමු. ටෙන්ට්, පුටු, මේස, බුෆේ සෙට් සහ අනෙකුත් උත්සව උපකරණ පහසු මිලට කුලියට ලබාදීමද අපගේ සේවාවන් අතරට ඇතුළත් වේ.",
-  contactHeading: "අප අමතන්න",
-  contactDescription:
-    "ඔබගේ උත්සවයේ දිනය, ස්ථානය, අමුත්තන්ගේ සංඛ්‍යාව සහ අවශ්‍ය සේවාවන් පිළිබඳ අපට දැනුම් දෙන්න. ඔබට ගැළපෙන හොඳම සේවාව සහ මිල ගණන් අපි ලබා දෙන්නෙමු.",
   phone: "+94703324500",
   whatsapp: "+94703324500",
   email: "sudathjayathilakabs@gmail.com",
