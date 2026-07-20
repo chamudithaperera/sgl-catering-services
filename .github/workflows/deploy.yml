@@ -94,7 +94,7 @@ jobs:
           cd "$APP_ROOT"
           npm install --include=dev
           npx prisma generate
-          npx prisma db push
+          npx prisma db push --accept-data-loss
           touch tmp/restart.txt
 
           rm -f "/home/$CPANEL_USER/frontend.tar.gz" "/home/$CPANEL_USER/server.tar.gz"
