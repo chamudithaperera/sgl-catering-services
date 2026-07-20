@@ -779,12 +779,12 @@
 
 @media (max-width: 1120px) {
   .service-page-topbar {
+    grid-template-columns: 1fr auto;
     gap: 10px;
   }
 
-  .service-page-primary-nav a {
-    padding-inline: 12px;
-    font-size: 0.86rem;
+  .service-page-primary-nav {
+    display: none;
   }
 
   .service-category-grid {
@@ -823,14 +823,6 @@
 }
 
 @media (max-width: 900px) {
-  .service-page-topbar {
-    grid-template-columns: 1fr auto;
-  }
-
-  .service-page-primary-nav {
-    display: none;
-  }
-
   .service-menu-grid,
   .service-bundle-grid,
   .service-category-grid {
