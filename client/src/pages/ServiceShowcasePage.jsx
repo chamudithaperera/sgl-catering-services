@@ -49,6 +49,8 @@ function SectionHead({ eyebrow, title, description, light = false, center = fals
 }
 
 function PackageCard({ item }) {
+  const includedItems = item.includedItems || [];
+
   return (
     <article className={`service-package-card${item.featured ? " is-featured" : ""}`}>
       <div className="service-package-card-head">
@@ -62,7 +64,7 @@ function PackageCard({ item }) {
       <p>{item.summary}</p>
 
       <ul className="service-package-card-list">
-        {item.includedItems.map((includedItem) => (
+        {includedItems.map((includedItem) => (
           <li key={includedItem}>
             <Check size={16} />
             <span>{includedItem}</span>
@@ -108,6 +110,21 @@ function CateringSections({ page }) {
   useEffect(() => {
     setActiveCategoryId(page.categories[0]?.id ?? "");
   }, [page]);
+
+  if (page.categories.length === 0) {
+    return (
+      <section className="service-band service-band-dark" id="categories">
+        <div className="service-page-shell">
+          <SectionHead
+            eyebrow={page.overview.eyebrow}
+            title={page.overview.title}
+            description={page.overview.description}
+            center
+          />
+        </div>
+      </section>
+    );
+  }
 
   const activeCategoryIndex = Math.max(
     0,
@@ -271,11 +288,9 @@ function RentingSections({ page }) {
 }
 
 function buildManagedCateringPage(page, content) {
-  if (!content?.cateringCategories?.length) {
-    return page;
-  }
-
-  const categories = content.cateringCategories.map((category) => ({
+  const cateringCategories = content?.cateringCategories || [];
+  const foodPackages = content?.foodPackages || [];
+  const categories = cateringCategories.map((category) => ({
     id: String(category.id),
     title: category.title,
     shortLabel: category.shortLabel,
@@ -283,7 +298,7 @@ function buildManagedCateringPage(page, content) {
     image: category.imageUrl,
     description: category.description,
     highlights: category.highlights?.length ? category.highlights : ["අවස්ථාවට ගැළපෙන මෙනු", "අයවැය අනුව සැකසුම්"],
-    packages: (content.foodPackages || [])
+    packages: foodPackages
       .filter((item) => item.categoryId === category.id)
       .map((item) => ({
         name: item.name,
@@ -300,7 +315,7 @@ function buildManagedCateringPage(page, content) {
       { label: "උත්සව කාණ්ඩ", value: String(categories.length).padStart(2, "0"), note: "අවස්ථා වර්ග" },
       {
         label: "මෙනු තේරීම්",
-        value: `${(content.foodPackages || []).length}+`,
+        value: `${foodPackages.length}+`,
         note: "විවිධ මෙනු",
       },
       page.heroStats[2],
@@ -310,13 +325,9 @@ function buildManagedCateringPage(page, content) {
 }
 
 function buildManagedRentalPage(page, content) {
-  const hasRentalContent = content?.rentalItems?.length || content?.rentalPackages?.length;
-
-  if (!hasRentalContent) {
-    return page;
-  }
-
-  const groupedItems = (content.rentalItems || []).reduce((groups, item) => {
+  const rentalItems = content?.rentalItems || [];
+  const rentalPackages = content?.rentalPackages || [];
+  const groupedItems = rentalItems.reduce((groups, item) => {
     const category = item.category || "Rental Items";
     groups[category] = groups[category] || [];
     groups[category].push({
@@ -332,11 +343,11 @@ function buildManagedRentalPage(page, content) {
   return {
     ...page,
     heroStats: [
-      { label: "කුලී පැකේජ", value: String((content.rentalPackages || []).length).padStart(2, "0"), note: "සූදානම් පැකේජ" },
-      { label: "භාණ්ඩ වර්ග", value: `${(content.rentalItems || []).length}+`, note: "තේරීම් රැසක්" },
+      { label: "කුලී පැකේජ", value: String(rentalPackages.length).padStart(2, "0"), note: "සූදානම් පැකේජ" },
+      { label: "භාණ්ඩ වර්ග", value: `${rentalItems.length}+`, note: "තේරීම් රැසක්" },
       page.heroStats[2],
     ],
-    packages: (content.rentalPackages || []).map((item) => ({
+    packages: rentalPackages.map((item) => ({
       name: item.name,
       summary: item.summary,
       priceLabel: item.priceLabel,
@@ -387,9 +398,36 @@ function ContactBand({ page, anchorId }) {
   );
 }
 
+function buildEmptyManagedPage(page) {
+  return page.type === "catering"
+    ? {
+        ...page,
+        heroStats: [
+          { label: "උත්සව කාණ්ඩ", value: "00", note: "අවස්ථා වර්ග" },
+          { label: "මෙනු තේරීම්", value: "0+", note: "විවිධ මෙනු" },
+          page.heroStats[2],
+        ],
+        categories: [],
+      }
+    : {
+        ...page,
+        heroStats: [
+          { label: "කුලී පැකේජ", value: "00", note: "සූදානම් පැකේජ" },
+          { label: "භාණ්ඩ වර්ග", value: "0+", note: "තේරීම් රැසක්" },
+          page.heroStats[2],
+        ],
+        packages: [],
+        itemGroups: [],
+      };
+}
+
 export function ServiceShowcasePage({ page }) {
-  const [managedPage, setManagedPage] = useState(page);
+  const [managedPage, setManagedPage] = useState(() => buildEmptyManagedPage(page));
   const anchorId = managedPage.type === "catering" ? "consultation" : "booking";
+
+  useEffect(() => {
+    setManagedPage(buildEmptyManagedPage(page));
+  }, [page]);
 
   useEffect(() => {
     let ignore = false;

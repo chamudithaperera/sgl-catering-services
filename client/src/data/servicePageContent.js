@@ -1,4 +1,4 @@
-// Dummy content until the service detail pages are connected to admin-managed data.
+// Static page shell copy. Cards and record lists are loaded from the API.
 export const servicePageContent = {
   catering: {
     type: "catering",

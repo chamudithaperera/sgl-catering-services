@@ -79,211 +79,6 @@ const serviceItems = [
   },
 ];
 
-const galleryItems = [
-  {
-    title: "විශේෂ බෆේ සැකසුම්",
-    image: "/assets/sgl-images/hero-buffet.jpg",
-    layout: "hero",
-    position: "center center",
-  },
-  {
-    title: "ග්‍රිල් බෆේ අයිතම",
-    image: "/assets/sgl-images/grill-buffet.jpg",
-    layout: "portrait",
-    position: "center center",
-  },
-  {
-    title: "සැලඩ් ස්ටේෂන්",
-    image: "/assets/sgl-images/salad-station.jpg",
-    layout: "compact",
-    position: "center 42%",
-  },
-  {
-    title: "රසකැවිලි මේසය",
-    image: "/assets/sgl-images/traditional-sweets.jpg",
-    layout: "compact",
-    position: "center center",
-  },
-  {
-    title: "ප්‍රධාන ආහාර තේරීම්",
-    image: "/assets/sgl-images/rice-plate.jpg",
-    layout: "square",
-    position: "center center",
-  },
-  {
-    title: "උත්සව භෝජන සැකසුම",
-    image: "/assets/sgl-images/indoor-buffet.jpg",
-    layout: "landscape",
-    position: "center 42%",
-  },
-  {
-    title: "සැලඩ් බෆේ සැකසුම්",
-    image: "/assets/sgl-images/salad-buffet.jpg",
-    layout: "landscape",
-    position: "center center",
-  },
-  {
-    title: "කැරට් සම්බෝලය",
-    image: "/assets/sgl-images/carrot-sambol.jpg",
-    layout: "compact",
-    position: "center 44%",
-  },
-  {
-    title: "අලංකාර අතුරුපද විශේෂය",
-    image: "/assets/sgl-images/devilled-side.jpg",
-    layout: "portrait",
-    position: "center center",
-  },
-  {
-    title: "බෆේ පිළිගැන්වීම්",
-    image: "/assets/hero-buffet.jpg",
-    layout: "compact",
-    position: "22% center",
-  },
-  {
-    title: "කරි හා අතුරු අයිතම",
-    image: "/assets/sgl-images/curry-selection.jpg",
-    layout: "compact",
-    position: "34% center",
-  },
-  {
-    title: "සැලඩ් සේවනාංග",
-    image: "/assets/sgl-images/salad-station.jpg",
-    layout: "square",
-    position: "center 24%",
-  },
-  {
-    title: "බත් සහ අතුරු තේරීම්",
-    image: "/assets/sgl-images/rice-plate.jpg",
-    layout: "compact",
-    position: "center 58%",
-  },
-  {
-    title: "ග්‍රිල් මේස සැකසුම",
-    image: "/assets/sgl-images/grill-buffet.jpg",
-    layout: "compact",
-    position: "68% center",
-  },
-  {
-    title: "උත්සව සූදානම් කිරීම",
-    image: "/assets/sgl-images/indoor-buffet.jpg",
-    layout: "square",
-    position: "78% center",
-  },
-  {
-    title: "අතුරුපද සැරසිලි",
-    image: "/assets/sgl-images/devilled-side.jpg",
-    layout: "compact",
-    position: "54% center",
-  },
-  {
-    title: "රසකැවිලි තෝරාගැනීම",
-    image: "/assets/sgl-images/traditional-sweets.jpg",
-    layout: "compact",
-    position: "center 44%",
-  },
-  {
-    title: "සම්පූර්ණ බෆේ අත්දැකීම",
-    image: "/assets/sgl-images/salad-buffet.jpg",
-    layout: "landscape",
-    position: "center 68%",
-  },
-];
-
-const reviewItems = [
-  {
-    name: "සචිනි සහ දිනේෂ්",
-    event: "මංගල උත්සවය",
-    score: "5.0",
-    quote:
-      "අපේ මංගල උත්සවයට ආහාරයේ රස, සේවයේ පිළිවෙළ සහ කාර්ය මණ්ඩලයේ වෘත්තීයභාවය අප බලාපොරොත්තු වූ දේටත් වඩා ඉහළ මට්ටමේ තිබුණා. ආරාධිතයෝ හැමෝම විශේෂයෙන් ආහාර ගැනම කතා කළා.",
-  },
-  {
-    name: "දිනුකා ප්‍රනාන්දු",
-    event: "ආයතනික හමුවීම",
-    score: "5.0",
-    quote:
-      "ආයතනික වැඩසටහන සඳහා ලබාදුන් ආහාර හා සැකසුම් සේවාව ඉතා සංවිධානාත්මකව සිදු වුණා. වේලාවට සැපයීම, පිරිසිදුභාවය සහ පිළිගැන්වීම නිසා අපගේ ආරාධිතයින්ට ඉතා හොඳ අත්දැකීමක් ලැබුණා.",
-  },
-  {
-    name: "අමල්කා ජයසිංහ",
-    event: "දාන පිංකම",
-    score: "5.0",
-    quote:
-      "දාන පිංකමට අවශ්‍ය ආහාර සහ භාණ්ඩ එකම ස්ථානයකින් ලැබුණු නිසා අපට සැලසුම් කිරීම බොහෝ පහසු වුණා. රසවත් ආහාරත්, ගෞරවනීය සේවාවත් නිසා පවුලේ හැමෝම ඉතා සතුටු වුණා.",
-  },
-  {
-    name: "නිල්මිණි සහ අකිල",
-    event: "ගිවිස ගැනීමේ උත්සවය",
-    score: "5.0",
-    quote:
-      "අපගේ ගිවිස ගැනීමේ උත්සවය සඳහා සකස් කළ මෙනුව ඉතා අලංකාරව සහ රසවත් ලෙස ඉදිරිපත් කළා. ආරාධිතයින්ට සුවපහසු සේවාවක් ලබාදීමට කණ්ඩායම දැක්වූ කැපවීම විශේෂයෙන්ම ගණන්ගන්න වටිනවා.",
-  },
-  {
-    name: "චතුරංග පෙරේරා",
-    event: "ආයතනික සම්මන්ත්‍රණය",
-    score: "5.0",
-    quote:
-      "වෘත්තීයමය සැකසුම, වේලාවට සේවය සහ පිරිසිදුභාවය නිසා අපගේ සම්මන්ත්‍රණ දිනය ඉතා සාර්ථක වුණා. සභාගත වූ අමුත්තන්ගෙන් ආහාරයේ ගුණාත්මකභාවය ගැන හොඳ ප්‍රතිචාර ලැබුණා.",
-  },
-  {
-    name: "හර්ෂනී ද සිල්වා",
-    event: "නිවසේ සැමරුම",
-    score: "5.0",
-    quote:
-      "නිවසේ පැවැත්වූ පවුල් සැමරුමට ගැළපෙන ලෙස සරලත් අලංකාරත් සේවාවක් ලබාදුන්නා. රසය, පිළිවෙළ සහ කාර්ය මණ්ඩලයේ සුහදත්වය නිසා අපට කිසිඳු කනස්සල්ලක් නොමැතිව අමුත්තන් සමඟ කාලය ගත කළා.",
-  },
-  {
-    name: "සංජීව කුමාර",
-    event: "නිවාස ප්‍රවේශය",
-    score: "5.0",
-    quote:
-      "නිවාස ප්‍රවේශ උත්සවයට අවශ්‍ය ආහාර හා භාණ්ඩ දෙකම එකම ස්ථානයකින් ලැබුණු එක අපට ලොකු පහසුවක් වුණා. සැපයීමේ වේලාව, භාණ්ඩවල තත්ත්වය සහ සේවාව සියල්ලම ඉතාමත් සතුටුදායකයි.",
-  },
-  {
-    name: "මධුෂානි සහ තරිඳු",
-    event: "උපන්දින උත්සවය",
-    score: "5.0",
-    quote:
-      "උපන්දින උත්සවය සඳහා සකස් කළ බෆේ සැකසුම සහ රසවත් මෙනුව නිසා අවස්ථාවට ඉතා සුන්දර පෙනුමක් ලැබුණා. කුඩා විස්තර පවා සැලකිල්ලට ගෙන වැඩ කළ ආකාරය අපට බොහෝ වටිනවා.",
-  },
-  {
-    name: "රුවන් ජයවර්ධන",
-    event: "වාර්ෂික සමාගම් උත්සවය",
-    score: "5.0",
-    quote:
-      "අපගේ වාර්ෂික සමාගම් උත්සවයට අමුත්තන් විශාල ප්‍රමාණයක් සහභාගී වුණත් සේවාව කිසිම වෙලාවක අඩුවුණේ නැහැ. විශිෂ්ට සංවිධානය සහ පරිපූර්ණ ආහාර සැපයීම නිසා මේ සේවාව නැවතත් තෝරාගන්න අපි තීරණය කළා.",
-  },
-  {
-    name: "සඳුනි රත්නායක",
-    event: "සාදය",
-    score: "5.0",
-    quote:
-      "අමුත්තන්ගේ රුචිකත්වය හඳුනාගෙන මෙනුව සකස් කළ ආකාරය අපට ඉතා කැමතියි. සෞඛ්‍යාරක්ෂිත පිළිවෙත් සහ අලංකාර පිළිගැන්වීම එකට තිබුණු නිසා අවස්ථාව පුරාම උසස්ම හැඟීමක් ලැබුණා.",
-  },
-  {
-    name: "තිලිණි අබේරත්න",
-    event: "අවුරුදු උත්සවය",
-    score: "5.0",
-    quote:
-      "අවුරුදු උත්සවයට අවශ්‍ය සම්ප්‍රදායික රසයන් නවීන අලංකාරයකින් ඉදිරිපත් කළා. විශේෂයෙන් අතුරුපස සහ සේවනාංග සැකසුම ගැන පවුලේ හැමෝම ඉතාමත් ප්‍රශංසා කළා.",
-  },
-  {
-    name: "කවිඳු සහ නෙත්මි",
-    event: "පූර්ව මංගල සාදය",
-    score: "5.0",
-    quote:
-      "පූර්ව මංගල සාදය සඳහා අවශ්‍ය පරිසරය නිර්මාණය කරන්න ආහාර සැකසුමත් භාණ්ඩත් බොහෝ දුරට උපකාරී වුණා. අපේ අදහස් වලට ගරු කරලා ගැළපෙන විසඳුම් ලබාදුන් නිසා ප්‍රතිඵලය අප බලාපොරොත්තු වූ දේට වඩා හොඳයි.",
-  },
-  {
-    name: "ඉෂාරා ගුණසේකර",
-    event: "දායකත්ව හමුවීම",
-    score: "5.0",
-    quote:
-      "අමුත්තන් පිළිගැනීමේ සිට ආහාර අවසන් වනතුරුම සේවාව ඉතාමත් පිළිවෙළින් කළා. ගුණාත්මක ආහාර, නිසි පිරිසිදුකම සහ වෘත්තීයභාවය එකට ලැබුණු නිසා මෙය විශ්වාසයෙන් නිර්දේශ කළ හැකි සේවාවක්.",
-  },
-];
-
 function useActivateOnIntersect(targetRef, { rootMargin = "240px 0px", threshold = 0.08 } = {}) {
   const [isActive, setIsActive] = useState(false);
 
@@ -412,24 +207,18 @@ export function HomePage() {
 
   const siteConfig = content?.siteConfig;
   const homepageServices = serviceItems;
-  const homepageGallery =
-    content?.gallery?.length > 0
-      ? content.gallery.map((item, index) => ({
-          title: item.title,
-          image: item.imageUrl,
-          layout: ["hero", "portrait", "compact", "square", "landscape"][index % 5],
-          position: "center center",
-        }))
-      : galleryItems;
-  const homepageReviews =
-    content?.reviews?.length > 0
-      ? content.reviews.map((review) => ({
-          name: review.customerName,
-          event: review.eventType,
-          score: Number(review.rating || 5).toFixed(1),
-          quote: review.quote,
-        }))
-      : reviewItems;
+  const homepageGallery = (content?.gallery || []).map((item, index) => ({
+    title: item.title,
+    image: item.imageUrl,
+    layout: ["hero", "portrait", "compact", "square", "landscape"][index % 5],
+    position: "center center",
+  }));
+  const homepageReviews = (content?.reviews || []).map((review) => ({
+    name: review.customerName,
+    event: review.eventType,
+    score: Number(review.rating || 5).toFixed(1),
+    quote: review.quote,
+  }));
   const homepagePhone = siteConfig?.phone || contactPhone;
   const homepagePhoneLabel = siteConfig?.phone || contactPhoneLabel;
   const homepageEmail = siteConfig?.email || contactEmail;
@@ -471,7 +260,7 @@ export function HomePage() {
   }, [activeSlide]);
 
   useEffect(() => {
-    if (activeReview >= homepageReviews.length) {
+    if (homepageReviews.length > 0 && activeReview >= homepageReviews.length) {
       setActiveReview(0);
     }
   }, [activeReview, homepageReviews.length]);
@@ -515,10 +304,12 @@ export function HomePage() {
   }
 
   function showPreviousReview() {
+    if (homepageReviews.length === 0) return;
     setActiveReview((currentReview) => (currentReview === 0 ? homepageReviews.length - 1 : currentReview - 1));
   }
 
   function showNextReview() {
+    if (homepageReviews.length === 0) return;
     setActiveReview((currentReview) => (currentReview + 1) % homepageReviews.length);
   }
 
@@ -555,8 +346,8 @@ export function HomePage() {
     }
   }
 
-  const previousReviewIndex = activeReview === 0 ? homepageReviews.length - 1 : activeReview - 1;
-  const nextReviewIndex = (activeReview + 1) % homepageReviews.length;
+  const previousReviewIndex = homepageReviews.length > 0 ? (activeReview === 0 ? homepageReviews.length - 1 : activeReview - 1) : 0;
+  const nextReviewIndex = homepageReviews.length > 0 ? (activeReview + 1) % homepageReviews.length : 0;
 
   function getInitials(name) {
     return name
@@ -736,123 +527,127 @@ export function HomePage() {
         </div>
       </section>
 
-      <section ref={gallerySectionRef} className="premium-gallery" id="gallery">
-        <div className="premium-gallery-background" aria-hidden="true">
-          <video
-            ref={galleryVideoRef}
-            className="premium-gallery-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            disablePictureInPicture
-            disableRemotePlayback
-          >
-            {isGalleryVideoActive ? (
-              <source src="/assets/sgl-videos/gallery-background.mp4?v=3" type="video/mp4" />
-            ) : null}
-          </video>
-          <div className="premium-gallery-veil" />
-        </div>
-
-        <div className="premium-gallery-shell">
-          <div className="premium-gallery-heading premium-reveal premium-reveal-heading" data-reveal>
-            <span>Curated Event Moments</span>
-            <h2>ඡායාරූප</h2>
-            <p>
-              අප විසින් සකස් කළ උත්සව භෝජන සැකසුම්, රසවත් ආහාර තේරීම් සහ අලංකාර සේවා අවස්ථා අතරින්
-              තෝරාගත් රූප කිහිපයක් මෙහි නරඹන්න.
-            </p>
+      {homepageGallery.length > 0 ? (
+        <section ref={gallerySectionRef} className="premium-gallery" id="gallery">
+          <div className="premium-gallery-background" aria-hidden="true">
+            <video
+              ref={galleryVideoRef}
+              className="premium-gallery-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              disablePictureInPicture
+              disableRemotePlayback
+            >
+              {isGalleryVideoActive ? (
+                <source src="/assets/sgl-videos/gallery-background.mp4?v=3" type="video/mp4" />
+              ) : null}
+            </video>
+            <div className="premium-gallery-veil" />
           </div>
 
-          <div className="premium-gallery-grid">
-            {homepageGallery.map((item) => (
-              <article
-                key={item.title}
-                className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
-                data-reveal
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  decoding="async"
-                  fetchPriority="low"
-                  style={{ objectPosition: item.position }}
-                />
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="premium-reviews" id="reviews">
-        <div className="premium-reviews-shell">
-          <div className="premium-reviews-heading premium-reveal premium-reveal-heading" data-reveal>
-            <span>Client Testimonials</span>
-            <h2>පාරිභෝගික අදහස්</h2>
-            <p>
-              අපගේ සේවාවන් භාවිතා කළ පාරිභෝගිකයින්ගේ අත්දැකීම් අතරින් තෝරාගත් අදහස් කිහිපයක් මෙහි
-              නරඹන්න.
-            </p>
-          </div>
-
-          <div className="premium-reviews-stage premium-reveal premium-reveal-review" data-reveal>
-            <div className="premium-reviews-carousel">
-              {homepageReviews.map((review, index) => {
-                let positionClass = "is-hidden";
-
-                if (index === activeReview) {
-                  positionClass = "is-active";
-                } else if (index === previousReviewIndex) {
-                  positionClass = "is-previous";
-                } else if (index === nextReviewIndex) {
-                  positionClass = "is-next";
-                }
-
-                return (
-                  <article key={review.name} className={`premium-review-card ${positionClass}`}>
-                    <div className="premium-review-rating" aria-hidden="true">
-                      <span className="premium-review-stars">★★★★★</span>
-                      <strong>{review.score}</strong>
-                    </div>
-
-                    <p>{review.quote}</p>
-
-                    <div className="premium-review-meta">
-                      <div className="premium-review-avatar" aria-hidden="true">
-                        {getInitials(review.name)}
-                      </div>
-
-                      <div className="premium-review-meta-copy">
-                        <strong>{review.name}</strong>
-                        <span>{review.event}</span>
-                      </div>
-                    </div>
-
-                    <span className="premium-review-quote-mark" aria-hidden="true">
-                      “
-                    </span>
-                  </article>
-                );
-              })}
+          <div className="premium-gallery-shell">
+            <div className="premium-gallery-heading premium-reveal premium-reveal-heading" data-reveal>
+              <span>Curated Event Moments</span>
+              <h2>ඡායාරූප</h2>
+              <p>
+                අප විසින් සකස් කළ උත්සව භෝජන සැකසුම්, රසවත් ආහාර තේරීම් සහ අලංකාර සේවා අවස්ථා අතරින්
+                තෝරාගත් රූප කිහිපයක් මෙහි නරඹන්න.
+              </p>
             </div>
 
-            <div className="premium-reviews-controls">
-              <button type="button" className="premium-review-arrow" aria-label="Previous review" onClick={showPreviousReview}>
-                <ChevronLeft size={20} />
-              </button>
-
-              <span className="premium-review-count">{`${String(activeReview + 1).padStart(2, "0")} / ${String(homepageReviews.length).padStart(2, "0")}`}</span>
-
-              <button type="button" className="premium-review-arrow is-active" aria-label="Next review" onClick={showNextReview}>
-                <ChevronRight size={20} />
-              </button>
+            <div className="premium-gallery-grid">
+              {homepageGallery.map((item) => (
+                <article
+                  key={item.title}
+                  className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
+                  data-reveal
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
+                    style={{ objectPosition: item.position }}
+                  />
+                </article>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
+
+      {homepageReviews.length > 0 ? (
+        <section className="premium-reviews" id="reviews">
+          <div className="premium-reviews-shell">
+            <div className="premium-reviews-heading premium-reveal premium-reveal-heading" data-reveal>
+              <span>Client Testimonials</span>
+              <h2>පාරිභෝගික අදහස්</h2>
+              <p>
+                අපගේ සේවාවන් භාවිතා කළ පාරිභෝගිකයින්ගේ අත්දැකීම් අතරින් තෝරාගත් අදහස් කිහිපයක් මෙහි
+                නරඹන්න.
+              </p>
+            </div>
+
+            <div className="premium-reviews-stage premium-reveal premium-reveal-review" data-reveal>
+              <div className="premium-reviews-carousel">
+                {homepageReviews.map((review, index) => {
+                  let positionClass = "is-hidden";
+
+                  if (index === activeReview) {
+                    positionClass = "is-active";
+                  } else if (index === previousReviewIndex) {
+                    positionClass = "is-previous";
+                  } else if (index === nextReviewIndex) {
+                    positionClass = "is-next";
+                  }
+
+                  return (
+                    <article key={review.name} className={`premium-review-card ${positionClass}`}>
+                      <div className="premium-review-rating" aria-hidden="true">
+                        <span className="premium-review-stars">★★★★★</span>
+                        <strong>{review.score}</strong>
+                      </div>
+
+                      <p>{review.quote}</p>
+
+                      <div className="premium-review-meta">
+                        <div className="premium-review-avatar" aria-hidden="true">
+                          {getInitials(review.name)}
+                        </div>
+
+                        <div className="premium-review-meta-copy">
+                          <strong>{review.name}</strong>
+                          <span>{review.event}</span>
+                        </div>
+                      </div>
+
+                      <span className="premium-review-quote-mark" aria-hidden="true">
+                        “
+                      </span>
+                    </article>
+                  );
+                })}
+              </div>
+
+              <div className="premium-reviews-controls">
+                <button type="button" className="premium-review-arrow" aria-label="Previous review" onClick={showPreviousReview}>
+                  <ChevronLeft size={20} />
+                </button>
+
+                <span className="premium-review-count">{`${String(activeReview + 1).padStart(2, "0")} / ${String(homepageReviews.length).padStart(2, "0")}`}</span>
+
+                <button type="button" className="premium-review-arrow is-active" aria-label="Next review" onClick={showNextReview}>
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="premium-contact" id="contact">
         <div className="premium-contact-shell">
