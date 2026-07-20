@@ -190,7 +190,9 @@ export function HomePage() {
   const [contactStatus, setContactStatus] = useState("");
   const [contactStatusType, setContactStatusType] = useState("success");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0, 1]));
+  const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0]));
+  const [galleryVideoReady, setGalleryVideoReady] = useState(false);
+  const gallerySectionRef = useRef(null);
   const galleryVideoRef = useRef(null);
 
   const siteConfig = content?.siteConfig;
@@ -220,11 +222,11 @@ export function HomePage() {
     ? { href: homepageFacebookUrl, target: "_blank", rel: "noreferrer" }
     : { href: "#contact" };
 
-  useAutoplayVideo(galleryVideoRef, true);
+  useAutoplayVideo(galleryVideoRef, galleryVideoReady);
 
   useEffect(() => {
     api
-      .get("/public/content")
+      .get("/public/home")
       .then((response) => setContent(response.data))
       .catch((error) => {
         console.error(error);
@@ -241,18 +243,46 @@ export function HomePage() {
 
   useEffect(() => {
     const upcomingSlide = (activeSlide + 1) % heroSlides.length;
+    const preloadDelay = window.setTimeout(() => {
+      setLoadedHeroSlides((currentSlides) => {
+        if (currentSlides.has(activeSlide) && currentSlides.has(upcomingSlide)) {
+          return currentSlides;
+        }
 
-    setLoadedHeroSlides((currentSlides) => {
-      if (currentSlides.has(activeSlide) && currentSlides.has(upcomingSlide)) {
-        return currentSlides;
-      }
+        const nextSlides = new Set(currentSlides);
+        nextSlides.add(activeSlide);
+        nextSlides.add(upcomingSlide);
+        return nextSlides;
+      });
+    }, 1400);
 
-      const nextSlides = new Set(currentSlides);
-      nextSlides.add(activeSlide);
-      nextSlides.add(upcomingSlide);
-      return nextSlides;
-    });
+    return () => window.clearTimeout(preloadDelay);
   }, [activeSlide]);
+
+  useEffect(() => {
+    const gallerySection = gallerySectionRef.current;
+
+    if (!gallerySection || galleryVideoReady) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setGalleryVideoReady(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: "700px 0px",
+        threshold: 0.01,
+      }
+    );
+
+    observer.observe(gallerySection);
+
+    return () => observer.disconnect();
+  }, [galleryVideoReady]);
 
   useEffect(() => {
     if (homepageReviews.length > 0 && activeReview >= homepageReviews.length) {
@@ -335,6 +365,15 @@ export function HomePage() {
   }, [content, homepageGallery.length, homepageReviews.length]);
 
   function selectSlide(slideIndex) {
+    setLoadedHeroSlides((currentSlides) => {
+      if (currentSlides.has(slideIndex)) {
+        return currentSlides;
+      }
+
+      const nextSlides = new Set(currentSlides);
+      nextSlides.add(slideIndex);
+      return nextSlides;
+    });
     setActiveSlide(slideIndex);
     setMenuOpen(false);
   }
@@ -576,7 +615,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="premium-gallery" id="gallery">
+      <section className="premium-gallery" id="gallery" ref={gallerySectionRef}>
         <div className="premium-gallery-background" aria-hidden="true">
           <video
             ref={galleryVideoRef}
@@ -585,12 +624,12 @@ export function HomePage() {
             muted
             loop
             playsInline
-            preload="auto"
+            preload={galleryVideoReady ? "metadata" : "none"}
             poster={galleryBackgroundPoster}
             disablePictureInPicture
             disableRemotePlayback
           >
-            <source src={galleryBackgroundVideo} type="video/mp4" />
+            {galleryVideoReady ? <source src={galleryBackgroundVideo} type="video/mp4" /> : null}
           </video>
           <div className="premium-gallery-veil" />
         </div>

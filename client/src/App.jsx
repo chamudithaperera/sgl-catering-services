@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import { FloatingContact } from "./components/FloatingContact";
-import { servicePageContent } from "./data/servicePageContent";
-import { AdminPage } from "./pages/AdminPage";
 import { HomePage } from "./pages/HomePage";
-import { ServiceShowcasePage } from "./pages/ServiceShowcasePage";
+
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+const CateringPage = lazy(() => import("./pages/CateringPage"));
+const RentingPage = lazy(() => import("./pages/RentingPage"));
 
 function App() {
   const location = useLocation();
@@ -19,9 +20,30 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/catering" element={<ServiceShowcasePage page={servicePageContent.catering} />} />
-        <Route path="/renting" element={<ServiceShowcasePage page={servicePageContent.renting} />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route
+          path="/catering"
+          element={
+            <Suspense fallback={null}>
+              <CateringPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/renting"
+          element={
+            <Suspense fallback={null}>
+              <RentingPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <Suspense fallback={null}>
+              <AdminPage />
+            </Suspense>
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       {!isAdminRoute ? <FloatingContact /> : null}

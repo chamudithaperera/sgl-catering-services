@@ -8,6 +8,21 @@ router.get("/health", (request, response) => {
   response.json({ ok: true });
 });
 
+router.get("/home", async (request, response) => {
+  const [contactDetails, gallery, reviews] = await Promise.all([
+    prisma.contactDetails.findUnique({ where: { id: 1 } }),
+    prisma.gallery.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
+  ]);
+
+  response.json({
+    siteConfig: contactDetails,
+    contactDetails,
+    gallery,
+    reviews,
+  });
+});
+
 router.get("/content", async (request, response) => {
   const [
     contactDetails,
