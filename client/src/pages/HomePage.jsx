@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Mail, MapPin, Menu, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import galleryBackgroundPoster from "../assets/gallery-background-poster.jpg";
+import galleryBackgroundVideo from "../assets/gallery-background-silent.mp4";
 import { api } from "../lib/api";
 import "./HomePage.css";
 
@@ -554,10 +556,11 @@ export function HomePage() {
             loop
             playsInline
             preload="auto"
+            poster={galleryBackgroundPoster}
             disablePictureInPicture
             disableRemotePlayback
           >
-            <source src="/assets/sgl-videos/gallery-background.mp4?v=5" type="video/mp4" />
+            <source src={galleryBackgroundVideo} type="video/mp4" />
           </video>
           <div className="premium-gallery-veil" />
         </div>
