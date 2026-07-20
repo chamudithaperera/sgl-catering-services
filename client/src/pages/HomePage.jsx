@@ -310,25 +310,41 @@ export function HomePage() {
       return undefined;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((firstEntry, secondEntry) => secondEntry.intersectionRatio - firstEntry.intersectionRatio)[0];
+    let animationFrame = 0;
 
-        if (visibleEntry?.target?.id) {
-          setActiveSectionId(visibleEntry.target.id);
-        }
-      },
-      {
-        rootMargin: "-28% 0px -58% 0px",
-        threshold: [0.12, 0.25, 0.45, 0.65],
-      },
-    );
+    const updateActiveSection = () => {
+      const navHeight = document.querySelector(".premium-nav")?.getBoundingClientRect().height || 0;
+      const marker = window.scrollY + navHeight + window.innerHeight * 0.28;
+      const pageBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      const contactSection = document.getElementById("contact");
 
-    sections.forEach((section) => observer.observe(section));
+      if (pageBottom && contactSection) {
+        setActiveSectionId("contact");
+        return;
+      }
 
-    return () => observer.disconnect();
+      const currentSection = sections.reduce((activeSection, section) => {
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        return sectionTop <= marker ? section : activeSection;
+      }, sections[0]);
+
+      setActiveSectionId((currentId) => (currentId === currentSection.id ? currentId : currentSection.id));
+    };
+
+    const requestActiveSectionUpdate = () => {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
+    window.addEventListener("resize", requestActiveSectionUpdate);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", requestActiveSectionUpdate);
+      window.removeEventListener("resize", requestActiveSectionUpdate);
+    };
   }, [content, homepageGallery.length, homepageReviews.length]);
 
   function selectSlide(slideIndex) {
