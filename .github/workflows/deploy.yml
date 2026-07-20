@@ -83,6 +83,8 @@ jobs:
 
           cat > "$PUBLIC_HTML/.htaccess" <<'HTACCESS'
           Options -MultiViews
+          AddType video/mp4 .mp4
+          AddType video/webm .webm
           RewriteEngine On
 
           RewriteCond %{REQUEST_FILENAME} !-f

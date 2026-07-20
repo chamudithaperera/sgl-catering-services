@@ -193,7 +193,7 @@ export function HomePage() {
   const homepageMapUrl = siteConfig?.mapUrl || "";
   const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl, contactMapEmbedUrl);
 
-  useAutoplayVideo(galleryVideoRef, homepageGallery.length > 0);
+  useAutoplayVideo(galleryVideoRef, true);
 
   useEffect(() => {
     api
@@ -544,35 +544,35 @@ export function HomePage() {
         </div>
       </section>
 
-      {homepageGallery.length > 0 ? (
-        <section className="premium-gallery" id="gallery">
-          <div className="premium-gallery-background" aria-hidden="true">
-            <video
-              ref={galleryVideoRef}
-              className="premium-gallery-video"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              disablePictureInPicture
-              disableRemotePlayback
-            >
-              <source src="/assets/sgl-videos/gallery-background.mp4?v=4" type="video/mp4" />
-            </video>
-            <div className="premium-gallery-veil" />
+      <section className="premium-gallery" id="gallery">
+        <div className="premium-gallery-background" aria-hidden="true">
+          <video
+            ref={galleryVideoRef}
+            className="premium-gallery-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
+          >
+            <source src="/assets/sgl-videos/gallery-background.mp4?v=5" type="video/mp4" />
+          </video>
+          <div className="premium-gallery-veil" />
+        </div>
+
+        <div className="premium-gallery-shell">
+          <div className="premium-gallery-heading premium-reveal premium-reveal-heading" data-reveal>
+            <span>Curated Event Moments</span>
+            <h2>ඡායාරූප</h2>
+            <p>
+              අප විසින් සකස් කළ උත්සව භෝජන සැකසුම්, රසවත් ආහාර තේරීම් සහ අලංකාර සේවා අවස්ථා අතරින්
+              තෝරාගත් රූප කිහිපයක් මෙහි නරඹන්න.
+            </p>
           </div>
 
-          <div className="premium-gallery-shell">
-            <div className="premium-gallery-heading premium-reveal premium-reveal-heading" data-reveal>
-              <span>Curated Event Moments</span>
-              <h2>ඡායාරූප</h2>
-              <p>
-                අප විසින් සකස් කළ උත්සව භෝජන සැකසුම්, රසවත් ආහාර තේරීම් සහ අලංකාර සේවා අවස්ථා අතරින්
-                තෝරාගත් රූප කිහිපයක් මෙහි නරඹන්න.
-              </p>
-            </div>
-
+          {homepageGallery.length > 0 ? (
             <div className="premium-gallery-grid">
               {homepageGallery.map((item) => (
                 <article
@@ -591,9 +591,9 @@ export function HomePage() {
                 </article>
               ))}
             </div>
-          </div>
-        </section>
-      ) : null}
+          ) : null}
+        </div>
+      </section>
 
       {homepageReviews.length > 0 ? (
         <section className="premium-reviews" id="reviews">
