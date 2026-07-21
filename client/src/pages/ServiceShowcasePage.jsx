@@ -78,7 +78,7 @@ function PackageCard({ item }) {
   );
 }
 
-function BannerSection({ page, anchorId }) {
+function BannerSection({ page }) {
   return (
     <section className="service-banner">
       <div className="service-banner-media" aria-hidden="true">
@@ -93,9 +93,6 @@ function BannerSection({ page, anchorId }) {
           <p>{page.description}</p>
 
           <div className="service-banner-actions">
-            <a className="service-banner-button is-primary" href={`#${anchorId}`}>
-              වැඩි විස්තර
-            </a>
             <a className="service-banner-button" href={`tel:${contactPhone}`}>
               <PhoneCall size={18} />
               <span>අමතන්න</span>
@@ -525,7 +522,7 @@ export function ServiceShowcasePage({ page }) {
         </div>
       </header>
 
-      <BannerSection anchorId={anchorId} page={managedPage} />
+      <BannerSection page={managedPage} />
 
       {managedPage.type === "catering" ? <CateringSections page={managedPage} /> : <RentingSections page={managedPage} />}
 
