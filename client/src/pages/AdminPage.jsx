@@ -1321,3 +1321,5 @@ export function AdminPage() {
     </main>
   );
 }
+
+export default AdminPage;
