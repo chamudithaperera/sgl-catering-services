@@ -120,8 +120,6 @@ function CateringMenuCard({ item }) {
         <strong>{item.priceLabel}</strong>
       </div>
 
-      <p>{item.summary}</p>
-
       {includedItems.length ? (
         <ul>
           {includedItems.map((includedItem) => (

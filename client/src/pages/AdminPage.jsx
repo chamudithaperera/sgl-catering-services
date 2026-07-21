@@ -268,6 +268,10 @@ function adminRequest(token) {
   };
 }
 
+function isUnauthorizedError(error) {
+  return error?.response?.status === 401;
+}
+
 function normalizeForForm(config, item) {
   return Object.keys(config.form).reduce((form, fieldName) => {
     const field = config.fields.find((candidate) => candidate.name === fieldName);
@@ -411,10 +415,8 @@ export function AdminPage() {
 
   const loadAdminData = useCallback(async (activeToken, { preserveActiveForms = false } = {}) => {
     const requestConfig = adminRequest(activeToken);
-    const [dashboardResponse, ...resourceResponses] = await Promise.all([
-      api.get("/admin/dashboard", requestConfig),
-      ...resourceConfigs.map((config) => api.get(config.endpoint, requestConfig)),
-    ]);
+    const dashboardResponse = await api.get("/admin/dashboard", requestConfig);
+    const resourceResponses = await Promise.all(resourceConfigs.map((config) => api.get(config.endpoint, requestConfig)));
 
     const nextRecords = {};
     const nextForms = {};
@@ -455,6 +457,14 @@ export function AdminPage() {
     if (!token) return;
     loadAdminData(token).catch((error) => {
       console.error(error);
+      if (isUnauthorizedError(error)) {
+        window.localStorage.removeItem("sgl-admin-token");
+        setToken("");
+        setDashboard(null);
+        setStatusMessage("");
+        setErrorMessage("Session expired. Please login again.");
+        return;
+      }
       setErrorMessage("Could not load admin content. Please try again.");
     });
   }, [loadAdminData, token]);
@@ -465,6 +475,13 @@ export function AdminPage() {
     const intervalId = window.setInterval(() => {
       loadAdminData(token, { preserveActiveForms: true }).catch((error) => {
         console.error(error);
+        if (isUnauthorizedError(error)) {
+          window.localStorage.removeItem("sgl-admin-token");
+          setToken("");
+          setDashboard(null);
+          setStatusMessage("");
+          setErrorMessage("Session expired. Please login again.");
+        }
       });
     }, 30000);
 
