@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Check, ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
+import { Check, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
 import { api } from "../lib/api";
@@ -89,7 +89,10 @@ function BannerSection({ page }) {
       <div className="service-page-shell service-banner-shell">
         <div className="service-banner-copy">
           <span>{page.eyebrow}</span>
-          <h1>{page.title}</h1>
+          <h1>
+            <span>{page.title}</span>
+            {page.englishTitle ? <small>{page.englishTitle}</small> : null}
+          </h1>
           <p>{page.description}</p>
 
           <div className="service-banner-actions">
@@ -104,123 +107,52 @@ function BannerSection({ page }) {
   );
 }
 
-function CateringSections({ page }) {
-  const [activeCategoryId, setActiveCategoryId] = useState(() => page.categories[0]?.id ?? "");
-
-  useEffect(() => {
-    setActiveCategoryId(page.categories[0]?.id ?? "");
-  }, [page]);
-
-  if (page.categories.length === 0) {
-    return (
-      <section className="service-band service-band-dark" id="categories">
-        <div className="service-page-shell">
-          <SectionHead
-            eyebrow={page.overview.eyebrow}
-            title={page.overview.title}
-            description={page.overview.description}
-            center
-          />
-        </div>
-      </section>
-    );
-  }
-
-  const activeCategoryIndex = Math.max(
-    0,
-    page.categories.findIndex((category) => category.id === activeCategoryId)
-  );
-  const activeCategory = page.categories[activeCategoryIndex] ?? page.categories[0];
-  const previousCategory = page.categories[(activeCategoryIndex - 1 + page.categories.length) % page.categories.length];
-  const nextCategory = page.categories[(activeCategoryIndex + 1) % page.categories.length];
-
-  const showPreviousCategory = () => {
-    setActiveCategoryId(previousCategory.id);
-  };
-
-  const showNextCategory = () => {
-    setActiveCategoryId(nextCategory.id);
-  };
+function CateringMenuCard({ item }) {
+  const includedItems = item.includedItems || [];
 
   return (
-    <>
-      <section className="service-band service-band-dark" id="categories">
-        <div className="service-page-shell">
-          <SectionHead
-            eyebrow={page.overview.eyebrow}
-            title={page.overview.title}
-            description={page.overview.description}
-            center
-          />
-
-          <div className="service-category-grid">
-            {page.categories.map((category) => (
-              <button
-                key={category.id}
-                type="button"
-                className={`service-category-card${category.id === activeCategory.id ? " is-active" : ""}`}
-                onClick={() => setActiveCategoryId(category.id)}
-              >
-                <small>{category.shortLabel}</small>
-                <strong>{category.title}</strong>
-                <span>{category.packages.length} මෙනු</span>
-              </button>
-            ))}
-          </div>
+    <article className={`service-catering-menu-card${item.featured ? " is-featured" : ""}`}>
+      <div className="service-catering-menu-card-head">
+        <div>
+          {item.featured ? <small>Popular</small> : null}
+          <h3>{item.name}</h3>
         </div>
-      </section>
+        <strong>{item.priceLabel}</strong>
+      </div>
 
-      <section className="service-band service-band-ivory" id="menus">
-        <div className="service-page-shell">
-          <div className="service-category-feature">
-            <button
-              type="button"
-              className="service-category-arrow service-category-arrow-left"
-              aria-label={`Show previous category: ${previousCategory.title}`}
-              onClick={showPreviousCategory}
-            >
-              <ChevronLeft size={22} />
-            </button>
+      <p>{item.summary}</p>
 
-            <div className="service-category-feature-media">
-              <img
-                {...responsiveImageProps(activeCategory.image, "(max-width: 900px) 100vw, 44vw")}
-                alt={activeCategory.title}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
+      {includedItems.length ? (
+        <ul>
+          {includedItems.map((includedItem) => (
+            <li key={includedItem}>{includedItem}</li>
+          ))}
+        </ul>
+      ) : null}
+    </article>
+  );
+}
 
-            <div className="service-category-feature-copy">
-              <span>{activeCategory.shortLabel}</span>
-              <h3>{activeCategory.title}</h3>
-              <p>{activeCategory.description}</p>
+function CateringSections({ page }) {
+  const menus = page.menus || [];
 
-              <ul className="service-category-feature-list">
-                {activeCategory.highlights.map((highlight) => (
-                  <li key={highlight}>{highlight}</li>
-                ))}
-              </ul>
-            </div>
+  return (
+    <section className="service-band service-band-ivory service-catering-menu-band" id="menus">
+      <div className="service-page-shell">
+        <SectionHead
+          eyebrow={page.overview.eyebrow}
+          title={page.overview.title}
+          description={page.overview.description}
+          center
+        />
 
-            <button
-              type="button"
-              className="service-category-arrow service-category-arrow-right"
-              aria-label={`Show next category: ${nextCategory.title}`}
-              onClick={showNextCategory}
-            >
-              <ChevronRight size={22} />
-            </button>
-          </div>
-
-          <div className="service-menu-grid">
-            {activeCategory.packages.map((item) => (
-              <PackageCard item={item} key={item.name} />
-            ))}
-          </div>
+        <div className="service-catering-menu-list">
+          {menus.map((item) => (
+            <CateringMenuCard item={item} key={item.name} />
+          ))}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 
@@ -298,39 +230,26 @@ function RentingSections({ page }) {
 }
 
 function buildManagedCateringPage(page, content) {
-  const cateringCategories = content?.cateringCategories || [];
   const foodPackages = content?.foodPackages || [];
-  const categories = cateringCategories.map((category) => ({
-    id: String(category.id),
-    title: category.title,
-    shortLabel: category.shortLabel,
-    iconKey: "utensils",
-    image: category.imageUrl,
-    description: category.description,
-    highlights: category.highlights?.length ? category.highlights : ["අවස්ථාවට ගැළපෙන මෙනු", "අයවැය අනුව සැකසුම්"],
-    packages: foodPackages
-      .filter((item) => item.categoryId === category.id)
-      .map((item) => ({
-        name: item.name,
-        summary: item.summary,
-        priceLabel: item.priceLabel,
-        featured: item.featured,
-        includedItems: item.includedItems,
-      })),
-  }));
 
   return {
     ...page,
     heroStats: [
-      { label: "උත්සව කාණ්ඩ", value: String(categories.length).padStart(2, "0"), note: "අවස්ථා වර්ග" },
       {
         label: "මෙනු තේරීම්",
         value: `${foodPackages.length}+`,
         note: "විවිධ මෙනු",
       },
+      { label: "සැකසුම්", value: "අභිරුචි", note: "අයවැය අනුව" },
       page.heroStats[2],
     ],
-    categories,
+    menus: foodPackages.map((item) => ({
+      name: item.name,
+      summary: item.summary,
+      priceLabel: item.priceLabel,
+      featured: item.featured,
+      includedItems: item.includedItems,
+    })),
   };
 }
 
@@ -413,11 +332,11 @@ function buildEmptyManagedPage(page) {
     ? {
         ...page,
         heroStats: [
-          { label: "උත්සව කාණ්ඩ", value: "00", note: "අවස්ථා වර්ග" },
-          { label: "මෙනු තේරීම්", value: "0+", note: "විවිධ මෙනු" },
+          { label: "මෙනු තේරීම්", value: `${page.menus?.length || 0}+`, note: "විවිධ මෙනු" },
+          { label: "සැකසුම්", value: "අභිරුචි", note: "අයවැය අනුව" },
           page.heroStats[2],
         ],
-        categories: [],
+        menus: page.menus || [],
       }
     : {
         ...page,

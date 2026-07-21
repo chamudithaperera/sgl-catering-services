@@ -253,14 +253,25 @@
 }
 
 .service-banner-copy h1 {
+  display: grid;
+  gap: 12px;
   margin: 0;
-  max-width: 12ch;
+  max-width: 13ch;
   font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
   font-size: clamp(3rem, 6vw, 5rem);
   font-weight: 800;
   line-height: 0.94;
   text-wrap: balance;
   color: var(--text-main);
+}
+
+.service-banner-copy h1 small {
+  font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
+  font-size: clamp(1.05rem, 1.7vw, 1.42rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--accent-luxury);
+  text-transform: uppercase;
 }
 
 .service-banner-copy p {
@@ -314,8 +325,7 @@
 }
 
 .service-section-head h2,
-.service-contact-copy h2,
-.service-category-feature-copy h3 {
+.service-contact-copy h2 {
   margin: 0;
   font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
   font-weight: 800;
@@ -329,9 +339,9 @@
 
 .service-section-head p,
 .service-contact-copy p,
-.service-category-feature-copy p,
 .service-item-card-body p,
-.service-package-card p {
+.service-package-card p,
+.service-catering-menu-card p {
   margin: 0;
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
   font-size: 1rem;
@@ -348,7 +358,7 @@
 
 .service-band-ivory .service-section-head h2,
 .service-band-light .service-section-head h2,
-.service-band-ivory .service-category-feature-copy h3,
+.service-catering-menu-card h3,
 .service-band-ivory .service-package-card h3,
 .service-band-dark .service-package-card h3 {
   color: #101617;
@@ -356,153 +366,102 @@
 
 .service-band-ivory .service-section-head p,
 .service-band-light .service-section-head p,
-.service-band-ivory .service-category-feature-copy p,
 .service-band-ivory .service-item-card-body p,
 .service-band-ivory .service-package-card p,
-.service-band-dark .service-package-card p {
+.service-band-dark .service-package-card p,
+.service-catering-menu-card p {
   color: rgba(16, 22, 23, 0.72);
 }
 
-.service-category-grid {
+.service-catering-menu-band {
+  background:
+    linear-gradient(180deg, rgba(255, 248, 239, 0.96) 0%, rgba(243, 229, 207, 0.98) 100%),
+    #fff8ef;
+}
+
+.service-catering-menu-list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
+  gap: 20px;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
-.service-category-card {
-  display: grid;
-  gap: 10px;
-  padding: 22px 18px;
-  border: 1px solid rgba(245, 241, 232, 0.1);
-  background: rgba(245, 241, 232, 0.03);
-  color: var(--text-main);
-  text-align: left;
-}
-
-.service-category-card small {
-  color: var(--accent-luxury);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.service-category-card strong {
-  font-size: 1.08rem;
-  line-height: 1.4;
-}
-
-.service-category-card span {
-  color: var(--text-soft);
-  font-size: 0.92rem;
-}
-
-.service-category-card.is-active {
-  border-color: rgba(var(--accent-rgb), 0.36);
-  background: rgba(var(--accent-rgb), 0.18);
-}
-
-.service-category-feature {
+.service-catering-menu-card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(320px, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(26px, 3vw, 42px);
-  align-items: stretch;
-  margin-bottom: 32px;
-  padding-inline: clamp(56px, 5vw, 82px);
+  gap: 14px;
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid rgba(136, 48, 32, 0.18);
+  border-left: 5px solid #a83e2d;
+  background: rgba(255, 251, 244, 0.92);
+  box-shadow: 0 18px 36px rgba(17, 23, 24, 0.08);
 }
 
-.service-category-arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 3;
+.service-catering-menu-card.is-featured {
+  border-left-color: var(--accent-primary);
+  box-shadow:
+    0 22px 42px rgba(17, 23, 24, 0.1),
+    inset 0 0 0 1px rgba(184, 154, 106, 0.12);
+}
+
+.service-catering-menu-card-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+}
+
+.service-catering-menu-card-head small {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 54px;
-  height: 54px;
-  border: 1px solid rgba(184, 154, 106, 0.26);
-  border-radius: 12px;
-  background: rgba(255, 251, 244, 0.94);
-  color: #101617;
-  box-shadow: 0 16px 36px rgba(17, 23, 24, 0.1);
-  transform: translateY(-50%);
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.service-category-arrow:hover {
-  color: var(--accent-primary);
-  border-color: rgba(var(--accent-rgb), 0.32);
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 18px 40px rgba(17, 23, 24, 0.14);
-}
-
-.service-category-arrow-left {
-  left: 0;
-}
-
-.service-category-arrow-right {
-  right: 0;
-}
-
-.service-category-feature-media {
-  overflow: hidden;
-  min-height: 360px;
-}
-
-.service-category-feature-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.service-category-feature-copy {
-  display: grid;
-  align-content: center;
-  gap: 16px;
-  min-width: 0;
-}
-
-.service-category-feature-copy > span {
-  color: #7f6640;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  min-height: 26px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  background: rgba(168, 62, 45, 0.1);
+  color: #8d3426;
+  font-size: 0.76rem;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
-.service-category-feature-copy h3 {
-  font-size: clamp(2rem, 3vw, 3rem);
+.service-catering-menu-card h3 {
+  margin: 0;
+  font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
+  font-size: clamp(1.82rem, 2.8vw, 2.45rem);
+  line-height: 1.02;
 }
 
-.service-category-feature-list {
+.service-catering-menu-card-head strong {
+  color: #8d3426;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.service-catering-menu-card ul {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   margin: 6px 0 0;
   padding: 0;
   list-style: none;
 }
 
-.service-category-feature-list li {
+.service-catering-menu-card li {
   position: relative;
-  padding-left: 18px;
-  line-height: 1.75;
+  padding-left: 22px;
+  font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
+  line-height: 1.68;
   color: rgba(16, 22, 23, 0.76);
 }
 
-.service-category-feature-list li::before {
-  content: "";
+.service-catering-menu-card li::before {
+  content: "-";
   position: absolute;
   left: 0;
-  top: 10px;
-  width: 8px;
-  height: 8px;
-  background: var(--accent-luxury);
+  top: 0;
+  color: #a83e2d;
+  font-weight: 800;
 }
 
 .service-menu-grid {
