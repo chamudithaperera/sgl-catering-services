@@ -28,14 +28,12 @@ router.get("/content", async (request, response) => {
     contactDetails,
     cateringMenus,
     rentalItems,
-    rentalBundles,
     gallery,
     reviews,
   ] = await Promise.all([
     prisma.contactDetails.findUnique({ where: { id: 1 } }),
     prisma.cateringMenu.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.rentalItem.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.rentalBundle.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.gallery.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
@@ -46,8 +44,6 @@ router.get("/content", async (request, response) => {
     foodPackages: cateringMenus,
     cateringMenus,
     rentalItems,
-    rentalPackages: rentalBundles,
-    rentalBundles,
     gallery,
     reviews,
   });

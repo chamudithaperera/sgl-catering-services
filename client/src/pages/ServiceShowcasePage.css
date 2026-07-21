@@ -463,6 +463,93 @@
   font-weight: 800;
 }
 
+.service-rental-item-band {
+  background:
+    linear-gradient(180deg, rgba(255, 248, 239, 0.96) 0%, rgba(243, 229, 207, 0.98) 100%),
+    #fff8ef;
+}
+
+.service-rental-item-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.service-rental-item-card {
+  display: grid;
+  gap: 16px;
+  padding: clamp(20px, 3vw, 28px);
+  border: 1px solid rgba(136, 48, 32, 0.16);
+  border-left: 5px solid #a83e2d;
+  background: rgba(255, 251, 244, 0.92);
+  box-shadow: 0 18px 36px rgba(17, 23, 24, 0.08);
+}
+
+.service-rental-item-card-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+}
+
+.service-rental-item-card-head small {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  background: rgba(168, 62, 45, 0.1);
+  color: #8d3426;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.service-rental-item-card h3 {
+  margin: 0;
+  font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
+  font-size: clamp(1.58rem, 2.4vw, 2.08rem);
+  line-height: 1.04;
+  color: #101617;
+}
+
+.service-rental-item-card-head strong {
+  color: #8d3426;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.service-rental-item-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid rgba(16, 22, 23, 0.08);
+}
+
+.service-rental-item-card-meta span,
+.service-rental-item-card-meta b {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid rgba(16, 22, 23, 0.08);
+  color: rgba(16, 22, 23, 0.68);
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+.service-rental-item-card-meta b {
+  border-color: rgba(var(--accent-rgb), 0.2);
+  color: var(--accent-primary);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
 .service-menu-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -749,6 +836,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .service-rental-item-list {
+    grid-template-columns: 1fr;
+  }
+
   .service-item-card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -814,6 +905,15 @@
   }
 
   .service-catering-menu-card-head strong {
+    text-align: left;
+    white-space: normal;
+  }
+
+  .service-rental-item-card-head {
+    grid-template-columns: 1fr;
+  }
+
+  .service-rental-item-card-head strong {
     text-align: left;
     white-space: normal;
   }
@@ -904,7 +1004,8 @@
 
   .service-item-card-body h3,
   .service-package-card-head h3,
-  .service-catering-menu-card h3 {
+  .service-catering-menu-card h3,
+  .service-rental-item-card h3 {
     font-size: 1.65rem;
   }
 
@@ -923,6 +1024,7 @@
   .service-contact-panel,
   .service-package-card,
   .service-catering-menu-card,
+  .service-rental-item-card,
   .service-item-card-body {
     padding-inline: 20px;
   }

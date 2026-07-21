@@ -55,21 +55,11 @@ const foodPackageSchema = z.object({
 
 const rentalItemSchema = z.object({
   name: z.string().min(2),
-  description: z.string().min(10),
   category: z.string().min(2),
   imageUrl: z.string().min(2),
   priceLabel: z.string().min(2),
   availableQuantity: z.coerce.number().int().min(0),
   status: z.string().min(2),
-  sortOrder: z.coerce.number().int().min(0).default(0),
-});
-
-const rentalPackageSchema = z.object({
-  name: z.string().min(2),
-  summary: z.string().min(10),
-  priceLabel: z.string().min(2),
-  items: z.union([z.array(z.string().min(1)), z.string()]).transform(textLines),
-  ctaLabel: z.string().min(2),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
@@ -104,7 +94,6 @@ module.exports = {
   siteConfigSchema,
   foodPackageSchema,
   rentalItemSchema,
-  rentalPackageSchema,
   galleryItemSchema,
   reviewSchema,
   contactMessageSchema,

@@ -8,7 +8,6 @@ const {
   siteConfigSchema,
   foodPackageSchema,
   rentalItemSchema,
-  rentalPackageSchema,
   galleryItemSchema,
   reviewSchema,
 } = require("../utils/validators");
@@ -50,7 +49,6 @@ const router = express.Router();
 const reorderModels = {
   foodPackages: prisma.cateringMenu,
   rentalItems: prisma.rentalItem,
-  rentalPackages: prisma.rentalBundle,
   galleryItems: prisma.gallery,
   reviews: prisma.review,
 };
@@ -61,7 +59,6 @@ router.get("/dashboard", async (request, response) => {
   const [
     foodPackages,
     rentalItems,
-    rentalPackages,
     galleryItems,
     reviews,
     contactMessages,
@@ -69,7 +66,6 @@ router.get("/dashboard", async (request, response) => {
   ] = await Promise.all([
     prisma.cateringMenu.count(),
     prisma.rentalItem.count(),
-    prisma.rentalBundle.count(),
     prisma.gallery.count(),
     prisma.review.count(),
     prisma.message.count(),
@@ -79,7 +75,6 @@ router.get("/dashboard", async (request, response) => {
   response.json({
     foodPackages,
     rentalItems,
-    rentalPackages,
     galleryItems,
     reviews,
     contactMessages,
@@ -185,31 +180,6 @@ router.put("/rental-items/:id", async (request, response) => {
 
 router.delete("/rental-items/:id", async (request, response) => {
   await prisma.rentalItem.delete({ where: { id: Number(request.params.id) } });
-  response.status(204).send();
-});
-
-router.get("/rental-packages", async (request, response) => {
-  const items = await prisma.rentalBundle.findMany({ orderBy: { sortOrder: "asc" } });
-  response.json(items);
-});
-
-router.post("/rental-packages", async (request, response) => {
-  const data = rentalPackageSchema.parse(request.body);
-  const item = await prisma.rentalBundle.create({ data });
-  response.status(201).json(item);
-});
-
-router.put("/rental-packages/:id", async (request, response) => {
-  const data = rentalPackageSchema.parse(request.body);
-  const item = await prisma.rentalBundle.update({
-    where: { id: Number(request.params.id) },
-    data,
-  });
-  response.json(item);
-});
-
-router.delete("/rental-packages/:id", async (request, response) => {
-  await prisma.rentalBundle.delete({ where: { id: Number(request.params.id) } });
   response.status(204).send();
 });
 

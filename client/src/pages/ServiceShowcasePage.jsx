@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Check, PhoneCall } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
 import { api } from "../lib/api";
@@ -48,33 +48,6 @@ function SectionHead({ eyebrow, title, description, light = false, center = fals
       <h2>{title}</h2>
       <p>{description}</p>
     </div>
-  );
-}
-
-function PackageCard({ item }) {
-  const includedItems = item.includedItems || [];
-
-  return (
-    <article className={`service-package-card${item.featured ? " is-featured" : ""}`}>
-      <div className="service-package-card-head">
-        <div>
-          {item.featured ? <small>Featured</small> : null}
-          <h3>{item.name}</h3>
-        </div>
-        <strong>{item.priceLabel}</strong>
-      </div>
-
-      <p>{item.summary}</p>
-
-      <ul className="service-package-card-list">
-        {includedItems.map((includedItem) => (
-          <li key={includedItem}>
-            <Check size={16} />
-            <span>{includedItem}</span>
-          </li>
-        ))}
-      </ul>
-    </article>
   );
 }
 
@@ -131,6 +104,25 @@ function CateringMenuCard({ item }) {
   );
 }
 
+function RentalItemCard({ item }) {
+  return (
+    <article className={`service-rental-item-card${item.featured ? " is-featured" : ""}`}>
+      <div className="service-rental-item-card-head">
+        <div>
+          <small>{item.category || "Rental Item"}</small>
+          <h3>{item.name}</h3>
+        </div>
+        <strong>{item.priceLabel}</strong>
+      </div>
+
+      <div className="service-rental-item-card-meta">
+        <span>{item.quantity}</span>
+        <b>{item.status}</b>
+      </div>
+    </article>
+  );
+}
+
 function CateringSections({ page }) {
   const menus = page.menus || [];
 
@@ -155,75 +147,25 @@ function CateringSections({ page }) {
 }
 
 function RentingSections({ page }) {
-  const itemCards = page.itemGroups.flatMap((group) =>
-    group.items.map((item) => ({
-      ...item,
-      categoryTitle: group.title,
-      categoryDescription: group.description,
-    }))
-  );
+  const items = page.items || [];
 
   return (
-    <>
-      <section className="service-band service-band-dark" id="packages">
-        <div className="service-page-shell">
-          <SectionHead
-            eyebrow={page.packagesIntro.eyebrow}
-            title={page.packagesIntro.title}
-            description={page.packagesIntro.description}
-            center
-          />
+    <section className="service-band service-band-ivory service-rental-item-band" id="items">
+      <div className="service-page-shell">
+        <SectionHead
+          eyebrow={page.overview.eyebrow}
+          title={page.overview.title}
+          description={page.overview.description}
+          center
+        />
 
-          <div className="service-bundle-grid">
-            {page.packages.map((item) => (
-              <PackageCard item={item} key={item.name} />
-            ))}
-          </div>
+        <div className="service-rental-item-list">
+          {items.map((item) => (
+            <RentalItemCard item={item} key={item.name} />
+          ))}
         </div>
-      </section>
-
-      <section className="service-band service-band-light" id="items">
-        <div className="service-page-shell">
-          <SectionHead
-            eyebrow={page.itemGroupsIntro.eyebrow}
-            title={page.itemGroupsIntro.title}
-            description={page.itemGroupsIntro.description}
-            light
-            center
-          />
-
-          <div className="service-item-card-grid">
-            {itemCards.map((item) => (
-              <article className="service-item-card" key={`${item.categoryTitle}-${item.name}`}>
-                <div className="service-item-card-media">
-                  <img
-                    {...responsiveImageProps(item.imageUrl, "(max-width: 900px) 100vw, 33vw")}
-                    alt={item.name}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-
-                <div className="service-item-card-body">
-                  <small>{item.categoryTitle}</small>
-                  <h3>{item.name}</h3>
-                  <p>{item.categoryDescription}</p>
-
-                  <div className="service-item-card-meta">
-                    <strong>{item.priceLabel}</strong>
-                    <span>{item.quantity}</span>
-                  </div>
-
-                  <div className={`service-item-card-status${item.status === "ලබාගත හැකියි" ? " is-available" : ""}`}>
-                    {item.status}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 
@@ -253,38 +195,20 @@ function buildManagedCateringPage(page, content) {
 
 function buildManagedRentalPage(page, content) {
   const rentalItems = content?.rentalItems || [];
-  const rentalPackages = content?.rentalPackages || [];
-  const groupedItems = rentalItems.reduce((groups, item) => {
-    const category = item.category || "Rental Items";
-    groups[category] = groups[category] || [];
-    groups[category].push({
-      name: item.name,
-      imageUrl: item.imageUrl,
-      priceLabel: item.priceLabel,
-      quantity: `${item.availableQuantity} available`,
-      status: item.status,
-    });
-    return groups;
-  }, {});
 
   return {
     ...page,
     heroStats: [
-      { label: "කුලී පැකේජ", value: String(rentalPackages.length).padStart(2, "0"), note: "සූදානම් පැකේජ" },
       { label: "භාණ්ඩ වර්ග", value: `${rentalItems.length}+`, note: "තේරීම් රැසක්" },
+      { label: "මිල පරාසය", value: "රු. 20", note: "සිට ඉහළට" },
       page.heroStats[2],
     ],
-    packages: rentalPackages.map((item) => ({
+    items: rentalItems.map((item) => ({
       name: item.name,
-      summary: item.summary,
+      category: item.category,
       priceLabel: item.priceLabel,
-      featured: false,
-      includedItems: item.items,
-    })),
-    itemGroups: Object.entries(groupedItems).map(([title, items]) => ({
-      title,
-      description: "Admin-managed rental inventory.",
-      items,
+      quantity: item.availableQuantity ? `${item.availableQuantity} ලබාගත හැකියි` : "ප්‍රමාණය විමසන්න",
+      status: item.status,
     })),
   };
 }
@@ -339,12 +263,11 @@ function buildEmptyManagedPage(page) {
     : {
         ...page,
         heroStats: [
-          { label: "කුලී පැකේජ", value: "00", note: "සූදානම් පැකේජ" },
-          { label: "භාණ්ඩ වර්ග", value: "0+", note: "තේරීම් රැසක්" },
+          { label: "භාණ්ඩ වර්ග", value: `${page.items?.length || 0}+`, note: "තේරීම් රැසක්" },
+          { label: "මිල පරාසය", value: "රු. 20", note: "සිට ඉහළට" },
           page.heroStats[2],
         ],
-        packages: [],
-        itemGroups: [],
+        items: page.items || [],
       };
 }
 

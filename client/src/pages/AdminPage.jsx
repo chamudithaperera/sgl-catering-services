@@ -99,9 +99,8 @@ const resourceConfigs = [
     eyebrow: "Equipment inventory, categories, quantities, and images",
     endpoint: "/admin/rental-items",
     icon: Boxes,
-    form: {
+  form: {
       name: "",
-      description: "",
       category: "",
       imageUrl: "/assets/sgl-images/hero-buffet.jpg",
       priceLabel: "",
@@ -111,7 +110,6 @@ const resourceConfigs = [
     },
     fields: [
       { name: "name", label: "Item name" },
-      { name: "description", label: "Description", type: "textarea" },
       { name: "category", label: "Category" },
       { name: "imageUrl", label: "Image URL", type: "image" },
       { name: "priceLabel", label: "Price label" },
@@ -124,27 +122,6 @@ const resourceConfigs = [
       { name: "category", label: "Category" },
       { name: "priceLabel", label: "Price" },
       { name: "availableQuantity", label: "Qty" },
-    ],
-  },
-  {
-    key: "rentalPackages",
-    label: "Bundles",
-    eyebrow: "Rental bundles built from created rental items",
-    endpoint: "/admin/rental-packages",
-    icon: PackageCheck,
-    form: { name: "", summary: "", priceLabel: "", items: "", ctaLabel: "Ask price", sortOrder: 0 },
-    fields: [
-      { name: "name", label: "Bundle name" },
-      { name: "summary", label: "Summary", type: "textarea" },
-      { name: "priceLabel", label: "Bundle price" },
-      { name: "items", label: "Selected items", type: "bundleItems" },
-      { name: "ctaLabel", label: "CTA label" },
-      { name: "sortOrder", label: "Sort order", type: "number" },
-    ],
-    columns: [
-      { name: "name", label: "Bundle" },
-      { name: "priceLabel", label: "Price" },
-      { name: "items", label: "Items" },
     ],
   },
   {
@@ -225,16 +202,13 @@ const groupedSections = {
   },
   rental: {
     label: "Rental",
-    eyebrow: "Manage rental bundles and inventory items",
+    eyebrow: "Manage rental inventory items",
     icon: Boxes,
-    tabs: [
-      { key: "rentalPackages", label: "Bundles" },
-      { key: "rentalItems", label: "Items" },
-    ],
+    tabs: [{ key: "rentalItems", label: "Items" }],
   },
 };
 
-const popupCrudKeys = ["foodPackages", "rentalPackages", "rentalItems", "galleryItems", "reviews"];
+const popupCrudKeys = ["foodPackages", "rentalItems", "galleryItems", "reviews"];
 const sortableKeys = popupCrudKeys;
 
 const navItems = [
@@ -377,7 +351,7 @@ export function AdminPage() {
   const [activeKey, setActiveKey] = useState("dashboard");
   const [activeGroupTabs, setActiveGroupTabs] = useState({
     catering: "foodPackages",
-    rental: "rentalPackages",
+    rental: "rentalItems",
   });
   const [crudModalKey, setCrudModalKey] = useState("");
   const [draggedItem, setDraggedItem] = useState(null);
@@ -539,7 +513,7 @@ export function AdminPage() {
     if (config.key === "foodPackages") {
       setActiveKey("catering");
       setActiveGroupTabs((current) => ({ ...current, catering: config.key }));
-    } else if (["rentalPackages", "rentalItems"].includes(config.key)) {
+    } else if (config.key === "rentalItems") {
       setActiveKey("rental");
       setActiveGroupTabs((current) => ({ ...current, rental: config.key }));
     } else {
