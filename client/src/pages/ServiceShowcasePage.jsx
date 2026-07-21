@@ -111,7 +111,7 @@ function RentalItemCard({ item }) {
     <article className={`service-rental-item-card${item.featured ? " is-featured" : ""}`}>
       <div className="service-rental-item-card-media">
         <img
-          {...responsiveImageProps(imageUrl, "(max-width: 900px) 96px, 112px")}
+          {...responsiveImageProps(imageUrl, "(max-width: 720px) 76px, (max-width: 900px) 84px, 90px")}
           alt={item.name}
           loading="lazy"
           decoding="async"
