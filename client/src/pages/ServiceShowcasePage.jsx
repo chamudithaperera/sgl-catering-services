@@ -105,8 +105,19 @@ function CateringMenuCard({ item }) {
 }
 
 function RentalItemCard({ item }) {
+  const imageUrl = item.imageUrl || "/assets/sgl-images/indoor-buffet.jpg";
+
   return (
     <article className={`service-rental-item-card${item.featured ? " is-featured" : ""}`}>
+      <div className="service-rental-item-card-media">
+        <img
+          {...responsiveImageProps(imageUrl, "(max-width: 900px) 96px, 112px")}
+          alt={item.name}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
       <div className="service-rental-item-card-head">
         <div>
           <small>{item.category || "Rental Item"}</small>
@@ -206,6 +217,7 @@ function buildManagedRentalPage(page, content) {
     items: rentalItems.map((item) => ({
       name: item.name,
       category: item.category,
+      imageUrl: item.imageUrl,
       priceLabel: item.priceLabel,
       quantity: item.availableQuantity ? `${item.availableQuantity} ලබාගත හැකියි` : "ප්‍රමාණය විමසන්න",
       status: item.status,
