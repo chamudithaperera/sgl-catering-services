@@ -239,6 +239,18 @@ function isUnauthorizedError(error) {
   return error?.response?.status === 401;
 }
 
+function getAdminErrorMessage(error, fallback) {
+  const responseData = error?.response?.data;
+  const responseMessage = Array.isArray(responseData?.issues)
+    ? responseData.issues
+        .map((issue) => `${issue.path?.join(".") || "field"}: ${issue.message}`)
+        .join("; ")
+    : responseData?.message;
+  const reason = responseMessage || error?.message;
+
+  return reason ? `${fallback} Reason: ${reason}` : fallback;
+}
+
 function normalizeForForm(config, item) {
   return Object.keys(config.form).reduce((form, fieldName) => {
     const field = config.fields.find((candidate) => candidate.name === fieldName);
@@ -432,7 +444,7 @@ export function AdminPage() {
         setErrorMessage("Session expired. Please login again.");
         return;
       }
-      setErrorMessage("Could not load admin content. Please try again.");
+      setErrorMessage(getAdminErrorMessage(error, "Could not load admin content."));
     });
   }, [loadAdminData, token]);
 
@@ -467,7 +479,7 @@ export function AdminPage() {
       setStatusMessage("Welcome back. Admin access is active.");
     } catch (error) {
       console.error(error);
-      setErrorMessage("Login failed. Please check your username and password.");
+      setErrorMessage(getAdminErrorMessage(error, "Login failed."));
     } finally {
       setBusy(false);
     }
@@ -575,7 +587,7 @@ export function AdminPage() {
       setStatusMessage(`${config.label} saved successfully.`);
     } catch (error) {
       console.error(error);
-      setErrorMessage(`Could not save ${config.label.toLowerCase()}. Check required fields and try again.`);
+      setErrorMessage(getAdminErrorMessage(error, `Could not save ${config.label.toLowerCase()}.`));
     } finally {
       setBusy(false);
     }
@@ -591,7 +603,7 @@ export function AdminPage() {
       setStatusMessage(`${config.label} item deleted.`);
     } catch (error) {
       console.error(error);
-      setErrorMessage(`Could not delete ${config.label.toLowerCase()} item.`);
+      setErrorMessage(getAdminErrorMessage(error, `Could not delete ${config.label.toLowerCase()} item.`));
     }
   }
 
@@ -606,7 +618,7 @@ export function AdminPage() {
       setStatusMessage(`Message marked as ${item.isRead ? "unread" : "read"}.`);
     } catch (error) {
       console.error(error);
-      setErrorMessage("Could not update message status.");
+      setErrorMessage(getAdminErrorMessage(error, "Could not update message status."));
     }
   }
 
@@ -664,7 +676,7 @@ export function AdminPage() {
       setStatusMessage(`${config.label} order updated.`);
     } catch (error) {
       console.error(error);
-      setErrorMessage(`Could not update ${config.label.toLowerCase()} order.`);
+      setErrorMessage(getAdminErrorMessage(error, `Could not update ${config.label.toLowerCase()} order.`));
       await loadAdminData(token);
     }
   }
@@ -693,7 +705,7 @@ export function AdminPage() {
       setStatusMessage("Image uploaded successfully.");
     } catch (error) {
       console.error(error);
-      setErrorMessage("Image upload failed.");
+      setErrorMessage(getAdminErrorMessage(error, "Image upload failed."));
     } finally {
       setBusy(false);
     }
@@ -823,6 +835,12 @@ export function AdminPage() {
             <Plus size={20} />
           )}
         </div>
+        {isModal && errorMessage ? (
+          <div className="sgla-alert sgla-alert-error">
+            <X size={18} />
+            {errorMessage}
+          </div>
+        ) : null}
         <div className="sgla-form-grid">
           {config.fields.map((field) => (
             <label
@@ -1076,7 +1094,7 @@ export function AdminPage() {
             {statusMessage}
           </div>
         ) : null}
-        {errorMessage ? (
+        {errorMessage && !crudModalConfig ? (
           <div className="sgla-alert sgla-alert-error">
             <X size={18} />
             {errorMessage}
