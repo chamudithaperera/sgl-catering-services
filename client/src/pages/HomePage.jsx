@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, MapPin, Menu, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Seo } from "../components/Seo";
 import galleryBackgroundPoster from "../assets/gallery-background-poster.jpg";
 import galleryBackgroundVideo from "../assets/gallery-background-silent.mp4";
 import { api } from "../lib/api";
 import { responsiveImageProps } from "../lib/imagePerformance";
+import { buildSiteUrl } from "../lib/seo";
 import "./HomePage.css";
 
 const contactPhone = "+94703324500";
@@ -14,6 +16,8 @@ const contactLocation = "No.360, National Housing, Stage II, Anuradhapura.";
 const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
 const heroDescription =
   "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.";
+const localSearchIntro =
+  "SGL Catering Service offers catering services in Anuradhapura for weddings, home functions, almsgivings, birthdays, office events, and special celebrations.";
 const aboutHeading = "SGL කේටරින් සර්විස් යනු:";
 const aboutBody =
   "වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත් සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට අප සූදානම්.";
@@ -22,6 +26,61 @@ const contactDescription =
   "ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න. ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු.";
 const contactMapEmbedUrl =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4934.785252954407!2d80.40432687591523!3d8.319864291715861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afcf5005cd65e2d%3A0x378ef91fdb3a6052!2sSGL%20Catering%20Service!5e1!3m2!1sen!2slk!4v1784484566797!5m2!1sen!2slk";
+const homeStructuredData = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "FoodService"],
+  name: "SGL Catering Service",
+  alternateName: "SGL Catering Services",
+  url: buildSiteUrl("/"),
+  image: buildSiteUrl("/assets/sgl-images/hero-buffet.jpg"),
+  logo: buildSiteUrl("/assets/sgl-logo.png"),
+  telephone: contactPhone,
+  email: contactEmail,
+  description:
+    "SGL Catering Service provides catering services in Anuradhapura for weddings, home functions, almsgivings, birthdays, office events, and special celebrations.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "No.360, National Housing, Stage II",
+    addressLocality: "Anuradhapura",
+    addressCountry: "LK",
+  },
+  areaServed: [
+    {
+      "@type": "City",
+      name: "Anuradhapura",
+    },
+    {
+      "@type": "AdministrativeArea",
+      name: "North Central Province",
+    },
+  ],
+  hasMap: contactMapEmbedUrl,
+  priceRange: "$$",
+  servesCuisine: ["Sri Lankan", "Traditional Sri Lankan", "Buffet"],
+  makesOffer: [
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Wedding catering in Anuradhapura",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Home function catering",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Event rental equipment",
+      },
+    },
+  ],
+};
 
 function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
   const rawMapUrl = String(mapUrl || "")
@@ -498,6 +557,19 @@ export function HomePage() {
 
   return (
     <main className="premium-home">
+      <Seo
+        title="SGL Catering Service | Catering Services Anuradhapura"
+        description="SGL Catering Service provides wedding, home function, almsgiving, birthday, and event catering services in Anuradhapura with buffet menus and event rentals."
+        canonicalPath="/"
+        keywords={[
+          "sgl catering service",
+          "catering services anuradhapura",
+          "Anuradhapura catering",
+          "wedding catering Anuradhapura",
+          "buffet catering Sri Lanka",
+        ]}
+        structuredData={homeStructuredData}
+      />
       <header className="premium-nav">
         <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
           <span className="premium-brand-logo">
@@ -572,6 +644,7 @@ export function HomePage() {
             <h1>SGL කේටරින් සර්විස්</h1>
             <span className="premium-hero-subtitle">SGL Catering Service</span>
             <p>{heroDescription}</p>
+            <p className="premium-hero-local">{localSearchIntro}</p>
 
             <div className="premium-hero-actions">
               <button type="button" className="premium-button premium-button-primary" onClick={(event) => handleNavAnchorClick(event, "#services")}>

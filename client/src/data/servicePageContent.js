@@ -5,6 +5,19 @@ export const servicePageContent = {
     title: "ආහාර පාන සැපයීම",
     eyebrow: "Signature Catering",
     image: "/assets/sgl-images/hero-buffet.jpg",
+    seo: {
+      title: "Catering Services Anuradhapura | SGL Catering Service",
+      description:
+        "Choose SGL Catering Service for catering services in Anuradhapura, including weddings, home functions, almsgivings, birthdays, office events, buffet menus, and custom food packages.",
+      canonicalPath: "/catering",
+      keywords: [
+        "catering services anuradhapura",
+        "sgl catering service",
+        "wedding catering Anuradhapura",
+        "buffet catering Anuradhapura",
+        "home function catering Anuradhapura",
+      ],
+    },
     description:
       "විවාහ උත්සව, නිවසේ සැමරුම්, උපන්දින සාද සහ ආයතනික වැඩසටහන් සඳහා අවස්ථාවට ගැළපෙන මෙනු, වෘත්තීයමය පිළිගැන්වීම සහ රසවත් ආහාර අත්දැකීමක් අපි සකස් කරමු.",
     heroStats: [
@@ -236,6 +249,19 @@ export const servicePageContent = {
     title: "උත්සව භාණ්ඩ සැපයීම",
     eyebrow: "Event Rentals",
     image: "/assets/sgl-images/indoor-buffet.jpg",
+    seo: {
+      title: "Event Rentals Anuradhapura | SGL Catering Service",
+      description:
+        "Rent buffet equipment, tables, chairs, serviceware, and event support items from SGL Catering Service in Anuradhapura for weddings, home functions, and special events.",
+      canonicalPath: "/renting",
+      keywords: [
+        "event rentals Anuradhapura",
+        "sgl catering service",
+        "catering services anuradhapura",
+        "buffet equipment rental Anuradhapura",
+        "wedding rental items Anuradhapura",
+      ],
+    },
     description:
       "බෆේ උපකරණ, මේස සැකසුම්, සේවනාංග සහ උත්සව අවශ්‍ය භාණ්ඩ පැකේජ මට්ටමින් හෝ භාණ්ඩ වශයෙන්ම කුලියට ලබාදෙමින් ඔබගේ අවස්ථාව පිළිවෙළට සංවිධානය කිරීමට අපි සහාය වෙමු.",
     heroStats: [

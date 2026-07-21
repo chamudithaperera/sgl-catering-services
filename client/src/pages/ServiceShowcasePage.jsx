@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Check, ChevronLeft, ChevronRight, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Seo } from "../components/Seo";
 import { api } from "../lib/api";
 import { responsiveImageProps } from "../lib/imagePerformance";
+import { buildSiteUrl } from "../lib/seo";
 import "./ServiceShowcasePage.css";
 
 const contactPhone = "+94703324500";
@@ -435,6 +437,38 @@ function buildEmptyManagedPage(page) {
 export function ServiceShowcasePage({ page }) {
   const [managedPage, setManagedPage] = useState(() => buildEmptyManagedPage(page));
   const anchorId = managedPage.type === "catering" ? "consultation" : "booking";
+  const serviceStructuredData = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name:
+        managedPage.type === "catering"
+          ? "Catering services in Anuradhapura"
+          : "Event rentals in Anuradhapura",
+      serviceType: managedPage.type === "catering" ? "Catering" : "Event rental equipment",
+      description: managedPage.seo?.description || managedPage.description,
+      url: buildSiteUrl(managedPage.seo?.canonicalPath || "/"),
+      image: buildSiteUrl(managedPage.image),
+      areaServed: {
+        "@type": "City",
+        name: "Anuradhapura",
+      },
+      provider: {
+        "@type": ["LocalBusiness", "FoodService"],
+        name: "SGL Catering Service",
+        url: buildSiteUrl("/"),
+        telephone: contactPhone,
+        email: contactEmail,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "No.360, National Housing, Stage II",
+          addressLocality: "Anuradhapura",
+          addressCountry: "LK",
+        },
+      },
+    }),
+    [managedPage.description, managedPage.image, managedPage.seo, managedPage.type]
+  );
 
   useEffect(() => {
     setManagedPage(buildEmptyManagedPage(page));
@@ -460,6 +494,14 @@ export function ServiceShowcasePage({ page }) {
 
   return (
     <main className={`service-page service-page-${managedPage.type}`}>
+      <Seo
+        title={managedPage.seo?.title || `${managedPage.title} | SGL Catering Service`}
+        description={managedPage.seo?.description || managedPage.description}
+        canonicalPath={managedPage.seo?.canonicalPath || "/"}
+        image={managedPage.image}
+        keywords={managedPage.seo?.keywords || ["sgl catering service", "catering services anuradhapura"]}
+        structuredData={serviceStructuredData}
+      />
       <header className="service-page-topbar">
         <Link className="service-page-brand" to="/">
           <span className="service-page-brand-logo">
