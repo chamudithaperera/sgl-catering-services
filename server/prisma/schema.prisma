@@ -20,17 +20,13 @@ model Admin {
 }
 
 model Message {
-  id            Int      @id @default(autoincrement())
-  customerName  String   @map("customer_name")
-  phone         String
-  eventType     String   @map("event_type")
-  serviceNeeded String   @map("service_needed")
-  eventDate     String   @map("event_date")
-  guestCount    String   @map("guest_count")
-  location      String
-  message       String   @db.Text
-  isRead        Boolean  @default(false) @map("is_read")
-  createdAt     DateTime @default(now()) @map("created_at")
+  id           Int      @id @default(autoincrement())
+  customerName String   @map("customer_name")
+  phone        String
+  eventType    String   @map("event_type")
+  message      String   @db.Text
+  isRead       Boolean  @default(false) @map("is_read")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("messages")
 }

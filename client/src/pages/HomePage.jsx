@@ -527,10 +527,6 @@ export function HomePage() {
         customerName: contactForm.name,
         phone: contactForm.phone,
         eventType: contactForm.eventType || "Website inquiry",
-        serviceNeeded: "Website inquiry",
-        eventDate: "Not specified",
-        guestCount: "Not specified",
-        location: "Not specified",
         message: contactForm.message,
       });
       setContactForm({ name: "", phone: "", eventType: "", message: "" });

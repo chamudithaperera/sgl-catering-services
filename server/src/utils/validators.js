@@ -78,10 +78,6 @@ const contactMessageSchema = z.object({
   customerName: z.string().min(2),
   phone: z.string().min(7),
   eventType: z.string().min(2),
-  serviceNeeded: z.string().min(2),
-  eventDate: z.string().min(2),
-  guestCount: z.string().min(1),
-  location: z.string().min(2),
   message: z.string().min(10),
 });
 
