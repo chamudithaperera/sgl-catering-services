@@ -28,11 +28,17 @@ const contactMapEmbedUrl =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4934.785252954407!2d80.40432687591523!3d8.319864291715861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afcf5005cd65e2d%3A0x378ef91fdb3a6052!2sSGL%20Catering%20Service!5e1!3m2!1sen!2slk!4v1784484566797!5m2!1sen!2slk";
 const homeStructuredData = {
   "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "FoodService"],
+  "@type": "LocalBusiness",
+  "@id": buildSiteUrl("/#sgl-catering-service"),
+  additionalType: "https://schema.org/FoodService",
   name: "SGL Catering Service",
   alternateName: "SGL Catering Services",
   url: buildSiteUrl("/"),
-  image: buildSiteUrl("/assets/sgl-images/hero-buffet.jpg"),
+  image: [
+    buildSiteUrl("/assets/sgl-images/hero-buffet.jpg"),
+    buildSiteUrl("/assets/sgl-images/indoor-buffet.jpg"),
+    buildSiteUrl("/assets/sgl-images/grill-buffet.jpg"),
+  ],
   logo: buildSiteUrl("/assets/sgl-logo.png"),
   telephone: contactPhone,
   email: contactEmail,
@@ -43,6 +49,11 @@ const homeStructuredData = {
     streetAddress: "No.360, National Housing, Stage II",
     addressLocality: "Anuradhapura",
     addressCountry: "LK",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 8.319864291715861,
+    longitude: 80.40432687591523,
   },
   areaServed: [
     {
@@ -57,6 +68,21 @@ const homeStructuredData = {
   hasMap: contactMapEmbedUrl,
   priceRange: "$$",
   servesCuisine: ["Sri Lankan", "Traditional Sri Lankan", "Buffet"],
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: contactPhone,
+    contactType: "customer service",
+    areaServed: "LK",
+    availableLanguage: ["Sinhala", "English"],
+  },
+  knowsAbout: [
+    "Catering services in Anuradhapura",
+    "Wedding catering",
+    "Birthday catering",
+    "Almsgiving catering",
+    "Buffet catering",
+    "Event rental equipment",
+  ],
   makesOffer: [
     {
       "@type": "Offer",
