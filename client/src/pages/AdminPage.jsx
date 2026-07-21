@@ -71,20 +71,16 @@ const resourceConfigs = [
     icon: Utensils,
     form: {
       name: "",
-      summary: "",
       priceLabel: "",
       includedItems: "",
       featured: false,
-      ctaLabel: "Ask price",
       sortOrder: 0,
     },
     fields: [
       { name: "name", label: "Menu name" },
-      { name: "summary", label: "Summary", type: "textarea" },
       { name: "priceLabel", label: "Price label" },
       { name: "includedItems", label: "Included items", type: "lines" },
       { name: "featured", label: "Featured", type: "boolean" },
-      { name: "ctaLabel", label: "CTA label" },
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [

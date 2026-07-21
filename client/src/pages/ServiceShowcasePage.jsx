@@ -193,7 +193,6 @@ function buildManagedCateringPage(page, content) {
     ],
     menus: foodPackages.map((item) => ({
       name: item.name,
-      summary: item.summary,
       priceLabel: item.priceLabel,
       featured: item.featured,
       includedItems: item.includedItems,

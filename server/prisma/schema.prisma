@@ -54,11 +54,9 @@ model ContactDetails {
 model CateringMenu {
   id            Int      @id @default(autoincrement())
   name          String
-  summary       String   @db.Text
   priceLabel    String   @map("price_label")
   includedItems Json     @map("included_items")
   featured      Boolean  @default(false)
-  ctaLabel      String   @map("cta_label")
   sortOrder     Int      @default(0) @map("sort_order")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")

@@ -45,11 +45,9 @@ const siteConfigSchema = z.object({
 
 const foodPackageSchema = z.object({
   name: z.string().min(2),
-  summary: z.string().min(10),
   priceLabel: z.string().min(2),
   includedItems: z.union([z.array(z.string().min(1)), z.string()]).transform(textLines),
   featured: z.coerce.boolean().default(false),
-  ctaLabel: z.string().min(2),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 

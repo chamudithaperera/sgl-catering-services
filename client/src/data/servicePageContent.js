@@ -39,35 +39,30 @@ export const servicePageContent = {
     menus: [
       {
         name: "Rice & Curry / රයිස් & කරි",
-        summary: "දිනපතා සහ උත්සව අවස්ථා සඳහා එළවලු, මාළු හෝ කුකුල් මස් තේරීම් සමඟ සකස් කරන බත් සහ කරි මෙනුව.",
         priceLabel: "රු. 400 සිට / පුද්ගලයෙකුට",
         featured: true,
         includedItems: ["එළවලු (Veg) - රු. 400 සිට", "මාළු (Fish) - රු. 450 සිට", "කුකුල් මස් (Chicken) - රු. 500 සිට"],
       },
       {
         name: "Fried Rice / ෆ්‍රයිඩ් රයිස්",
-        summary: "සැහැල්ලු උත්සව, සාද සහ පවුල් හමුවීම් සඳහා ජනප්‍රිය ෆ්‍රයිඩ් රයිස් මෙනුව.",
         priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
         featured: false,
         includedItems: ["අවශ්‍යතාවය අනුව චිකන්, මාළු හෝ එළවලු තේරීම් එකතු කළ හැක"],
       },
       {
         name: "Yellow Rice / කහ බත්",
-        summary: "විශේෂ අවස්ථා සඳහා කහ බත් මූලික කරගත් පිරිසිදු සහ රසවත් සැකසුම.",
         priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
         featured: false,
         includedItems: ["අවශ්‍යතාවය අනුව මස්, මාළු, එළවලු සහ සලාද තේරීම් එකතු කළ හැක"],
       },
       {
         name: "Short Eats / කෙටි ආහාර",
-        summary: "තේ පැන්, රැස්වීම් සහ කුඩා සාද සඳහා කෙටි ආහාර වර්ග.",
         priceLabel: "රු. 80 සිට / එකකට",
         featured: false,
         includedItems: ["කෙටි ආහාර වර්ග අවශ්‍ය ප්‍රමාණය අනුව සකස් කර දිය හැක"],
       },
       {
         name: "Bites / බයිට් වර්ග",
-        summary: "ආහාර මේසයට හෝ විශේෂ සාද සඳහා කිලෝග්‍රෑම් පදනමින් ලබාගත හැකි බයිට් වර්ග.",
         priceLabel: "රු. 600 සිට / 1kg",
         featured: true,
         includedItems: [
