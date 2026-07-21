@@ -6,7 +6,6 @@ const { prisma } = require("../config/prisma");
 const { requireAuth } = require("../middleware/auth");
 const {
   siteConfigSchema,
-  eventCategorySchema,
   foodPackageSchema,
   rentalItemSchema,
   rentalPackageSchema,
@@ -49,7 +48,6 @@ const upload = multer({
 const router = express.Router();
 
 const reorderModels = {
-  cateringCategories: prisma.cateringCatergory,
   foodPackages: prisma.cateringMenu,
   rentalItems: prisma.rentalItem,
   rentalPackages: prisma.rentalBundle,
@@ -61,7 +59,6 @@ router.use(requireAuth);
 
 router.get("/dashboard", async (request, response) => {
   const [
-    cateringCategories,
     foodPackages,
     rentalItems,
     rentalPackages,
@@ -70,7 +67,6 @@ router.get("/dashboard", async (request, response) => {
     contactMessages,
     unreadMessages,
   ] = await Promise.all([
-    prisma.cateringCatergory.count(),
     prisma.cateringMenu.count(),
     prisma.rentalItem.count(),
     prisma.rentalBundle.count(),
@@ -81,7 +77,6 @@ router.get("/dashboard", async (request, response) => {
   ]);
 
   response.json({
-    cateringCategories,
     foodPackages,
     rentalItems,
     rentalPackages,
@@ -143,36 +138,8 @@ router.put("/site-config", async (request, response) => {
   response.json(item);
 });
 
-router.get("/catering-categories", async (request, response) => {
-  const items = await prisma.cateringCatergory.findMany({ orderBy: { sortOrder: "asc" } });
-  response.json(items);
-});
-
-router.post("/catering-categories", async (request, response) => {
-  const data = eventCategorySchema.parse(request.body);
-  const item = await prisma.cateringCatergory.create({ data });
-  response.status(201).json(item);
-});
-
-router.put("/catering-categories/:id", async (request, response) => {
-  const data = eventCategorySchema.parse(request.body);
-  const item = await prisma.cateringCatergory.update({
-    where: { id: Number(request.params.id) },
-    data,
-  });
-  response.json(item);
-});
-
-router.delete("/catering-categories/:id", async (request, response) => {
-  await prisma.cateringCatergory.delete({ where: { id: Number(request.params.id) } });
-  response.status(204).send();
-});
-
 router.get("/food-packages", async (request, response) => {
-  const items = await prisma.cateringMenu.findMany({
-    include: { category: true },
-    orderBy: { sortOrder: "asc" },
-  });
+  const items = await prisma.cateringMenu.findMany({ orderBy: { sortOrder: "asc" } });
   response.json(items);
 });
 

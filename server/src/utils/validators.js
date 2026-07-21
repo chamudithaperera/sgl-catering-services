@@ -43,19 +43,7 @@ const siteConfigSchema = z.object({
   instagramUrl: z.string().min(2),
 });
 
-const eventCategorySchema = z.object({
-  title: z.string().min(2),
-  shortLabel: z.string().min(2),
-  description: z.string().min(10),
-  imageUrl: z.string().min(2),
-  highlights: z.union([z.array(z.string().min(1)), z.string()]).transform(textLines),
-  sortOrder: z.coerce.number().int().min(0).default(0),
-});
-
 const foodPackageSchema = z.object({
-  categoryId: z
-    .union([z.coerce.number().int().positive(), z.literal(""), z.null(), z.undefined()])
-    .transform((value) => (value === "" || value === null || value === undefined ? null : value)),
   name: z.string().min(2),
   summary: z.string().min(10),
   priceLabel: z.string().min(2),
@@ -114,7 +102,6 @@ const contactMessageSchema = z.object({
 
 module.exports = {
   siteConfigSchema,
-  eventCategorySchema,
   foodPackageSchema,
   rentalItemSchema,
   rentalPackageSchema,

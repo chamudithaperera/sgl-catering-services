@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   ClipboardList,
   GalleryHorizontalEnd,
-  Grid2X2,
   Home,
   ImageUp,
   LayoutDashboard,
@@ -65,41 +64,12 @@ const resourceConfigs = [
     ],
   },
   {
-    key: "cateringCategories",
-    label: "Categories",
-    eyebrow: "Event categories such as weddings and home functions",
-    endpoint: "/admin/catering-categories",
-    icon: Grid2X2,
-    form: {
-      title: "",
-      shortLabel: "",
-      description: "",
-      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
-      highlights: "",
-      sortOrder: 0,
-    },
-    fields: [
-      { name: "title", label: "Title" },
-      { name: "shortLabel", label: "Short label" },
-      { name: "description", label: "Description", type: "textarea" },
-      { name: "imageUrl", label: "Image URL", type: "image" },
-      { name: "highlights", label: "Highlights", type: "lines" },
-      { name: "sortOrder", label: "Sort order", type: "number" },
-    ],
-    columns: [
-      { name: "title", label: "Title" },
-      { name: "shortLabel", label: "Short label" },
-      { name: "sortOrder", label: "Order" },
-    ],
-  },
-  {
     key: "foodPackages",
     label: "Menus",
-    eyebrow: "Food menus assigned to event categories",
+    eyebrow: "Food menus shown directly on the catering page",
     endpoint: "/admin/food-packages",
     icon: Utensils,
     form: {
-      categoryId: "",
       name: "",
       summary: "",
       priceLabel: "",
@@ -109,7 +79,6 @@ const resourceConfigs = [
       sortOrder: 0,
     },
     fields: [
-      { name: "categoryId", label: "Show under category", type: "select", optionsKey: "cateringCategories", optionLabel: "title" },
       { name: "name", label: "Menu name" },
       { name: "summary", label: "Summary", type: "textarea" },
       { name: "priceLabel", label: "Price label" },
@@ -120,7 +89,6 @@ const resourceConfigs = [
     ],
     columns: [
       { name: "name", label: "Menu" },
-      { name: "categoryId", label: "Category" },
       { name: "priceLabel", label: "Price" },
       { name: "featured", label: "Featured" },
     ],
@@ -251,12 +219,9 @@ const resourceConfigs = [
 const groupedSections = {
   catering: {
     label: "Catering",
-    eyebrow: "Manage event categories and food menus",
+    eyebrow: "Manage food menus",
     icon: Utensils,
-    tabs: [
-      { key: "cateringCategories", label: "Categories" },
-      { key: "foodPackages", label: "Menus" },
-    ],
+    tabs: [{ key: "foodPackages", label: "Menus" }],
   },
   rental: {
     label: "Rental",
@@ -269,7 +234,7 @@ const groupedSections = {
   },
 };
 
-const popupCrudKeys = ["cateringCategories", "foodPackages", "rentalPackages", "rentalItems", "galleryItems", "reviews"];
+const popupCrudKeys = ["foodPackages", "rentalPackages", "rentalItems", "galleryItems", "reviews"];
 const sortableKeys = popupCrudKeys;
 
 const navItems = [
@@ -331,10 +296,6 @@ function formatCell(value) {
 function renderCell(item, column) {
   if (column.name === "isRead") {
     return <span className={`sgla-status-chip ${item.isRead ? "is-read" : "is-unread"}`}>{item.isRead ? "Read" : "Unread"}</span>;
-  }
-
-  if (column.name === "categoryId") {
-    return item.category?.title || "-";
   }
 
   const value = formatCell(item[column.name]);
@@ -411,7 +372,7 @@ export function AdminPage() {
   const [loginForm, setLoginForm] = useState({ email: "sgladmin", password: "" });
   const [activeKey, setActiveKey] = useState("dashboard");
   const [activeGroupTabs, setActiveGroupTabs] = useState({
-    catering: "cateringCategories",
+    catering: "foodPackages",
     rental: "rentalPackages",
   });
   const [crudModalKey, setCrudModalKey] = useState("");
@@ -558,7 +519,7 @@ export function AdminPage() {
   }
 
   function beginEdit(config, item) {
-    if (["cateringCategories", "foodPackages"].includes(config.key)) {
+    if (config.key === "foodPackages") {
       setActiveKey("catering");
       setActiveGroupTabs((current) => ({ ...current, catering: config.key }));
     } else if (["rentalPackages", "rentalItems"].includes(config.key)) {

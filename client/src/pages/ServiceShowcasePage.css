@@ -151,8 +151,7 @@
 }
 
 .service-page-call-link:hover,
-.service-banner-button:hover,
-.service-category-card:hover {
+.service-banner-button:hover {
   transform: translateY(-1px);
 }
 
@@ -746,10 +745,6 @@
     font-size: 0.86rem;
   }
 
-  .service-category-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .service-bundle-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -758,22 +753,8 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .service-category-feature,
   .service-contact-panel {
     grid-template-columns: 1fr;
-  }
-
-  .service-category-feature {
-    gap: 28px;
-    padding-inline: 0;
-  }
-
-  .service-category-arrow-left {
-    left: 16px;
-  }
-
-  .service-category-arrow-right {
-    right: 16px;
   }
 
   .service-contact-actions {
@@ -820,8 +801,7 @@
   }
 
   .service-menu-grid,
-  .service-bundle-grid,
-  .service-category-grid {
+  .service-bundle-grid {
     grid-template-columns: 1fr;
   }
 
@@ -829,14 +809,13 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .service-category-feature-media {
-    min-height: 300px;
+  .service-catering-menu-card-head {
+    grid-template-columns: 1fr;
   }
 
-  .service-category-arrow {
-    top: auto;
-    bottom: 18px;
-    transform: none;
+  .service-catering-menu-card-head strong {
+    text-align: left;
+    white-space: normal;
   }
 }
 
@@ -894,9 +873,9 @@
   .service-banner-copy p,
   .service-section-head p,
   .service-contact-copy p,
-  .service-category-feature-copy p,
   .service-item-card-body p,
-  .service-package-card p {
+  .service-package-card p,
+  .service-catering-menu-card p {
     font-size: 0.96rem;
     line-height: 1.82;
   }
@@ -923,28 +902,14 @@
     font-size: 2.4rem;
   }
 
-  .service-category-feature-copy h3,
   .service-item-card-body h3,
-  .service-package-card-head h3 {
+  .service-package-card-head h3,
+  .service-catering-menu-card h3 {
     font-size: 1.65rem;
   }
 
   .service-item-card-grid {
     grid-template-columns: 1fr;
-  }
-
-  .service-category-arrow {
-    width: 48px;
-    height: 48px;
-    bottom: 14px;
-  }
-
-  .service-category-arrow-left {
-    left: 14px;
-  }
-
-  .service-category-arrow-right {
-    right: 14px;
   }
 
   .service-package-card-head {
@@ -957,6 +922,7 @@
 
   .service-contact-panel,
   .service-package-card,
+  .service-catering-menu-card,
   .service-item-card-body {
     padding-inline: 20px;
   }

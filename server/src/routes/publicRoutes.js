@@ -26,7 +26,6 @@ router.get("/home", async (request, response) => {
 router.get("/content", async (request, response) => {
   const [
     contactDetails,
-    cateringCategories,
     cateringMenus,
     rentalItems,
     rentalBundles,
@@ -34,8 +33,7 @@ router.get("/content", async (request, response) => {
     reviews,
   ] = await Promise.all([
     prisma.contactDetails.findUnique({ where: { id: 1 } }),
-    prisma.cateringCatergory.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.cateringMenu.findMany({ include: { category: true }, orderBy: { sortOrder: "asc" } }),
+    prisma.cateringMenu.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.rentalItem.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.rentalBundle.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.gallery.findMany({ orderBy: { sortOrder: "asc" } }),
@@ -45,7 +43,6 @@ router.get("/content", async (request, response) => {
   response.json({
     siteConfig: contactDetails,
     contactDetails,
-    cateringCategories,
     foodPackages: cateringMenus,
     cateringMenus,
     rentalItems,

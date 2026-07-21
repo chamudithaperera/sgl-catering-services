@@ -60,82 +60,62 @@ async function main() {
 
   await seedContactDetailsIfMissing();
 
-  await seedIfEmpty(prisma.cateringCatergory, [
+  await prisma.cateringMenu.deleteMany();
+  await prisma.cateringMenu.createMany({
+    data: [
     {
-      title: "විවාහ උත්සව",
-      shortLabel: "Wedding",
-      description: "විවාහ උත්සව සඳහා අලංකාර බුෆේ සැකසුම් සහ සම්පූර්ණ ආහාර සේවාව.",
-      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
-      highlights: ["බුෆේ සැකසුම", "සේවා කණ්ඩායම", "විශේෂ මෙනු"],
+      name: "Rice & Curry / රයිස් & කරි",
+      summary: "දිනපතා සහ උත්සව අවස්ථා සඳහා එළවලු, මාළු හෝ කුකුල් මස් තේරීම් සමඟ සකස් කරන බත් සහ කරි මෙනුව.",
+      priceLabel: "රු. 400 සිට / පුද්ගලයෙකුට",
+      includedItems: ["එළවලු (Veg) - රු. 400 සිට", "මාළු (Fish) - රු. 450 සිට", "කුකුල් මස් (Chicken) - රු. 500 සිට"],
+      featured: true,
+      ctaLabel: "මිල විමසන්න",
       sortOrder: 1,
     },
     {
-      title: "පවුල් සහ උපන්දින සාද",
-      shortLabel: "Family",
-      description: "උපන්දින, නිවසේ සාද සහ පවුල් හමුවීම් සඳහා රසවත් ආහාර පැකේජ.",
-      imageUrl: "/assets/sgl-images/salad-buffet.jpg",
-      highlights: ["සරල සැකසුම්", "ළමුන්ට ගැළපෙන මෙනු", "පහසු මිල"],
+      name: "Fried Rice / ෆ්‍රයිඩ් රයිස්",
+      summary: "සැහැල්ලු උත්සව, සාද සහ පවුල් හමුවීම් සඳහා ජනප්‍රිය ෆ්‍රයිඩ් රයිස් මෙනුව.",
+      priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
+      includedItems: ["අවශ්‍යතාවය අනුව චිකන්, මාළු හෝ එළවලු තේරීම් එකතු කළ හැක"],
+      featured: false,
+      ctaLabel: "මිල විමසන්න",
       sortOrder: 2,
     },
     {
-      title: "ආයතනික උත්සව",
-      shortLabel: "Corporate",
-      description: "රැස්වීම්, වැඩමුළු සහ සමාගම් උත්සව සඳහා පිළිවෙලට සැලසුම් කළ catering සේවාව.",
-      imageUrl: "/assets/sgl-images/indoor-buffet.jpg",
-      highlights: ["වේලාවට සේවාව", "පිරිසිදු ඉදිරිපත් කිරීම", "සැලසුම් කළ මෙනු"],
+      name: "Yellow Rice / කහ බත්",
+      summary: "විශේෂ අවස්ථා සඳහා කහ බත් මූලික කරගත් පිරිසිදු සහ රසවත් සැකසුම.",
+      priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
+      includedItems: ["අවශ්‍යතාවය අනුව මස්, මාළු, එළවලු සහ සලාද තේරීම් එකතු කළ හැක"],
+      featured: false,
+      ctaLabel: "මිල විමසන්න",
       sortOrder: 3,
     },
-  ]);
-
-  const categories = await prisma.cateringCatergory.findMany({ orderBy: { sortOrder: "asc" } });
-  const weddingCategory = categories[0];
-  const familyCategory = categories[1] || weddingCategory;
-  const corporateCategory = categories[2] || weddingCategory;
-
-  if (weddingCategory) {
-    await seedIfEmpty(prisma.cateringMenu, [
-      {
-        categoryId: weddingCategory.id,
-        name: "මූලික ආහාර මෙනුව",
-        summary: "කුඩා සහ මධ්‍යම ප්‍රමාණයේ උත්සව සඳහා ගැළපෙන ජනප්‍රිය තේරීමක්.",
-        priceLabel: "එක් පුද්ගලයෙකුට රු. 1,750 සිට",
-        includedItems: ["බත් වර්ගයක්", "කරි වර්ග තුනක්", "සලාදයක්", "අතුරුපසක්"],
-        featured: false,
-        ctaLabel: "මිල විමසන්න",
-        sortOrder: 1,
-      },
-      {
-        categoryId: weddingCategory.id,
-        name: "විශේෂ ආහාර මෙනුව",
-        summary: "විවාහ, උපන්දින සහ සමාගම් උත්සව සඳහා සමතුලිත මෙනුවක්.",
-        priceLabel: "එක් පුද්ගලයෙකුට රු. 2,450 සිට",
-        includedItems: ["බත් වර්ග දෙකක්", "මස් හෝ මාළු වර්ගයක්", "කරි වර්ග හතරක්", "සලාදයක්", "අතුරුපසක්"],
-        featured: true,
-        ctaLabel: "මිල විමසන්න",
-        sortOrder: 2,
-      },
-      {
-        categoryId: familyCategory.id,
-        name: "පවුල් සාද මෙනුව",
-        summary: "නිවසේ සාද සහ උපන්දින සඳහා පහසු, රසවත් සහ පිරිසිදු ආහාර තේරීමක්.",
-        priceLabel: "එක් පුද්ගලයෙකුට රු. 2,100 සිට",
-        includedItems: ["ෆ්‍රයිඩ් රයිස්", "චිකන් කරි", "එළවළු දෙකක්", "සලාද", "අතුරුපස"],
-        featured: false,
-        ctaLabel: "මිල විමසන්න",
-        sortOrder: 3,
-      },
-      {
-        categoryId: corporateCategory.id,
-        name: "ප්‍රිමියම් ආහාර මෙනුව",
-        summary: "විශාල උත්සව සහ විශේෂ සැලසුම් කළ ආරාධනාවන් සඳහා premium සේවාව.",
-        priceLabel: "එක් පුද්ගලයෙකුට රු. 3,250 සිට",
-        includedItems: ["විශේෂ බත් වර්ග", "මස් සහ මාළු ආහාර", "කරි සහ අතුරු ආහාර", "අතුරුපස", "පානයක්"],
-        featured: false,
-        ctaLabel: "මිල විමසන්න",
-        sortOrder: 4,
-      },
-    ]);
-  }
+    {
+      name: "Short Eats / කෙටි ආහාර",
+      summary: "තේ පැන්, රැස්වීම් සහ කුඩා සාද සඳහා කෙටි ආහාර වර්ග.",
+      priceLabel: "රු. 80 සිට / එකකට",
+      includedItems: ["කෙටි ආහාර වර්ග අවශ්‍ය ප්‍රමාණය අනුව සකස් කර දිය හැක"],
+      featured: false,
+      ctaLabel: "මිල විමසන්න",
+      sortOrder: 4,
+    },
+    {
+      name: "Bites / බයිට් වර්ග",
+      summary: "ආහාර මේසයට හෝ විශේෂ සාද සඳහා කිලෝග්‍රෑම් පදනමින් ලබාගත හැකි බයිට් වර්ග.",
+      priceLabel: "රු. 600 සිට / 1kg",
+      includedItems: [
+        "තම්බපු එළවලු (Boiled vegetables) 1kg - රු. 800 සිට",
+        "වැව් මාළු (Tank fish) 1kg - රු. 1000 සිට",
+        "කුකුල් මස් (Chicken) 1kg - රු. 2000 සිට",
+        "ඌරු මස් / ඉස්සන් / දැල්ලෝ (Pork / Prawns / Cuttlefish) 1kg - රු. 3500 සිට",
+        "මඤ්ඤොක්කා (Manioc) 1kg - රු. 600 සිට",
+      ],
+      featured: true,
+      ctaLabel: "මිල විමසන්න",
+      sortOrder: 5,
+    },
+    ],
+  });
 
   await seedIfEmpty(prisma.rentalItem, [
     {
