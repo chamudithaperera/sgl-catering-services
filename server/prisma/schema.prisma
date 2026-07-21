@@ -72,6 +72,7 @@ model RentalItem {
   category   String
   imageUrl   String   @map("image_url")
   priceLabel String   @map("price_label")
+  details    String   @default("")
   sortOrder  Int      @default(0) @map("sort_order")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")

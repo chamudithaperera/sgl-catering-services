@@ -584,6 +584,14 @@
   color: #101617;
 }
 
+.service-rental-item-card-details {
+  margin: 0;
+  color: rgba(16, 22, 23, 0.64);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .service-rental-item-card-head strong {
   display: inline-flex;
   align-items: center;

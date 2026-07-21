@@ -32,6 +32,7 @@ const rentalItems = [
     category: "Serviceware",
     imageUrl: "",
     priceLabel: "රු. 20 සිට ඉහළට",
+    details: "Water glass / Shot glass / Beer glass",
     sortOrder: 5,
   },
   {
@@ -74,6 +75,7 @@ const rentalItems = [
     category: "Canopies",
     imageUrl: "",
     priceLabel: "රු. 2500 සිට ඉහළට",
+    details: "10x10 / 10x15 / 15x15 / 20x20",
     sortOrder: 11,
   },
   {
@@ -81,6 +83,7 @@ const rentalItems = [
     category: "Beverage Support",
     imageUrl: "",
     priceLabel: "රු. 1000 සිට ඉහළට",
+    details: "මේස, පුටු සහ සියළුම සාංඝික උපකරණ",
     sortOrder: 12,
   },
   {

@@ -122,6 +122,7 @@ function RentalItemCard({ item }) {
         <div>
           <small>{item.category || "Rental Item"}</small>
           <h3>{item.name}</h3>
+          {item.details ? <p className="service-rental-item-card-details">{item.details}</p> : null}
         </div>
         <strong>{item.priceLabel}</strong>
       </div>
@@ -215,6 +216,7 @@ function buildManagedRentalPage(page, content) {
       category: item.category,
       imageUrl: item.imageUrl,
       priceLabel: item.priceLabel,
+      details: item.details,
     })),
   };
 }

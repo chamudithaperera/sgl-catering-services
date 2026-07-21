@@ -104,6 +104,7 @@ const resourceConfigs = [
       category: "",
       imageUrl: "",
       priceLabel: "",
+      details: "",
       sortOrder: 0,
     },
     fields: [
@@ -111,6 +112,7 @@ const resourceConfigs = [
       { name: "category", label: "Category" },
       { name: "imageUrl", label: "Image URL", type: "image" },
       { name: "priceLabel", label: "Price label" },
+      { name: "details", label: "Details", type: "textarea" },
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [
