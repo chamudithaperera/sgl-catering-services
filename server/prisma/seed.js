@@ -125,8 +125,6 @@ async function main() {
       category: "Seating",
       imageUrl: "/assets/sgl-images/indoor-buffet.jpg",
       priceLabel: "රු. 30 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 1,
     },
     {
@@ -134,8 +132,6 @@ async function main() {
       category: "Seating",
       imageUrl: "/assets/sgl-images/salad-station.jpg",
       priceLabel: "රු. 100 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 2,
     },
     {
@@ -143,8 +139,6 @@ async function main() {
       category: "Tables",
       imageUrl: "/assets/sgl-images/grill-buffet.jpg",
       priceLabel: "රු. 100 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 3,
     },
     {
@@ -152,8 +146,6 @@ async function main() {
       category: "Tables",
       imageUrl: "/assets/sgl-images/hero-buffet.jpg",
       priceLabel: "රු. 200 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 4,
     },
     {
@@ -161,8 +153,6 @@ async function main() {
       category: "Serviceware",
       imageUrl: "/assets/sgl-images/traditional-sweets.jpg",
       priceLabel: "රු. 20 සිට / එකකට",
-      availableQuantity: 0,
-      status: "Water glass / Shot glass / Beer glass",
       sortOrder: 5,
     },
     {
@@ -170,8 +160,6 @@ async function main() {
       category: "Serviceware",
       imageUrl: "/assets/sgl-images/curry-selection.jpg",
       priceLabel: "රු. 150 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 6,
     },
     {
@@ -179,8 +167,6 @@ async function main() {
       category: "Support Items",
       imageUrl: "/assets/sgl-images/salad-buffet.jpg",
       priceLabel: "රු. 600 සිට / එකකට",
-      availableQuantity: 0,
-      status: "With clothes - රු. 800 සිට",
       sortOrder: 7,
     },
     {
@@ -188,8 +174,6 @@ async function main() {
       category: "Ceremony Items",
       imageUrl: "/assets/sgl-images/hero-buffet.jpg",
       priceLabel: "රු. 2000 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 8,
     },
     {
@@ -197,8 +181,6 @@ async function main() {
       category: "Outdoor",
       imageUrl: "/assets/sgl-images/grill-buffet.jpg",
       priceLabel: "රු. 500 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 9,
     },
     {
@@ -206,8 +188,6 @@ async function main() {
       category: "Support Items",
       imageUrl: "/assets/sgl-images/salad-station.jpg",
       priceLabel: "රු. 500 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 10,
     },
     {
@@ -215,8 +195,6 @@ async function main() {
       category: "Serviceware",
       imageUrl: "/assets/sgl-images/traditional-sweets.jpg",
       priceLabel: "රු. 20 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 11,
     },
     {
@@ -224,8 +202,6 @@ async function main() {
       category: "Canopies",
       imageUrl: "/assets/sgl-images/indoor-buffet.jpg",
       priceLabel: "රු. 2500 සිට / එකකට",
-      availableQuantity: 0,
-      status: "10x10 / 10x15 / 15x15 / 20x20",
       sortOrder: 12,
     },
     {
@@ -233,8 +209,6 @@ async function main() {
       category: "Beverage Support",
       imageUrl: "/assets/sgl-images/carrot-sambol.jpg",
       priceLabel: "රු. 1000 සිට / එකකට",
-      availableQuantity: 0,
-      status: "කෝප්ප සහ සැකසුම් භාණ්ඩ",
       sortOrder: 13,
     },
     {
@@ -242,8 +216,6 @@ async function main() {
       category: "Kitchen Support",
       imageUrl: "/assets/sgl-images/curry-selection.jpg",
       priceLabel: "රු. 500 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 14,
     },
     {
@@ -251,8 +223,6 @@ async function main() {
       category: "Kitchen Support",
       imageUrl: "/assets/sgl-images/devilled-side.jpg",
       priceLabel: "රු. 1000 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 15,
     },
     {
@@ -260,8 +230,6 @@ async function main() {
       category: "Kitchen Support",
       imageUrl: "/assets/sgl-images/rice-plate.jpg",
       priceLabel: "රු. 10,000 සිට / එකකට",
-      availableQuantity: 0,
-      status: "ලබාගත හැකියි",
       sortOrder: 16,
     },
     ],

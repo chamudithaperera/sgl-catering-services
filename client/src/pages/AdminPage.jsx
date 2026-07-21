@@ -96,16 +96,14 @@ const resourceConfigs = [
   {
     key: "rentalItems",
     label: "Items",
-    eyebrow: "Equipment inventory, categories, quantities, and images",
+    eyebrow: "Equipment inventory, categories, prices, and images",
     endpoint: "/admin/rental-items",
     icon: Boxes,
-  form: {
+    form: {
       name: "",
       category: "",
       imageUrl: "/assets/sgl-images/hero-buffet.jpg",
       priceLabel: "",
-      availableQuantity: 0,
-      status: "Available",
       sortOrder: 0,
     },
     fields: [
@@ -113,15 +111,12 @@ const resourceConfigs = [
       { name: "category", label: "Category" },
       { name: "imageUrl", label: "Image URL", type: "image" },
       { name: "priceLabel", label: "Price label" },
-      { name: "availableQuantity", label: "Available quantity", type: "number" },
-      { name: "status", label: "Status" },
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [
       { name: "name", label: "Item" },
       { name: "category", label: "Category" },
       { name: "priceLabel", label: "Price" },
-      { name: "availableQuantity", label: "Qty" },
     ],
   },
   {

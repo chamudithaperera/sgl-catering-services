@@ -126,10 +126,6 @@ function RentalItemCard({ item }) {
         <strong>{item.priceLabel}</strong>
       </div>
 
-      <div className="service-rental-item-card-meta">
-        <span>{item.quantity}</span>
-        <b>{item.status}</b>
-      </div>
     </article>
   );
 }
@@ -219,8 +215,6 @@ function buildManagedRentalPage(page, content) {
       category: item.category,
       imageUrl: item.imageUrl,
       priceLabel: item.priceLabel,
-      quantity: item.availableQuantity ? `${item.availableQuantity} ලබාගත හැකියි` : "ප්‍රමාණය විමසන්න",
-      status: item.status,
     })),
   };
 }
