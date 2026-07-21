@@ -346,7 +346,7 @@
   max-width: 680px;
   color: rgba(255, 248, 239, 0.78);
   font-family: inherit;
-  font-size: clamp(0.94rem, 1.7vw, 1.05rem);
+  font-size: clamp(1.02rem, 2.15vw, 1.24rem);
   font-weight: 600;
   line-height: 1.7;
 }
