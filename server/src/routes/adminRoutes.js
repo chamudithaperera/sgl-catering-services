@@ -53,6 +53,15 @@ const reorderModels = {
   reviews: prisma.review,
 };
 
+const galleryAdminSelect = {
+  id: true,
+  title: true,
+  imageUrl: true,
+  sortOrder: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
 router.use(requireAuth);
 
 router.get("/dashboard", async (request, response) => {
@@ -184,13 +193,19 @@ router.delete("/rental-items/:id", async (request, response) => {
 });
 
 router.get("/gallery-items", async (request, response) => {
-  const items = await prisma.gallery.findMany({ orderBy: { sortOrder: "asc" } });
+  const items = await prisma.gallery.findMany({
+    orderBy: { sortOrder: "asc" },
+    select: galleryAdminSelect,
+  });
   response.json(items);
 });
 
 router.post("/gallery-items", async (request, response) => {
   const data = galleryItemSchema.parse(request.body);
-  const item = await prisma.gallery.create({ data });
+  const item = await prisma.gallery.create({
+    data,
+    select: galleryAdminSelect,
+  });
   response.status(201).json(item);
 });
 
@@ -199,6 +214,7 @@ router.put("/gallery-items/:id", async (request, response) => {
   const item = await prisma.gallery.update({
     where: { id: Number(request.params.id) },
     data,
+    select: galleryAdminSelect,
   });
   response.json(item);
 });

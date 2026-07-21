@@ -83,9 +83,7 @@ model RentalItem {
 model Gallery {
   id        Int      @id @default(autoincrement())
   title     String
-  category  String
   imageUrl  String   @map("image_url")
-  featured  Boolean  @default(false)
   sortOrder Int      @default(0) @map("sort_order")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

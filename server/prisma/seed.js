@@ -121,12 +121,12 @@ async function main() {
   await seedIfEmpty(prisma.rentalItem, rentalItems);
 
   await seedIfEmpty(prisma.gallery, [
-    { title: "ප්‍රධාන බුෆේ සැකසුම", category: "බුෆේ සැකසුම්", imageUrl: "/assets/sgl-images/hero-buffet.jpg", featured: true, sortOrder: 1 },
-    { title: "නැවුම් සලාද කවුන්ටරය", category: "ආහාර", imageUrl: "/assets/sgl-images/salad-buffet.jpg", featured: true, sortOrder: 2 },
-    { title: "ශ්‍රී ලාංකික ප්‍රධාන පිඟාන", category: "ආහාර", imageUrl: "/assets/sgl-images/rice-plate.jpg", featured: false, sortOrder: 3 },
-    { title: "උණුසුම් මස් බුෆේ", category: "විවාහ උත්සව", imageUrl: "/assets/sgl-images/grill-buffet.jpg", featured: false, sortOrder: 4 },
-    { title: "රසවත් අතුරුපස සහ රසකැවිලි", category: "උපන්දින සාද", imageUrl: "/assets/sgl-images/traditional-sweets.jpg", featured: false, sortOrder: 5 },
-    { title: "සම්බෝල සහ අතුරු කෑම", category: "ආහාර", imageUrl: "/assets/sgl-images/carrot-sambol.jpg", featured: false, sortOrder: 6 },
+    { title: "ප්‍රධාන බුෆේ සැකසුම", imageUrl: "/assets/sgl-images/hero-buffet.jpg", sortOrder: 1 },
+    { title: "නැවුම් සලාද කවුන්ටරය", imageUrl: "/assets/sgl-images/salad-buffet.jpg", sortOrder: 2 },
+    { title: "ශ්‍රී ලාංකික ප්‍රධාන පිඟාන", imageUrl: "/assets/sgl-images/rice-plate.jpg", sortOrder: 3 },
+    { title: "උණුසුම් මස් බුෆේ", imageUrl: "/assets/sgl-images/grill-buffet.jpg", sortOrder: 4 },
+    { title: "රසවත් අතුරුපස සහ රසකැවිලි", imageUrl: "/assets/sgl-images/traditional-sweets.jpg", sortOrder: 5 },
+    { title: "සම්බෝල සහ අතුරු කෑම", imageUrl: "/assets/sgl-images/carrot-sambol.jpg", sortOrder: 6 },
   ]);
 
   await seedIfEmpty(prisma.review, [

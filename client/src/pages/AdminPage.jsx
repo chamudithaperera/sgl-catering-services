@@ -124,27 +124,23 @@ const resourceConfigs = [
   {
     key: "galleryItems",
     label: "Gallery",
-    eyebrow: "Gallery images, categories, and featured placement",
+    eyebrow: "Gallery images and display order",
     endpoint: "/admin/gallery-items",
     icon: Camera,
     form: {
       title: "",
-      category: "",
       imageUrl: "/assets/sgl-images/hero-buffet.jpg",
-      featured: false,
       sortOrder: 0,
     },
     fields: [
       { name: "title", label: "Title" },
-      { name: "category", label: "Category" },
       { name: "imageUrl", label: "Image URL", type: "image" },
-      { name: "featured", label: "Featured", type: "boolean" },
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [
       { name: "title", label: "Title" },
-      { name: "category", label: "Category" },
-      { name: "featured", label: "Featured" },
+      { name: "imageUrl", label: "Image" },
+      { name: "sortOrder", label: "Order" },
     ],
   },
   {
@@ -916,13 +912,9 @@ export function AdminPage() {
           >
             <div className="sgla-gallery-media">
               <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async" />
-              <span className={`sgla-status-chip ${item.featured ? "is-unread" : "is-read"}`}>
-                {item.featured ? "Featured" : "Normal"}
-              </span>
             </div>
             <div className="sgla-gallery-body">
               <div>
-                <p>{item.category}</p>
                 <h3>{item.title}</h3>
                 <span>{item.imageUrl}</span>
               </div>

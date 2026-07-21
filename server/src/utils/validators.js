@@ -64,9 +64,7 @@ const rentalItemSchema = z.object({
 
 const galleryItemSchema = z.object({
   title: z.string().min(2),
-  category: z.string().min(2),
   imageUrl: z.string().min(2),
-  featured: z.coerce.boolean().default(false),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
