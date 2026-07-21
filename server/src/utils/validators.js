@@ -56,7 +56,7 @@ const foodPackageSchema = z.object({
 const rentalItemSchema = z.object({
   name: z.string().min(2),
   category: z.string().min(2),
-  imageUrl: z.string().min(2),
+  imageUrl: z.string().optional().default(""),
   priceLabel: z.string().min(2),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });

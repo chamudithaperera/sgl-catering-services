@@ -102,7 +102,7 @@ const resourceConfigs = [
     form: {
       name: "",
       category: "",
-      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
+      imageUrl: "",
       priceLabel: "",
       sortOrder: 0,
     },

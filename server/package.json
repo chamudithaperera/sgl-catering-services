@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push --accept-data-loss",
-    "prisma:seed": "node prisma/seed.js"
+    "prisma:seed": "node prisma/seed.js",
+    "prisma:reset-rentals": "node prisma/reset-rental-items.js"
   },
   "keywords": [],
   "author": "",

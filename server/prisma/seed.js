@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const { PrismaClient } = require("@prisma/client");
+const { rentalItems } = require("./data/rentalItems");
 
 const prisma = new PrismaClient();
 
@@ -117,123 +118,7 @@ async function main() {
     ],
   });
 
-  await prisma.rentalItem.deleteMany();
-  await prisma.rentalItem.createMany({
-    data: [
-    {
-      name: "Plastic Chairs / ප්ලාස්ටික් පුටු",
-      category: "Seating",
-      imageUrl: "/assets/sgl-images/indoor-buffet.jpg",
-      priceLabel: "රු. 30 සිට ඉහළට",
-      sortOrder: 1,
-    },
-    {
-      name: "Covered Chairs / කවර් සහිත පුටු",
-      category: "Seating",
-      imageUrl: "/assets/sgl-images/salad-station.jpg",
-      priceLabel: "රු. 100 සිට ඉහළට",
-      sortOrder: 2,
-    },
-    {
-      name: "Tables / මේස",
-      category: "Tables",
-      imageUrl: "/assets/sgl-images/grill-buffet.jpg",
-      priceLabel: "රු. 100 සිට ඉහළට",
-      sortOrder: 3,
-    },
-    {
-      name: "Covered Tables / කවර් සහිත මේස",
-      category: "Tables",
-      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
-      priceLabel: "රු. 200 සිට ඉහළට",
-      sortOrder: 4,
-    },
-    {
-      name: "Glasses / වීදුරු",
-      category: "Serviceware",
-      imageUrl: "/assets/sgl-images/traditional-sweets.jpg",
-      priceLabel: "රු. 20 සිට ඉහළට",
-      sortOrder: 5,
-    },
-    {
-      name: "Cups / කප්",
-      category: "Serviceware",
-      imageUrl: "/assets/sgl-images/curry-selection.jpg",
-      priceLabel: "රු. 150 සිට ඉහළට",
-      sortOrder: 6,
-    },
-    {
-      name: "Basin / බේසම්",
-      category: "Support Items",
-      imageUrl: "/assets/sgl-images/salad-buffet.jpg",
-      priceLabel: "රු. 600 සිට ඉහළට",
-      sortOrder: 7,
-    },
-    {
-      name: "Oil Lamp / පොල් තෙල් පහන",
-      category: "Ceremony Items",
-      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
-      priceLabel: "රු. 2000 සිට ඉහළට",
-      sortOrder: 8,
-    },
-    {
-      name: "Garden Umbrella / උද්‍යාන කුඩ",
-      category: "Outdoor",
-      imageUrl: "/assets/sgl-images/grill-buffet.jpg",
-      priceLabel: "රු. 500 සිට ඉහළට",
-      sortOrder: 9,
-    },
-    {
-      name: "Sink / සින්ක්",
-      category: "Support Items",
-      imageUrl: "/assets/sgl-images/salad-station.jpg",
-      priceLabel: "රු. 500 සිට ඉහළට",
-      sortOrder: 10,
-    },
-    {
-      name: "Dessert Cup / ඩෙසට් කප්",
-      category: "Serviceware",
-      imageUrl: "/assets/sgl-images/traditional-sweets.jpg",
-      priceLabel: "රු. 20 සිට ඉහළට",
-      sortOrder: 11,
-    },
-    {
-      name: "VIP Canopies / හට්",
-      category: "Canopies",
-      imageUrl: "/assets/sgl-images/indoor-buffet.jpg",
-      priceLabel: "රු. 2500 සිට ඉහළට",
-      sortOrder: 12,
-    },
-    {
-      name: "Tea & Coffee Set / තේ කෝපි උපකරණ",
-      category: "Beverage Support",
-      imageUrl: "/assets/sgl-images/carrot-sambol.jpg",
-      priceLabel: "රු. 1000 සිට ඉහළට",
-      sortOrder: 13,
-    },
-    {
-      name: "Saucepan / සාස්පාන්",
-      category: "Kitchen Support",
-      imageUrl: "/assets/sgl-images/curry-selection.jpg",
-      priceLabel: "රු. 500 සිට ඉහළට",
-      sortOrder: 14,
-    },
-    {
-      name: "Gas Cooker / ගෑස් ලිප්",
-      category: "Kitchen Support",
-      imageUrl: "/assets/sgl-images/devilled-side.jpg",
-      priceLabel: "රු. 1000 සිට ඉහළට",
-      sortOrder: 15,
-    },
-    {
-      name: "Rice Warmer",
-      category: "Kitchen Support",
-      imageUrl: "/assets/sgl-images/rice-plate.jpg",
-      priceLabel: "රු. 10,000 සිට ඉහළට",
-      sortOrder: 16,
-    },
-    ],
-  });
+  await seedIfEmpty(prisma.rentalItem, rentalItems);
 
   await seedIfEmpty(prisma.gallery, [
     { title: "ප්‍රධාන බුෆේ සැකසුම", category: "බුෆේ සැකසුම්", imageUrl: "/assets/sgl-images/hero-buffet.jpg", featured: true, sortOrder: 1 },
