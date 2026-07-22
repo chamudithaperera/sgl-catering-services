@@ -3,15 +3,17 @@ export const servicePageContent = {
   catering: {
     type: "catering",
     title: "ආහාර පාන සැපයීම",
-    englishTitle: "Signature Catering",
+    englishTitle: "Catering Service in Anuradhapura",
     eyebrow: "SGL Catering Service",
     image: "/assets/sgl-images/hero-buffet.jpg",
     seo: {
-      title: "Catering Services Anuradhapura | SGL Catering Service",
+      title: "Catering Service in Anuradhapura | SGL Catering Service",
       description:
-        "Choose SGL Catering Service for catering services in Anuradhapura, including weddings, home functions, almsgivings, birthdays, office events, buffet menus, and custom food packages.",
+        "Choose SGL Catering Service for catering service and catering services in Anuradhapura, including weddings, home functions, almsgivings, birthdays, office events, buffet menus, and custom food packages.",
       canonicalPath: "/catering",
       keywords: [
+        "catering service in anuradhapura",
+        "catering services in anuradhapura",
         "catering services anuradhapura",
         "sgl catering service",
         "wedding catering Anuradhapura",
@@ -32,9 +34,9 @@ export const servicePageContent = {
     ],
     overview: {
       eyebrow: "Menu List",
-      title: "මෙනු සහ මිල ගණන්",
+      title: "Catering Services in Anuradhapura - මෙනු සහ මිල ගණන්",
       description:
-        "ඔබගේ අවස්ථාව, අමුත්තන් සංඛ්‍යාව සහ අවශ්‍ය ප්‍රමාණය අනුව අවසන් මිල වෙනස් විය හැක. වෙන්කරවා ගැනීමට පෙර අපි සමඟ මෙනුව තහවුරු කරගන්න.",
+        "ඔබගේ අවස්ථාව, අමුත්තන් සංඛ්‍යාව සහ අවශ්‍ය ප්‍රමාණය අනුව අවසන් මිල වෙනස් විය හැක. SGL Catering Service වෙතින් catering services Anuradhapura සඳහා වෙන්කරවා ගැනීමට පෙර අපි සමඟ මෙනුව තහවුරු කරගන්න.",
     },
     menus: [
       {

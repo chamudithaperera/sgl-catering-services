@@ -285,10 +285,15 @@ export function ServiceShowcasePage({ page }) {
     () => ({
       "@context": "https://schema.org",
       "@type": "Service",
+      "@id": buildSiteUrl(`${managedPage.seo?.canonicalPath || "/"}#service`),
       name:
         managedPage.type === "catering"
-          ? "Catering services in Anuradhapura"
+          ? "Catering service in Anuradhapura"
           : "Event rentals in Anuradhapura",
+      alternateName:
+        managedPage.type === "catering"
+          ? ["Catering services in Anuradhapura", "Catering services Anuradhapura"]
+          : ["Event rental equipment Anuradhapura", "Event rentals in Anuradhapura"],
       serviceType: managedPage.type === "catering" ? "Catering" : "Event rental equipment",
       description: managedPage.seo?.description || managedPage.description,
       url: buildSiteUrl(managedPage.seo?.canonicalPath || "/"),
@@ -298,7 +303,9 @@ export function ServiceShowcasePage({ page }) {
         name: "Anuradhapura",
       },
       provider: {
-        "@type": ["LocalBusiness", "FoodService"],
+        "@type": "LocalBusiness",
+        additionalType: "https://schema.org/FoodService",
+        "@id": buildSiteUrl("/#sgl-catering-service"),
         name: "SGL Catering Service",
         url: buildSiteUrl("/"),
         telephone: contactPhone,
