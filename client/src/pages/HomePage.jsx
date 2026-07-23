@@ -1081,7 +1081,11 @@ export function HomePage() {
       <footer className="premium-footer">
         <div className="premium-footer-shell">
           <p>
-            © 2026 sglcateringservice.lk by{" "}
+            © 2026{" "}
+            <a href="https://sglcateringservice.lk/" target="_blank" rel="noreferrer">
+              sglcateringservice.lk
+            </a>{" "}
+            by{" "}
             <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
               chamudithaperera.online
             </a>
