@@ -10,8 +10,10 @@ const {
   rentalItemSchema,
   galleryItemSchema,
   webImageSchema,
+  webTextSchema,
   reviewSchema,
 } = require("../utils/validators");
+const { buildWebTextFallback, webTextDefaults } = require("../utils/webTextDefaults");
 
 const uploadsDirectory = path.resolve(__dirname, "../../uploads");
 
@@ -62,6 +64,7 @@ const webImageGroups = {
   aboutImages: { imageKey: "about", maxItems: 1 },
   serviceImages: { imageKey: "services", maxItems: 2 },
 };
+const webTextKeys = new Set(Object.keys(webTextDefaults));
 
 const galleryAdminSelect = {
   id: true,
@@ -82,6 +85,17 @@ const webImageAdminSelect = {
   updatedAt: true,
 };
 
+const webTextAdminSelect = {
+  id: true,
+  textKey: true,
+  titleSinhala: true,
+  titleEnglish: true,
+  descriptionSinhala: true,
+  descriptionEnglish: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
 router.use(requireAuth);
 
 router.get("/dashboard", async (request, response) => {
@@ -91,6 +105,7 @@ router.get("/dashboard", async (request, response) => {
     bannerImages,
     aboutImages,
     serviceImages,
+    webTexts,
     galleryItems,
     reviews,
     contactMessages,
@@ -101,6 +116,7 @@ router.get("/dashboard", async (request, response) => {
     prisma.webImage.count({ where: { imageKey: "banner" } }),
     prisma.webImage.count({ where: { imageKey: "about" } }),
     prisma.webImage.count({ where: { imageKey: "services" } }),
+    prisma.webText.count(),
     prisma.gallery.count(),
     prisma.review.count(),
     prisma.message.count(),
@@ -113,6 +129,7 @@ router.get("/dashboard", async (request, response) => {
     bannerImages,
     aboutImages,
     serviceImages,
+    webTexts,
     webImages: bannerImages + aboutImages + serviceImages + galleryItems,
     galleryItems,
     reviews,
