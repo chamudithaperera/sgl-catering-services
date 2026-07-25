@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const { PrismaClient } = require("@prisma/client");
-const { rentalItems } = require("./data/rentalItems");
 
 const prisma = new PrismaClient();
 
@@ -62,55 +61,6 @@ async function main() {
   });
 
   await seedContactDetailsIfMissing();
-
-  await prisma.cateringMenu.deleteMany();
-  await prisma.cateringMenu.createMany({
-    data: [
-    {
-      name: "Rice & Curry / රයිස් & කරි",
-      priceLabel: "රු. 400 සිට / පුද්ගලයෙකුට",
-      includedItems: ["එළවලු (Veg) - රු. 400 සිට", "මාළු (Fish) - රු. 450 සිට", "කුකුල් මස් (Chicken) - රු. 500 සිට"],
-      featured: true,
-      sortOrder: 1,
-    },
-    {
-      name: "Fried Rice / ෆ්‍රයිඩ් රයිස්",
-      priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
-      includedItems: ["අවශ්‍යතාවය අනුව චිකන්, මාළු හෝ එළවලු තේරීම් එකතු කළ හැක"],
-      featured: false,
-      sortOrder: 2,
-    },
-    {
-      name: "Yellow Rice / කහ බත්",
-      priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
-      includedItems: ["අවශ්‍යතාවය අනුව මස්, මාළු, එළවලු සහ සලාද තේරීම් එකතු කළ හැක"],
-      featured: false,
-      sortOrder: 3,
-    },
-    {
-      name: "Short Eats / කෙටි ආහාර",
-      priceLabel: "රු. 80 සිට / එකකට",
-      includedItems: ["කෙටි ආහාර වර්ග අවශ්‍ය ප්‍රමාණය අනුව සකස් කර දිය හැක"],
-      featured: false,
-      sortOrder: 4,
-    },
-    {
-      name: "Bites / බයිට් වර්ග",
-      priceLabel: "රු. 600 සිට / 1kg",
-      includedItems: [
-        "තම්බපු එළවලු (Boiled vegetables) 1kg - රු. 800 සිට",
-        "වැව් මාළු (Tank fish) 1kg - රු. 1000 සිට",
-        "කුකුල් මස් (Chicken) 1kg - රු. 2000 සිට",
-        "ඌරු මස් / ඉස්සන් / දැල්ලෝ (Pork / Prawns / Cuttlefish) 1kg - රු. 3500 සිට",
-        "මඤ්ඤොක්කා (Manioc) 1kg - රු. 600 සිට",
-      ],
-      featured: true,
-      sortOrder: 5,
-    },
-    ],
-  });
-
-  await seedIfEmpty(prisma.rentalItem, rentalItems);
 
   await seedIfEmpty(prisma.gallery, [
     { title: "ප්‍රධාන බුෆේ සැකසුම", imageUrl: "/assets/sgl-images/hero-buffet.jpg", sortOrder: 1 },

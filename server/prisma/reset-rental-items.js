@@ -1,12 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
-const { rentalItems } = require("./data/rentalItems");
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.rentalItem.deleteMany();
-  await prisma.rentalItem.createMany({ data: rentalItems });
-  console.log(`Reset ${rentalItems.length} rental items.`);
+  await prisma.$connect();
+  console.log("Rental items are managed from the admin panel. No reset was performed.");
 }
 
 main()

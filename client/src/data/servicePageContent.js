@@ -23,11 +23,6 @@ export const servicePageContent = {
     },
     description:
       "විවාහ උත්සව, නිවසේ සැමරුම්, උපන්දින සාද සහ ආයතනික වැඩසටහන් සඳහා අවස්ථාවට ගැළපෙන පිරිසිදු, රසවත් ආහාර අත්දැකීමක් ඔබ වෙත ලබාදීමට අපි සූදානම්.",
-    heroStats: [
-      { label: "මෙනු තේරීම්", value: "08+", note: "විවිධ මෙනු" },
-      { label: "මිල පරාසය", value: "රු. 80", note: "සිට ඉහළට" },
-      { label: "සැකසුම් විලාසය", value: "අභිරුචි", note: "අයවැය අනුව" },
-    ],
     sectionNav: [
       { id: "menus", label: "මෙනු සහ මිල" },
       { id: "consultation", label: "වෙන්කරවා ගැනීම" },
@@ -38,44 +33,7 @@ export const servicePageContent = {
       description:
         "ඔබගේ අවස්ථාව, අමුත්තන් සංඛ්‍යාව සහ අවශ්‍ය ප්‍රමාණය අනුව අවසන් මිල වෙනස් විය හැක. SGL Catering Service වෙතින් catering services Anuradhapura සඳහා වෙන්කරවා ගැනීමට පෙර අපි සමඟ මෙනුව තහවුරු කරගන්න.",
     },
-    menus: [
-      {
-        name: "Rice & Curry / රයිස් & කරි",
-        priceLabel: "රු. 400 සිට / පුද්ගලයෙකුට",
-        featured: true,
-        includedItems: ["එළවලු (Veg) - රු. 400 සිට", "මාළු (Fish) - රු. 450 සිට", "කුකුල් මස් (Chicken) - රු. 500 සිට"],
-      },
-      {
-        name: "Fried Rice / ෆ්‍රයිඩ් රයිස්",
-        priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
-        featured: false,
-        includedItems: ["අවශ්‍යතාවය අනුව චිකන්, මාළු හෝ එළවලු තේරීම් එකතු කළ හැක"],
-      },
-      {
-        name: "Yellow Rice / කහ බත්",
-        priceLabel: "රු. 600 සිට / පුද්ගලයෙකුට",
-        featured: false,
-        includedItems: ["අවශ්‍යතාවය අනුව මස්, මාළු, එළවලු සහ සලාද තේරීම් එකතු කළ හැක"],
-      },
-      {
-        name: "Short Eats / කෙටි ආහාර",
-        priceLabel: "රු. 80 සිට / එකකට",
-        featured: false,
-        includedItems: ["කෙටි ආහාර වර්ග අවශ්‍ය ප්‍රමාණය අනුව සකස් කර දිය හැක"],
-      },
-      {
-        name: "Bites / බයිට් වර්ග",
-        priceLabel: "රු. 600 සිට / 1kg",
-        featured: true,
-        includedItems: [
-          "තම්බපු එළවලු (Boiled vegetables) 1kg - රු. 800 සිට",
-          "වැව් මාළු (Tank fish) 1kg - රු. 1000 සිට",
-          "කුකුල් මස් (Chicken) 1kg - රු. 2000 සිට",
-          "ඌරු මස් / ඉස්සන් / දැල්ලෝ (Pork / Prawns / Cuttlefish) 1kg - රු. 3500 සිට",
-          "මඤ්ඤොක්කා (Manioc) 1kg - රු. 600 සිට",
-        ],
-      },
-    ],
+    menus: [],
     consultation: {
       title: "වෙන්කරවා ගැනීමට පෙර අපි සමඟ මෙනුව සකස් කරගන්න",
       description:
@@ -103,11 +61,6 @@ export const servicePageContent = {
     },
     description:
       "ඔබගේ උත්සවයට අවශ්‍ය පුටු, මේස, වීදුරු, කැනපි, වෝමර් සහ අනෙකුත් භාණ්ඩ පිරිසිදු තත්ත්වයෙන් කුලියට ලබාදීමට අපි සූදානම්.",
-    heroStats: [
-      { label: "භාණ්ඩ වර්ග", value: "15+", note: "තේරීම් රැසක්" },
-      { label: "මිල පරාසය", value: "රු. 20", note: "සිට ඉහළට" },
-      { label: "ලබාදීම", value: "දිනපතා", note: "පූර්ව වෙන්කිරීම්" },
-    ],
     sectionNav: [
       { id: "items", label: "භාණ්ඩ මිල" },
       { id: "booking", label: "වෙන්කරවා ගැනීම" },

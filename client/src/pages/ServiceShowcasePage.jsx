@@ -199,15 +199,6 @@ function buildManagedCateringPage(page, content) {
 
   return {
     ...page,
-    heroStats: [
-      {
-        label: "මෙනු තේරීම්",
-        value: `${foodPackages.length}+`,
-        note: "විවිධ මෙනු",
-      },
-      { label: "සැකසුම්", value: "අභිරුචි", note: "අයවැය අනුව" },
-      page.heroStats[2],
-    ],
     menus: foodPackages.map((item) => ({
       name: item.name,
       priceLabel: item.priceLabel,
@@ -222,11 +213,6 @@ function buildManagedRentalPage(page, content) {
 
   return {
     ...page,
-    heroStats: [
-      { label: "භාණ්ඩ වර්ග", value: `${rentalItems.length}+`, note: "තේරීම් රැසක්" },
-      { label: "මිල පරාසය", value: "රු. 20", note: "සිට ඉහළට" },
-      page.heroStats[2],
-    ],
     items: rentalItems.map((item) => ({
       name: item.name,
       category: item.category,
@@ -281,20 +267,10 @@ function buildEmptyManagedPage(page) {
   return page.type === "catering"
     ? {
         ...page,
-        heroStats: [
-          { label: "මෙනු තේරීම්", value: `${page.menus?.length || 0}+`, note: "විවිධ මෙනු" },
-          { label: "සැකසුම්", value: "අභිරුචි", note: "අයවැය අනුව" },
-          page.heroStats[2],
-        ],
         menus: page.menus || [],
       }
     : {
         ...page,
-        heroStats: [
-          { label: "භාණ්ඩ වර්ග", value: `${page.items?.length || 0}+`, note: "තේරීම් රැසක්" },
-          { label: "මිල පරාසය", value: "රු. 20", note: "සිට ඉහළට" },
-          page.heroStats[2],
-        ],
         items: page.items || [],
       };
 }
