@@ -31,6 +31,8 @@ import { api } from "../lib/api";
 const siteConfigForm = {
   phone: "",
   whatsapp: "",
+  secondaryPhone: "",
+  tertiaryPhone: "",
   email: "",
   address: "",
   businessHours: "",
@@ -43,7 +45,7 @@ const resourceConfigs = [
   {
     key: "siteConfig",
     label: "Contact Details",
-    eyebrow: "Phone, WhatsApp, email, address, hours, map, and social links",
+    eyebrow: "Phone numbers, WhatsApp, email, address, hours, map, and social links",
     endpoint: "/admin/site-config",
     icon: Settings2,
     singleton: true,
@@ -51,6 +53,8 @@ const resourceConfigs = [
     fields: [
       { name: "phone", label: "Phone" },
       { name: "whatsapp", label: "WhatsApp" },
+      { name: "secondaryPhone", label: "Phone 2" },
+      { name: "tertiaryPhone", label: "Phone 3" },
       { name: "email", label: "Email", type: "email" },
       { name: "address", label: "Address", type: "textarea" },
       { name: "businessHours", label: "Business hours" },
@@ -60,6 +64,8 @@ const resourceConfigs = [
     ],
     columns: [
       { name: "phone", label: "Phone" },
+      { name: "secondaryPhone", label: "Phone 2" },
+      { name: "tertiaryPhone", label: "Phone 3" },
       { name: "email", label: "Email" },
     ],
   },
@@ -865,6 +871,8 @@ export function AdminPage() {
     const profileItems = [
       { label: "Phone", value: contact.phone },
       { label: "WhatsApp", value: contact.whatsapp },
+      { label: "Phone 2", value: contact.secondaryPhone },
+      { label: "Phone 3", value: contact.tertiaryPhone },
       { label: "Email", value: contact.email },
       { label: "Address", value: contact.address },
       { label: "Business hours", value: contact.businessHours },

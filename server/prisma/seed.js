@@ -5,8 +5,10 @@ const { rentalItems } = require("./data/rentalItems");
 const prisma = new PrismaClient();
 
 const contactDetails = {
-  phone: "+94703324500",
-  whatsapp: "+94703324500",
+  phone: "0703324350",
+  whatsapp: "0703324350",
+  secondaryPhone: "0252227538",
+  tertiaryPhone: "0703324500",
   email: "sudathjayathilakabs@gmail.com",
   address: "No.360, National Housing, Stage II, Anuradhapura.",
   businessHours: "සඳුදා - ඉරිදා | පෙ.ව. 8.00 - ප.ව. 8.00",

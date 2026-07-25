@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, MapPin, Menu, PhoneCall, Send, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Menu, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
 import galleryBackgroundPoster from "../assets/gallery-background-poster.jpg";
@@ -9,10 +9,10 @@ import { responsiveImageProps } from "../lib/imagePerformance";
 import { buildSiteUrl } from "../lib/seo";
 import "./HomePage.css";
 
-const contactPhone = "+94703324500";
-const contactPhoneLabel = "070 33 24 500";
+const contactPhone = "0703324350";
+const contactSecondaryPhone = "0252227538";
+const contactTertiaryPhone = "0703324500";
 const contactEmail = "sudathjayathilakabs@gmail.com";
-const contactLocation = "No.360, National Housing, Stage II, Anuradhapura.";
 const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
 const heroDescription =
   "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.";
@@ -160,7 +160,37 @@ function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
 function buildWhatsappUrl(phoneNumber) {
   const digits = phoneNumber?.replace(/[^\d]/g, "");
 
-  return digits ? `https://wa.me/${digits}` : "#contact";
+  if (!digits) {
+    return "#contact";
+  }
+
+  const internationalDigits = digits.startsWith("0") ? `94${digits.slice(1)}` : digits;
+
+  return `https://wa.me/${internationalDigits}`;
+}
+
+function buildTelUrl(phoneNumber) {
+  const digits = phoneNumber?.replace(/[^\d+]/g, "");
+
+  return digits ? `tel:${digits}` : "#contact";
+}
+
+function formatPhoneLabel(phoneNumber) {
+  const digits = phoneNumber?.replace(/[^\d]/g, "");
+
+  if (!digits) {
+    return phoneNumber || "";
+  }
+
+  if (digits.length === 10 && digits.startsWith("0")) {
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+  }
+
+  if (digits.length === 11 && digits.startsWith("94")) {
+    return `+94 ${digits.slice(2, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
+  }
+
+  return phoneNumber;
 }
 
 function buildExternalUrl(url) {
@@ -361,11 +391,16 @@ export function HomePage() {
     quote: review.quote,
   }));
   const homepagePhone = siteConfig?.phone || contactPhone;
-  const homepagePhoneLabel = siteConfig?.phone || contactPhoneLabel;
+  const homepageSecondaryPhone = siteConfig?.secondaryPhone || contactSecondaryPhone;
+  const homepageTertiaryPhone = siteConfig?.tertiaryPhone || contactTertiaryPhone;
+  const homepagePhoneCards = [
+    { label: "ප්‍රධාන දුරකථනය", value: homepagePhone },
+    { label: "දුරකථනය 2", value: homepageSecondaryPhone },
+    { label: "දුරකථනය 3", value: homepageTertiaryPhone },
+  ];
   const homepageWhatsapp = siteConfig?.whatsapp || homepagePhone;
   const homepageWhatsappUrl = buildWhatsappUrl(homepageWhatsapp);
   const homepageEmail = siteConfig?.email || contactEmail;
-  const homepageLocation = siteConfig?.address || contactLocation;
   const homepageMapUrl = siteConfig?.mapUrl || "";
   const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl, contactMapEmbedUrl);
   const homepageFacebookUrl = buildExternalUrl(siteConfig?.facebookUrl);
@@ -643,7 +678,7 @@ export function HomePage() {
             ))}
           </nav>
 
-          <a className="premium-nav-cta" href={`tel:${homepagePhone}`}>
+          <a className="premium-nav-cta" href={buildTelUrl(homepagePhone)}>
             <PhoneCall size={17} />
             <span>Call Now</span>
           </a>
@@ -693,7 +728,7 @@ export function HomePage() {
                 වැඩි විස්තර
                 <ChevronRight size={18} />
               </button>
-              <a className="premium-button premium-button-secondary" href={`tel:${homepagePhone}`}>
+              <a className="premium-button premium-button-secondary" href={buildTelUrl(homepagePhone)}>
                 <PhoneCall size={18} />
                 අප අමතන්න
               </a>
@@ -930,29 +965,21 @@ export function HomePage() {
               </div>
 
               <div className="premium-contact-cards">
-                <a className="premium-contact-card" href={`tel:${homepagePhone}`}>
-                  <span className="premium-contact-card-icon" aria-hidden="true">
-                    <PhoneCall size={18} />
-                  </span>
-                  <div>
-                    <strong>දුරකථනය</strong>
-                    <span>{homepagePhoneLabel}</span>
-                  </div>
-                </a>
-
-                <div className="premium-contact-card">
-                  <span className="premium-contact-card-icon" aria-hidden="true">
-                    <MapPin size={18} />
-                  </span>
-                  <div>
-                    <strong>ස්ථානය</strong>
-                    <span>{homepageLocation}</span>
-                  </div>
-                </div>
+                {homepagePhoneCards.map((phoneCard) => (
+                  <a className="premium-contact-card" href={buildTelUrl(phoneCard.value)} key={phoneCard.label}>
+                    <span className="premium-contact-card-icon" aria-hidden="true">
+                      <PhoneCall size={18} />
+                    </span>
+                    <div>
+                      <strong>{phoneCard.label}</strong>
+                      <span>{formatPhoneLabel(phoneCard.value)}</span>
+                    </div>
+                  </a>
+                ))}
               </div>
 
               <div className="premium-contact-actions" aria-label="Contact options">
-                <a className="premium-contact-action" href={`tel:${homepagePhone}`} aria-label="Call SGL Catering" title="Call">
+                <a className="premium-contact-action" href={buildTelUrl(homepagePhone)} aria-label="Call SGL Catering" title="Call">
                   <ContactPhoneIcon size={22} />
                 </a>
                 <a

@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { api } from "../lib/api";
 import "./FloatingContact.css";
 
-const contactPhone = "+94703324500";
+const contactPhone = "0703324350";
 const contactEmail = "sudathjayathilakabs@gmail.com";
-const whatsappHref = `https://wa.me/${contactPhone.replace(/[^\d]/g, "")}`;
+
+function buildWhatsappUrl(phoneNumber) {
+  const digits = phoneNumber?.replace(/[^\d]/g, "");
+
+  if (!digits) {
+    return "#";
+  }
+
+  const internationalDigits = digits.startsWith("0") ? `94${digits.slice(1)}` : digits;
+
+  return `https://wa.me/${internationalDigits}`;
+}
+
+function buildTelUrl(phoneNumber) {
+  const digits = phoneNumber?.replace(/[^\d+]/g, "");
+
+  return digits ? `tel:${digits}` : "#";
+}
 
 function PhoneIcon({ size = 20 }) {
   return (
@@ -32,6 +50,17 @@ function WhatsAppIcon({ size = 20 }) {
 
 export function FloatingContact() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [siteConfig, setSiteConfig] = useState(null);
+  const floatingPhone = siteConfig?.phone || contactPhone;
+  const floatingWhatsapp = siteConfig?.whatsapp || floatingPhone;
+  const floatingEmail = siteConfig?.email || contactEmail;
+
+  useEffect(() => {
+    api
+      .get("/public/home")
+      .then((response) => setSiteConfig(response.data?.siteConfig || null))
+      .catch(() => {});
+  }, []);
 
   function toggleMenu() {
     setMenuOpen((currentState) => !currentState);
@@ -40,19 +69,19 @@ export function FloatingContact() {
   return (
     <div className={`site-floating-contact ${menuOpen ? "is-open" : ""}`}>
       <div className="site-floating-actions" aria-hidden={!menuOpen}>
-        <a className="site-floating-link site-floating-link-call" href={`tel:${contactPhone}`} aria-label="Call us">
+        <a className="site-floating-link site-floating-link-call" href={buildTelUrl(floatingPhone)} aria-label="Call us">
           <PhoneIcon size={20} />
         </a>
         <a
           className="site-floating-link site-floating-link-whatsapp"
-          href={whatsappHref}
+          href={buildWhatsappUrl(floatingWhatsapp)}
           target="_blank"
           rel="noreferrer"
           aria-label="WhatsApp us"
         >
           <WhatsAppIcon size={20} />
         </a>
-        <a className="site-floating-link site-floating-link-email" href={`mailto:${contactEmail}`} aria-label="Email us">
+        <a className="site-floating-link site-floating-link-email" href={`mailto:${floatingEmail}`} aria-label="Email us">
           <GmailIcon size={20} />
         </a>
       </div>

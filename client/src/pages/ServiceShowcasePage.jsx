@@ -7,9 +7,26 @@ import { responsiveImageProps } from "../lib/imagePerformance";
 import { buildSiteUrl } from "../lib/seo";
 import "./ServiceShowcasePage.css";
 
-const contactPhone = "+94703324500";
+const contactPhone = "0703324350";
 const contactEmail = "sudathjayathilakabs@gmail.com";
-const whatsappHref = `https://wa.me/${contactPhone.replace(/[^\d]/g, "")}`;
+
+function buildWhatsappUrl(phoneNumber) {
+  const digits = phoneNumber?.replace(/[^\d]/g, "");
+
+  if (!digits) {
+    return "#";
+  }
+
+  const internationalDigits = digits.startsWith("0") ? `94${digits.slice(1)}` : digits;
+
+  return `https://wa.me/${internationalDigits}`;
+}
+
+function buildTelUrl(phoneNumber) {
+  const digits = phoneNumber?.replace(/[^\d+]/g, "");
+
+  return digits ? `tel:${digits}` : "#";
+}
 
 function PhoneIcon({ size = 20 }) {
   return (
@@ -51,7 +68,7 @@ function SectionHead({ eyebrow, title, description, light = false, center = fals
   );
 }
 
-function BannerSection({ page }) {
+function BannerSection({ page, phone }) {
   return (
     <section className="service-banner">
       <div className="service-banner-media" aria-hidden="true">
@@ -69,7 +86,7 @@ function BannerSection({ page }) {
           <p>{page.description}</p>
 
           <div className="service-banner-actions">
-            <a className="service-banner-button" href={`tel:${contactPhone}`}>
+            <a className="service-banner-button" href={buildTelUrl(phone)}>
               <PhoneCall size={18} />
               <span>අමතන්න</span>
             </a>
@@ -220,7 +237,11 @@ function buildManagedRentalPage(page, content) {
   };
 }
 
-function ContactBand({ page, anchorId }) {
+function ContactBand({ page, anchorId, contact }) {
+  const phone = contact?.phone || contactPhone;
+  const whatsapp = contact?.whatsapp || phone;
+  const email = contact?.email || contactEmail;
+
   return (
     <section className="service-band service-band-footer" id={anchorId}>
       <div className="service-page-shell">
@@ -232,13 +253,13 @@ function ContactBand({ page, anchorId }) {
           </div>
 
           <div className="service-contact-actions">
-            <a className="service-contact-icon-link is-call" href={`tel:${contactPhone}`} aria-label="Call us">
+            <a className="service-contact-icon-link is-call" href={buildTelUrl(phone)} aria-label="Call us">
               <PhoneIcon size={22} />
             </a>
 
             <a
               className="service-contact-icon-link is-whatsapp"
-              href={whatsappHref}
+              href={buildWhatsappUrl(whatsapp)}
               target="_blank"
               rel="noreferrer"
               aria-label="WhatsApp us"
@@ -246,7 +267,7 @@ function ContactBand({ page, anchorId }) {
               <WhatsAppIcon size={22} />
             </a>
 
-            <a className="service-contact-icon-link is-email" href={`mailto:${contactEmail}`} aria-label="Email us">
+            <a className="service-contact-icon-link is-email" href={`mailto:${email}`} aria-label="Email us">
               <GmailIcon size={22} />
             </a>
           </div>
@@ -280,7 +301,10 @@ function buildEmptyManagedPage(page) {
 
 export function ServiceShowcasePage({ page }) {
   const [managedPage, setManagedPage] = useState(() => buildEmptyManagedPage(page));
+  const [contactConfig, setContactConfig] = useState(null);
   const anchorId = managedPage.type === "catering" ? "consultation" : "booking";
+  const servicePhone = contactConfig?.phone || contactPhone;
+  const serviceEmail = contactConfig?.email || contactEmail;
   const serviceStructuredData = useMemo(
     () => ({
       "@context": "https://schema.org",
@@ -308,8 +332,8 @@ export function ServiceShowcasePage({ page }) {
         "@id": buildSiteUrl("/#sgl-catering-service"),
         name: "SGL Catering Service",
         url: buildSiteUrl("/"),
-        telephone: contactPhone,
-        email: contactEmail,
+        telephone: servicePhone,
+        email: serviceEmail,
         address: {
           "@type": "PostalAddress",
           streetAddress: "No.360, National Housing, Stage II",
@@ -318,7 +342,7 @@ export function ServiceShowcasePage({ page }) {
         },
       },
     }),
-    [managedPage.description, managedPage.image, managedPage.seo, managedPage.type]
+    [managedPage.description, managedPage.image, managedPage.seo, managedPage.type, serviceEmail, servicePhone]
   );
 
   useEffect(() => {
@@ -332,6 +356,7 @@ export function ServiceShowcasePage({ page }) {
       .get("/public/content")
       .then((response) => {
         if (ignore) return;
+        setContactConfig(response.data?.siteConfig || null);
         setManagedPage(page.type === "catering" ? buildManagedCateringPage(page, response.data) : buildManagedRentalPage(page, response.data));
       })
       .catch((error) => {
@@ -369,18 +394,18 @@ export function ServiceShowcasePage({ page }) {
         </nav>
 
         <div className="service-page-topbar-actions">
-          <a className="service-page-call-link" href={`tel:${contactPhone}`}>
+          <a className="service-page-call-link" href={buildTelUrl(servicePhone)}>
             <PhoneCall size={17} />
             <span>Call Now</span>
           </a>
         </div>
       </header>
 
-      <BannerSection page={managedPage} />
+      <BannerSection page={managedPage} phone={servicePhone} />
 
       {managedPage.type === "catering" ? <CateringSections page={managedPage} /> : <RentingSections page={managedPage} />}
 
-      <ContactBand anchorId={anchorId} page={managedPage} />
+      <ContactBand anchorId={anchorId} contact={contactConfig} page={managedPage} />
 
       <footer className="service-page-footer">
         <div className="service-page-footer-shell">
