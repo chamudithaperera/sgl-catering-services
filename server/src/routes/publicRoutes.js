@@ -1,8 +1,10 @@
 const express = require("express");
 const { prisma } = require("../config/prisma");
 const { contactMessageSchema } = require("../utils/validators");
+const { webTextDefaults } = require("../utils/webTextDefaults");
 
 const router = express.Router();
+const webTextKeys = Object.keys(webTextDefaults);
 
 const galleryPublicSelect = {
   title: true,
@@ -14,6 +16,14 @@ const webImagePublicSelect = {
   title: true,
   imageUrl: true,
   sortOrder: true,
+};
+
+const webTextPublicSelect = {
+  textKey: true,
+  titleSinhala: true,
+  titleEnglish: true,
+  descriptionSinhala: true,
+  descriptionEnglish: true,
 };
 
 function groupWebImages(webImages) {
@@ -37,12 +47,20 @@ function groupWebImages(webImages) {
   );
 }
 
+function groupWebTexts(webTexts) {
+  return webTextKeys.reduce((groups, textKey) => {
+    const item = webTexts.find((candidate) => candidate.textKey === textKey);
+    groups[textKey] = item || webTextDefaults[textKey];
+    return groups;
+  }, {});
+}
+
 router.get("/health", (request, response) => {
   response.json({ ok: true });
 });
 
 router.get("/home", async (request, response) => {
-  const [contactDetails, gallery, webImages, reviews] = await Promise.all([
+  const [contactDetails, gallery, webImages, webTexts, reviews] = await Promise.all([
     prisma.contactDetails.findUnique({ where: { id: 1 } }),
     prisma.gallery.findMany({
       orderBy: { sortOrder: "asc" },
@@ -56,14 +74,20 @@ router.get("/home", async (request, response) => {
         ...webImagePublicSelect,
       },
     }),
+    prisma.webText.findMany({
+      where: { textKey: { in: webTextKeys } },
+      select: webTextPublicSelect,
+    }),
     prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
   const groupedImages = groupWebImages(webImages);
+  const groupedTexts = groupWebTexts(webTexts);
 
   response.json({
     siteConfig: contactDetails,
     contactDetails,
     ...groupedImages,
+    webTexts: groupedTexts,
     gallery,
     reviews,
   });
@@ -76,6 +100,7 @@ router.get("/content", async (request, response) => {
     rentalItems,
     gallery,
     webImages,
+    webTexts,
     reviews,
   ] = await Promise.all([
     prisma.contactDetails.findUnique({ where: { id: 1 } }),
@@ -93,14 +118,20 @@ router.get("/content", async (request, response) => {
         ...webImagePublicSelect,
       },
     }),
+    prisma.webText.findMany({
+      where: { textKey: { in: webTextKeys } },
+      select: webTextPublicSelect,
+    }),
     prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
   const groupedImages = groupWebImages(webImages);
+  const groupedTexts = groupWebTexts(webTexts);
 
   response.json({
     siteConfig: contactDetails,
     contactDetails,
     ...groupedImages,
+    webTexts: groupedTexts,
     foodPackages: cateringMenus,
     cateringMenus,
     rentalItems,

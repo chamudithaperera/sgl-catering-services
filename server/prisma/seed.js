@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const { PrismaClient } = require("@prisma/client");
+const { webTextDefaults } = require("../src/utils/webTextDefaults");
 
 const prisma = new PrismaClient();
 
@@ -42,6 +43,19 @@ async function seedContactDetailsIfMissing() {
   });
 }
 
+async function seedWebTextsIfMissing() {
+  for (const webText of Object.values(webTextDefaults)) {
+    const existingWebText = await prisma.webText.findUnique({
+      where: { textKey: webText.textKey },
+      select: { id: true },
+    });
+
+    if (!existingWebText) {
+      await prisma.webText.create({ data: webText });
+    }
+  }
+}
+
 async function main() {
   const passwordHash = await bcrypt.hash("Admin@1234", 10);
 
@@ -61,6 +75,7 @@ async function main() {
   });
 
   await seedContactDetailsIfMissing();
+  await seedWebTextsIfMissing();
 
   await seedIfEmpty(prisma.review, [
     {
