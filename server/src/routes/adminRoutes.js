@@ -333,6 +333,43 @@ router.delete("/web-images/:resource/:id", async (request, response) => {
   response.status(204).send();
 });
 
+router.get("/web-texts/:textKey", async (request, response) => {
+  const { textKey } = request.params;
+
+  if (!webTextKeys.has(textKey)) {
+    return response.status(404).json({ message: "Unknown web text section" });
+  }
+
+  const item = await prisma.webText.findUnique({
+    where: { textKey },
+    select: webTextAdminSelect,
+  });
+
+  response.json(item || buildWebTextFallback(textKey));
+});
+
+router.put("/web-texts/:textKey", async (request, response) => {
+  const { textKey } = request.params;
+
+  if (!webTextKeys.has(textKey)) {
+    return response.status(404).json({ message: "Unknown web text section" });
+  }
+
+  const data = webTextSchema.parse(request.body);
+  const item = await prisma.webText.upsert({
+    where: { textKey },
+    update: data,
+    create: {
+      ...buildWebTextFallback(textKey),
+      ...data,
+      textKey,
+    },
+    select: webTextAdminSelect,
+  });
+
+  response.json(item);
+});
+
 router.get("/gallery-items", async (request, response) => {
   const items = await prisma.gallery.findMany({
     orderBy: { sortOrder: "asc" },
