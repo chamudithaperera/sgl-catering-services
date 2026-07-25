@@ -289,8 +289,13 @@ const resourceGroupByKey = {
   galleryItems: "webImages",
 };
 
-const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "serviceImages", "galleryItems", "reviews"];
+const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "galleryItems", "reviews"];
 const sortableKeys = popupCrudKeys;
+
+const serviceImageSlots = [
+  { key: "catering", title: "Catering", sortOrder: 1 },
+  { key: "rental", title: "Rental", sortOrder: 2 },
+];
 
 const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -377,6 +382,20 @@ function renderCell(item, column) {
   }
 
   return value;
+}
+
+function findServiceImageSlotRecord(items, slot) {
+  const serviceImages = items || [];
+  const normalizedKey = slot.key.toLowerCase();
+  const normalizedTitle = slot.title.toLowerCase();
+
+  return (
+    serviceImages.find((item) => String(item.title || "").toLowerCase().includes(normalizedKey)) ||
+    serviceImages.find((item) => String(item.title || "").toLowerCase() === normalizedTitle) ||
+    serviceImages.find((item) => Number(item.sortOrder) === slot.sortOrder) ||
+    serviceImages[slot.sortOrder - 1] ||
+    null
+  );
 }
 
 function loadImageFromFile(file) {
@@ -472,6 +491,7 @@ export function AdminPage() {
   const activeConfig = useMemo(() => resourceConfigs.find((config) => config.key === activeResourceKey), [activeResourceKey]);
   const crudModalConfig = useMemo(() => resourceConfigs.find((config) => config.key === crudModalKey), [crudModalKey]);
   const usesPopupCrud = Boolean(activeConfig && popupCrudKeys.includes(activeConfig.key));
+  const usesFixedServiceImageCards = activeConfig?.key === "serviceImages";
   const activeTitle = activeGroup?.label || activeConfig?.label || "Dashboard";
   const activeEyebrow = activeGroup?.eyebrow || activeConfig?.eyebrow || "Control room for editable website content";
   const activeRecordCount = activeConfig ? records[activeConfig.key]?.length || 0 : 0;
@@ -802,6 +822,38 @@ export function AdminPage() {
     }
   }
 
+  async function handleServiceImageUpload(config, slot, file) {
+    if (!file) return;
+
+    try {
+      setBusy(true);
+      setStatusMessage("");
+      setErrorMessage("");
+
+      const imageUrl = await uploadImage(token, file);
+      const existingItem = findServiceImageSlotRecord(records.serviceImages, slot);
+      const payload = {
+        title: slot.title,
+        imageUrl,
+        sortOrder: slot.sortOrder,
+      };
+
+      if (existingItem) {
+        await api.put(`${config.endpoint}/${existingItem.id}`, payload, adminRequest(token));
+      } else {
+        await api.post(config.endpoint, payload, adminRequest(token));
+      }
+
+      await loadAdminData(token);
+      setStatusMessage(`${slot.title} image saved successfully.`);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(getAdminErrorMessage(error, `Could not save ${slot.title.toLowerCase()} image.`));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   function handleLogout() {
     window.localStorage.removeItem("sgl-admin-token");
     setToken("");
@@ -1055,6 +1107,38 @@ export function AdminPage() {
     );
   }
 
+  function renderServiceImageCards(config) {
+    return (
+      <div className="sgla-service-image-grid">
+        {serviceImageSlots.map((slot) => {
+          const item = findServiceImageSlotRecord(records.serviceImages, slot);
+
+          return (
+            <label className={`sgla-service-image-card${item?.imageUrl ? " has-image" : ""}`} key={slot.key}>
+              {item?.imageUrl ? (
+                <img src={item.imageUrl} alt="" loading="lazy" decoding="async" />
+              ) : (
+                <span className="sgla-service-image-placeholder">
+                  <ImageUp size={24} />
+                </span>
+              )}
+              <strong>{slot.title}</strong>
+              <input
+                accept="image/*"
+                disabled={busy}
+                onChange={(event) => {
+                  handleServiceImageUpload(config, slot, event.target.files?.[0]);
+                  event.target.value = "";
+                }}
+                type="file"
+              />
+            </label>
+          );
+        })}
+      </div>
+    );
+  }
+
   if (!token) {
     return (
       <main className="sgla-login-page">
@@ -1289,14 +1373,14 @@ export function AdminPage() {
         {activeConfig?.key === "siteConfig" ? renderContactProfile(activeConfig) : null}
 
         {activeConfig && activeConfig.key !== "siteConfig" ? (
-          <section className={`sgla-crud-grid ${activeConfig.readOnly || usesPopupCrud ? "is-full" : ""}`}>
-            {!activeConfig.readOnly && !usesPopupCrud ? renderCrudForm(activeConfig) : null}
+          <section className={`sgla-crud-grid ${activeConfig.readOnly || usesPopupCrud || usesFixedServiceImageCards ? "is-full" : ""}`}>
+            {!activeConfig.readOnly && !usesPopupCrud && !usesFixedServiceImageCards ? renderCrudForm(activeConfig) : null}
 
             <section className="sgla-panel sgla-table-panel">
               <div className="sgla-panel-head">
                 <div>
-                  <p>{activeConfig.readOnly ? "Read and clear" : "Created records"}</p>
-                  <h2>{activeConfig.readOnly ? "Website messages" : `Created ${activeConfig.label}`}</h2>
+                  <p>{activeConfig.readOnly ? "Read and clear" : usesFixedServiceImageCards ? "Select service" : "Created records"}</p>
+                  <h2>{activeConfig.readOnly ? "Website messages" : usesFixedServiceImageCards ? activeConfig.label : `Created ${activeConfig.label}`}</h2>
                 </div>
                 {activeConfig.readOnly ? (
                   <button className="sgla-light-button" onClick={() => loadAdminData(token)} type="button">
@@ -1317,7 +1401,9 @@ export function AdminPage() {
                   <GalleryHorizontalEnd size={20} />
                 )}
               </div>
-              {["bannerImages", "aboutImages", "serviceImages", "galleryItems"].includes(activeConfig.key) ? (
+              {activeConfig.key === "serviceImages" ? (
+                renderServiceImageCards(activeConfig)
+              ) : ["bannerImages", "aboutImages", "galleryItems"].includes(activeConfig.key) ? (
                 renderGalleryCards(activeConfig)
               ) : (
                 <div className="sgla-table-wrap">

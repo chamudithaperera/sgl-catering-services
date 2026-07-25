@@ -196,11 +196,25 @@ function RentingSections({ page }) {
   );
 }
 
+function findServiceImageByKey(serviceImages, imageKey, fallbackIndex) {
+  const images = serviceImages || [];
+  const normalizedKey = imageKey.toLowerCase();
+
+  return (
+    images.find((item) => String(item.title || "").toLowerCase().includes(normalizedKey)) ||
+    images.find((item) => Number(item.sortOrder) === fallbackIndex + 1) ||
+    images[fallbackIndex] ||
+    null
+  );
+}
+
 function buildManagedCateringPage(page, content) {
   const foodPackages = content?.foodPackages || [];
+  const bannerImage = findServiceImageByKey(content?.serviceImages, "catering", 0)?.imageUrl || "";
 
   return {
     ...page,
+    image: bannerImage,
     menus: foodPackages.map((item) => ({
       name: item.name,
       priceLabel: item.priceLabel,
@@ -212,9 +226,11 @@ function buildManagedCateringPage(page, content) {
 
 function buildManagedRentalPage(page, content) {
   const rentalItems = content?.rentalItems || [];
+  const bannerImage = findServiceImageByKey(content?.serviceImages, "rental", 1)?.imageUrl || "";
 
   return {
     ...page,
+    image: bannerImage,
     items: rentalItems.map((item) => ({
       name: item.name,
       category: item.category,
@@ -299,7 +315,7 @@ export function ServiceShowcasePage({ page }) {
       serviceType: managedPage.type === "catering" ? "Catering" : "Event rental equipment",
       description: managedPage.seo?.description || managedPage.description,
       url: buildSiteUrl(managedPage.seo?.canonicalPath || "/"),
-      image: buildSiteUrl(managedPage.image),
+      ...(managedPage.image ? { image: buildSiteUrl(managedPage.image) } : {}),
       areaServed: {
         "@type": "City",
         name: "Anuradhapura",

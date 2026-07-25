@@ -243,6 +243,7 @@ const navItems = [
 
 const serviceItems = [
   {
+    imageKey: "catering",
     title: "ආහාර පාන සැපයීම",
     label: "Signature Catering",
     href: "/catering",
@@ -250,6 +251,7 @@ const serviceItems = [
       "මංගල උත්සව, ආයතනික හමුවීම්, දාන පිංකම් සහ පවුල් සැමරුම් සඳහා ඔබේ අවස්ථාවට ගැළපෙන ලෙස රසවත්, සෞඛ්‍යාරක්ෂිත සහ වෘත්තීයමය ආහාර සැපයීමක් අපි සකස් කරමු.",
   },
   {
+    imageKey: "rental",
     title: "උත්සව භාණ්ඩ සැපයීම",
     label: "Event Rentals",
     href: "/renting",
@@ -257,6 +259,18 @@ const serviceItems = [
       "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
   },
 ];
+
+function findServiceImageByKey(serviceImages, imageKey, fallbackIndex) {
+  const images = serviceImages || [];
+  const normalizedKey = imageKey.toLowerCase();
+
+  return (
+    images.find((item) => String(item.title || "").toLowerCase().includes(normalizedKey)) ||
+    images.find((item) => Number(item.sortOrder) === fallbackIndex + 1) ||
+    images[fallbackIndex] ||
+    null
+  );
+}
 
 function useAutoplayVideo(videoRef, shouldPlay) {
   useEffect(() => {
@@ -362,7 +376,7 @@ export function HomePage() {
   const serviceImages = content?.serviceImages || [];
   const homepageServices = serviceItems.map((service, index) => ({
     ...service,
-    image: serviceImages[index]?.imageUrl || "",
+    image: findServiceImageByKey(serviceImages, service.imageKey, index)?.imageUrl || "",
   }));
   const homepageGallery = (content?.gallery || []).map((item, index) => ({
     title: item.title,
