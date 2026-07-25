@@ -816,6 +816,67 @@
   cursor: pointer;
 }
 
+.sgla-web-text-services-panel {
+  align-self: start;
+}
+
+.sgla-web-text-service-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.sgla-web-text-service-card {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  text-align: left;
+  border-radius: 8px;
+  color: var(--sgla-text);
+  background: var(--sgla-surface-soft);
+  border: 1px solid var(--sgla-line);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.sgla-web-text-service-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(24, 35, 51, 0.12);
+  border-color: rgba(180, 82, 48, 0.34);
+}
+
+.sgla-web-text-service-card span {
+  color: var(--sgla-accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sgla-web-text-service-card strong {
+  color: var(--sgla-text);
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.sgla-web-text-service-card p {
+  margin: 0;
+  color: var(--sgla-muted);
+  line-height: 1.65;
+}
+
+.sgla-web-text-service-card b {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  justify-self: start;
+  color: var(--sgla-accent);
+  font-size: 0.82rem;
+}
+
 .sgla-table-panel {
   overflow: hidden;
 }
