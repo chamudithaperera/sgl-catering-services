@@ -532,18 +532,10 @@
 
 .premium-about-local {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   margin-top: 10px;
   padding-top: 24px;
   border-top: 1px solid rgba(132, 49, 26, 0.14);
-}
-
-.premium-about-local > span {
-  color: #84311a;
-  font-size: 0.76rem;
-  font-weight: 750;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 
 .premium-about-local h3 {
@@ -555,40 +547,9 @@
   color: #111516;
 }
 
-.premium-about-local-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 18px;
-  margin-top: 4px;
-}
-
-.premium-about-local-item {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: 10px;
-  align-items: center;
-  min-width: 0;
-}
-
-.premium-about-local-item span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(132, 49, 26, 0.1);
+.premium-about-local p strong {
   color: #84311a;
-  font-size: 0.9rem;
   font-weight: 800;
-}
-
-.premium-about-local-item strong {
-  min-width: 0;
-  color: rgba(17, 21, 22, 0.82);
-  font-size: 0.92rem;
-  font-weight: 750;
-  line-height: 1.38;
 }
 
 .premium-services {
@@ -1814,10 +1775,6 @@
     box-shadow: none;
   }
 
-  .premium-about-local-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .premium-services {
     padding: 82px 20px 98px;
   }
@@ -1996,21 +1953,6 @@
 
   .premium-about-local h3 {
     font-size: clamp(1.45rem, 7vw, 2rem);
-  }
-
-  .premium-about-local-list {
-    grid-template-columns: 1fr;
-    gap: 11px;
-  }
-
-  .premium-about-local-item {
-    grid-template-columns: 26px minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  .premium-about-local-item span {
-    width: 26px;
-    height: 26px;
   }
 
   .premium-services {

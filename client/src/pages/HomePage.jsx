@@ -18,18 +18,10 @@ const heroDescription =
   "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.";
 const localSearchIntro =
   "Looking for a catering service in Anuradhapura? SGL Catering Service offers catering services in Anuradhapura for weddings, home functions, almsgivings, birthdays, office events, and special celebrations.";
-const localSeoFeatures = [
-  "Wedding catering in Anuradhapura",
-  "Birthday and home function catering",
-  "Almsgiving and family event food service",
-  "Office event and buffet catering",
-];
 const aboutHeading = "SGL කේටරින් සර්විස් යනු:";
 const aboutBody =
   "වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත් සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට අප සූදානම්.";
 const aboutLocalTitle = "Catering Services in Anuradhapura";
-const aboutLocalBody =
-  "SGL Catering Service provides catering services in Anuradhapura for weddings, birthdays, home functions, almsgivings, office events, and buffet-style celebrations. If you need a catering service in Anuradhapura, our team can help plan the menu, food quantities, serving style, and event rental items.";
 const contactHeading = "අප අමතන්න";
 const contactDescription =
   "ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න. ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු.";
@@ -740,18 +732,16 @@ export function HomePage() {
             <p>{aboutBody}</p>
 
             <div className="premium-about-local" aria-labelledby="about-local-catering-heading">
-              <span>Local Catering</span>
               <h3 id="about-local-catering-heading">{aboutLocalTitle}</h3>
-              <p>{aboutLocalBody}</p>
-
-              <div className="premium-about-local-list">
-                {localSeoFeatures.map((feature) => (
-                  <div className="premium-about-local-item" key={feature}>
-                    <span aria-hidden="true">✓</span>
-                    <strong>{feature}</strong>
-                  </div>
-                ))}
-              </div>
+              <p>
+                SGL Catering Service provides catering services in Anuradhapura for{" "}
+                <strong>Wedding catering in Anuradhapura</strong>,{" "}
+                <strong>Birthday and home function catering</strong>,{" "}
+                <strong>Almsgiving and family event food service</strong>, and{" "}
+                <strong>Office event and buffet catering</strong>. If you need a catering service in
+                Anuradhapura, our team can help plan the menu, food quantities, serving style, and event
+                rental items.
+              </p>
             </div>
           </div>
         </div>
