@@ -237,29 +237,6 @@ function GmailIcon({ size = 22 }) {
   );
 }
 
-const heroSlides = [
-  {
-    image: "/assets/sgl-images/hero-buffet.jpg",
-    label: "Hero buffet",
-  },
-  {
-    image: "/assets/sgl-images/indoor-buffet.jpg",
-    label: "Indoor buffet",
-  },
-  {
-    image: "/assets/sgl-images/grill-buffet.jpg",
-    label: "Grill buffet",
-  },
-  {
-    image: "/assets/sgl-images/salad-buffet.jpg",
-    label: "Salad buffet",
-  },
-  {
-    image: "/assets/sgl-images/salad-station.jpg",
-    label: "Salad station",
-  },
-];
-
 const navItems = [
   { label: "මුල් පිටුව", href: "#home" },
   { label: "අප ගැන", href: "#about" },
@@ -274,7 +251,6 @@ const serviceItems = [
     title: "ආහාර පාන සැපයීම",
     label: "Signature Catering",
     href: "/catering",
-    image: "/assets/sgl-images/hero-buffet.jpg",
     description:
       "මංගල උත්සව, ආයතනික හමුවීම්, දාන පිංකම් සහ පවුල් සැමරුම් සඳහා ඔබේ අවස්ථාවට ගැළපෙන ලෙස රසවත්, සෞඛ්‍යාරක්ෂිත සහ වෘත්තීයමය ආහාර සැපයීමක් අපි සකස් කරමු.",
   },
@@ -282,7 +258,6 @@ const serviceItems = [
     title: "උත්සව භාණ්ඩ සැපයීම",
     label: "Event Rentals",
     href: "/renting",
-    image: "/assets/sgl-images/indoor-buffet.jpg",
     description:
       "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
   },
@@ -377,7 +352,16 @@ export function HomePage() {
   const galleryVideoRef = useRef(null);
 
   const siteConfig = content?.siteConfig;
-  const homepageServices = serviceItems;
+  const heroSlides = (content?.bannerImages || []).slice(0, 5).map((item) => ({
+    image: item.imageUrl,
+    label: item.title || "Banner image",
+  }));
+  const aboutImage = content?.aboutImages?.[0]?.imageUrl || "";
+  const serviceImages = content?.serviceImages || [];
+  const homepageServices = serviceItems.map((service, index) => ({
+    ...service,
+    image: serviceImages[index]?.imageUrl || "",
+  }));
   const homepageGallery = (content?.gallery || []).map((item, index) => ({
     title: item.title,
     image: item.imageUrl,
@@ -420,14 +404,28 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (heroSlides.length > 0 && activeSlide >= heroSlides.length) {
+      setActiveSlide(0);
+    }
+  }, [activeSlide, heroSlides.length]);
+
+  useEffect(() => {
+    if (heroSlides.length <= 1) {
+      return undefined;
+    }
+
     const intervalId = window.setInterval(() => {
       setActiveSlide((currentSlide) => (currentSlide + 1) % heroSlides.length);
     }, 5200);
 
     return () => window.clearInterval(intervalId);
-  }, []);
+  }, [heroSlides.length]);
 
   useEffect(() => {
+    if (heroSlides.length === 0) {
+      return undefined;
+    }
+
     const upcomingSlide = (activeSlide + 1) % heroSlides.length;
     const preloadDelay = window.setTimeout(() => {
       setLoadedHeroSlides((currentSlides) => {
@@ -443,7 +441,7 @@ export function HomePage() {
     }, 1400);
 
     return () => window.clearTimeout(preloadDelay);
-  }, [activeSlide]);
+  }, [activeSlide, heroSlides.length]);
 
   useEffect(() => {
     const gallerySection = gallerySectionRef.current;
@@ -754,12 +752,14 @@ export function HomePage() {
       <section className="premium-about" id="about">
         <div className="premium-about-shell">
           <div className="premium-about-media premium-reveal premium-reveal-media" data-reveal>
-            <img
-              {...responsiveImageProps("/assets/sgl-images/indoor-buffet.jpg", "(max-width: 900px) 100vw, 50vw")}
-              alt="SGL Catering buffet setup"
-              loading="lazy"
-              decoding="async"
-            />
+            {aboutImage ? (
+              <img
+                {...responsiveImageProps(aboutImage, "(max-width: 900px) 100vw, 50vw")}
+                alt="SGL Catering about section"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null}
           </div>
 
           <div className="premium-about-card premium-reveal premium-reveal-card" data-reveal>
@@ -797,12 +797,14 @@ export function HomePage() {
             {homepageServices.map((service, index) => (
               <article key={service.title} className="premium-service-card premium-reveal premium-reveal-service" data-reveal>
                 <div className="premium-service-media">
-                  <img
-                    {...responsiveImageProps(service.image, "(max-width: 900px) 100vw, 50vw")}
-                    alt={service.title}
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  {service.image ? (
+                    <img
+                      {...responsiveImageProps(service.image, "(max-width: 900px) 100vw, 50vw")}
+                      alt={service.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : null}
                 </div>
 
                 <div className="premium-service-content">

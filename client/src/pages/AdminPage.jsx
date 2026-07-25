@@ -479,7 +479,7 @@ export function AdminPage() {
   const totalRecords = useMemo(
     () =>
       Object.entries(dashboard || {})
-        .filter(([key]) => !["unreadMessages", "benefits", "services", "rentalPrices"].includes(key))
+        .filter(([key]) => !["unreadMessages", "benefits", "services", "rentalPrices", "bannerImages", "aboutImages", "serviceImages", "galleryItems"].includes(key))
         .reduce((total, [, value]) => total + Number(value || 0), 0),
     [dashboard],
   );
