@@ -35,11 +35,6 @@ const homeStructuredData = {
   name: "SGL Catering Service",
   alternateName: "SGL Catering Services",
   url: buildSiteUrl("/"),
-  image: [
-    buildSiteUrl("/assets/sgl-images/hero-buffet.jpg"),
-    buildSiteUrl("/assets/sgl-images/indoor-buffet.jpg"),
-    buildSiteUrl("/assets/sgl-images/grill-buffet.jpg"),
-  ],
   logo: buildSiteUrl("/assets/sgl-logo.png"),
   telephone: contactPhone,
   email: contactEmail,
@@ -356,6 +351,13 @@ export function HomePage() {
     image: item.imageUrl,
     label: item.title || "Banner image",
   }));
+  const structuredDataImages = heroSlides.map((slide) => slide.image).filter(Boolean).map((image) => buildSiteUrl(image));
+  const homepageStructuredData = structuredDataImages.length
+    ? {
+        ...homeStructuredData,
+        image: structuredDataImages,
+      }
+    : homeStructuredData;
   const aboutImage = content?.aboutImages?.[0]?.imageUrl || "";
   const serviceImages = content?.serviceImages || [];
   const homepageServices = serviceItems.map((service, index) => ({
@@ -633,6 +635,7 @@ export function HomePage() {
         title="Catering Service in Anuradhapura | SGL Catering Service"
         description="SGL Catering Service is a catering service in Anuradhapura for weddings, home functions, almsgivings, birthdays, office events, buffet menus, and event rentals."
         canonicalPath="/"
+        image={heroSlides[0]?.image || ""}
         keywords={[
           "sgl catering service",
           "catering service in anuradhapura",
@@ -642,7 +645,7 @@ export function HomePage() {
           "wedding catering Anuradhapura",
           "buffet catering Sri Lanka",
         ]}
-        structuredData={homeStructuredData}
+        structuredData={homepageStructuredData}
       />
       <header className="premium-nav">
         <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>

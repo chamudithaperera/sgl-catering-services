@@ -62,15 +62,6 @@ async function main() {
 
   await seedContactDetailsIfMissing();
 
-  await seedIfEmpty(prisma.gallery, [
-    { title: "ප්‍රධාන බුෆේ සැකසුම", imageUrl: "/assets/sgl-images/hero-buffet.jpg", sortOrder: 1 },
-    { title: "නැවුම් සලාද කවුන්ටරය", imageUrl: "/assets/sgl-images/salad-buffet.jpg", sortOrder: 2 },
-    { title: "ශ්‍රී ලාංකික ප්‍රධාන පිඟාන", imageUrl: "/assets/sgl-images/rice-plate.jpg", sortOrder: 3 },
-    { title: "උණුසුම් මස් බුෆේ", imageUrl: "/assets/sgl-images/grill-buffet.jpg", sortOrder: 4 },
-    { title: "රසවත් අතුරුපස සහ රසකැවිලි", imageUrl: "/assets/sgl-images/traditional-sweets.jpg", sortOrder: 5 },
-    { title: "සම්බෝල සහ අතුරු කෑම", imageUrl: "/assets/sgl-images/carrot-sambol.jpg", sortOrder: 6 },
-  ]);
-
   await seedIfEmpty(prisma.review, [
     {
       customerName: "සචිනි පෙරේරා",

@@ -5,7 +5,7 @@ export const servicePageContent = {
     title: "ආහාර පාන සැපයීම",
     englishTitle: "Catering Service in Anuradhapura",
     eyebrow: "SGL Catering Service",
-    image: "/assets/sgl-images/hero-buffet.jpg",
+    image: "",
     seo: {
       title: "Catering Service in Anuradhapura | SGL Catering Service",
       description:
@@ -45,7 +45,7 @@ export const servicePageContent = {
     title: "උත්සව භාණ්ඩ සැපයීම",
     englishTitle: "Event Rentals",
     eyebrow: "SGL Rental Service",
-    image: "/assets/sgl-images/indoor-buffet.jpg",
+    image: "",
     seo: {
       title: "Event Rentals Anuradhapura | SGL Catering Service",
       description:

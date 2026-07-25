@@ -71,9 +71,11 @@ function SectionHead({ eyebrow, title, description, light = false, center = fals
 function BannerSection({ page, phone }) {
   return (
     <section className="service-banner">
-      <div className="service-banner-media" aria-hidden="true">
-        <img {...responsiveImageProps(page.image, "100vw")} alt="" loading="eager" decoding="async" fetchPriority="high" />
-      </div>
+      {page.image ? (
+        <div className="service-banner-media" aria-hidden="true">
+          <img {...responsiveImageProps(page.image, "100vw")} alt="" loading="eager" decoding="async" fetchPriority="high" />
+        </div>
+      ) : null}
       <div className="service-banner-overlay" aria-hidden="true" />
 
       <div className="service-page-shell service-banner-shell">
@@ -122,17 +124,17 @@ function CateringMenuCard({ item }) {
 }
 
 function RentalItemCard({ item }) {
-  const imageUrl = item.imageUrl || "/assets/sgl-images/indoor-buffet.jpg";
-
   return (
     <article className={`service-rental-item-card${item.featured ? " is-featured" : ""}`}>
       <div className="service-rental-item-card-media">
-        <img
-          {...responsiveImageProps(imageUrl, "(max-width: 720px) 76px, (max-width: 900px) 84px, 90px")}
-          alt={item.name}
-          loading="lazy"
-          decoding="async"
-        />
+        {item.imageUrl ? (
+          <img
+            {...responsiveImageProps(item.imageUrl, "(max-width: 720px) 76px, (max-width: 900px) 84px, 90px")}
+            alt={item.name}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : null}
       </div>
 
       <div className="service-rental-item-card-head">

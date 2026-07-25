@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { buildSiteUrl } from "../lib/seo";
 
-const defaultImage = "/assets/sgl-images/hero-buffet.jpg";
-
 function upsertMeta(selector, attributes) {
   let element = document.head.querySelector(selector);
 
@@ -28,17 +26,21 @@ function upsertCanonical(href) {
   element.setAttribute("href", href);
 }
 
+function removeElement(selector) {
+  document.head.querySelector(selector)?.remove();
+}
+
 export function Seo({
   title,
   description,
   canonicalPath = "/",
-  image = defaultImage,
+  image = "",
   keywords = [],
   structuredData,
 }) {
   useEffect(() => {
     const canonicalUrl = buildSiteUrl(canonicalPath);
-    const imageUrl = buildSiteUrl(image);
+    const imageUrl = image ? buildSiteUrl(image) : "";
 
     document.title = title;
     upsertCanonical(canonicalUrl);
@@ -54,7 +56,6 @@ export function Seo({
     upsertMeta('meta[property="og:description"]', { property: "og:description", content: description });
     upsertMeta('meta[property="og:type"]', { property: "og:type", content: "website" });
     upsertMeta('meta[property="og:url"]', { property: "og:url", content: canonicalUrl });
-    upsertMeta('meta[property="og:image"]', { property: "og:image", content: imageUrl });
     upsertMeta('meta[property="og:site_name"]', {
       property: "og:site_name",
       content: "SGL Catering Service",
@@ -62,7 +63,14 @@ export function Seo({
     upsertMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
     upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: title });
     upsertMeta('meta[name="twitter:description"]', { name: "twitter:description", content: description });
-    upsertMeta('meta[name="twitter:image"]', { name: "twitter:image", content: imageUrl });
+
+    if (imageUrl) {
+      upsertMeta('meta[property="og:image"]', { property: "og:image", content: imageUrl });
+      upsertMeta('meta[name="twitter:image"]', { name: "twitter:image", content: imageUrl });
+    } else {
+      removeElement('meta[property="og:image"]');
+      removeElement('meta[name="twitter:image"]');
+    }
 
     const existingStructuredData = document.head.querySelector("#sgl-local-business-schema");
     existingStructuredData?.remove();
