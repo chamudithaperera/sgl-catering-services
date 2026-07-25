@@ -814,7 +814,6 @@ export function HomePage() {
           <div className="premium-hero-panel">
             <h1>{heroText.titleSinhala}</h1>
             <span className="premium-hero-subtitle">{heroText.titleEnglish}</span>
-            <strong className="premium-hero-search-title">Catering Service in Anuradhapura</strong>
             <p>{heroText.descriptionSinhala}</p>
             {heroText.descriptionEnglish ? <p className="premium-hero-local">{heroText.descriptionEnglish}</p> : null}
 
