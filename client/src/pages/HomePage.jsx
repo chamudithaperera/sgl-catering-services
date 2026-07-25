@@ -25,8 +25,69 @@ const aboutLocalTitle = "Catering Services in Anuradhapura";
 const contactHeading = "අප අමතන්න";
 const contactDescription =
   "ඔබගේ උත්සවයට ගැළපෙන ආහාර සැපයුම්, භාණ්ඩ සැකසුම් සහ වෙන්කරවා ගැනීම් සඳහා අප සමඟ සම්බන්ධවන්න. ඔබගේ අවශ්‍යතාවයට ගැළපෙන විසඳුමක් ඉක්මනින් සකස් කරදෙන්නෙමු.";
+const aboutEnglishDescription =
+  "SGL Catering Service provides catering services in Anuradhapura for Wedding catering in Anuradhapura, Birthday and home function catering, Almsgiving and family event food service, and Office event and buffet catering. If you need a catering service in Anuradhapura, our team can help plan the menu, food quantities, serving style, and event rental items.";
+const servicesHeadingEnglish = "Professional Event Solutions";
+const servicesHeadingSinhala = "අපගේ සේවාවන්";
+const servicesDescription =
+  "ඔබගේ උත්සව අවශ්‍යතාවයට ගැළපෙන පරිදි ආහාර සේවාවන් සහ උත්සව භාණ්ඩ සැපයුම් එක්ම විශ්වාසනීය ස්ථානයකින් ලබාදීමට අපි සූදානම්.";
+const galleryHeadingEnglish = "Curated Event Moments";
+const galleryHeadingSinhala = "ඡායාරූප";
+const galleryDescription =
+  "අප විසින් සකස් කළ උත්සව භෝජන සැකසුම්, රසවත් ආහාර තේරීම් සහ අලංකාර සේවා අවස්ථා අතරින් තෝරාගත් රූප කිහිපයක් මෙහි නරඹන්න.";
+const reviewsHeadingEnglish = "Client Testimonials";
+const reviewsHeadingSinhala = "පාරිභෝගික අදහස්";
+const reviewsDescription =
+  "අපගේ සේවාවන් භාවිතා කළ පාරිභෝගිකයින්ගේ අත්දැකීම් අතරින් තෝරාගත් අදහස් කිහිපයක් මෙහි නරඹන්න.";
+const contactHeadingEnglish = "Reach Out To SGL";
 const contactMapEmbedUrl =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4934.785252954407!2d80.40432687591523!3d8.319864291715861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afcf5005cd65e2d%3A0x378ef91fdb3a6052!2sSGL%20Catering%20Service!5e1!3m2!1sen!2slk!4v1784484566797!5m2!1sen!2slk";
+const defaultWebTexts = {
+  hero: {
+    titleSinhala: "SGL කේටරින් සර්විස්",
+    titleEnglish: "SGL Catering Service",
+    descriptionSinhala: heroDescription,
+    descriptionEnglish: localSearchIntro,
+  },
+  about: {
+    titleSinhala: aboutHeading,
+    titleEnglish: aboutLocalTitle,
+    descriptionSinhala: aboutBody,
+    descriptionEnglish: aboutEnglishDescription,
+  },
+  services: {
+    titleSinhala: servicesHeadingSinhala,
+    titleEnglish: servicesHeadingEnglish,
+    descriptionSinhala: servicesDescription,
+  },
+  serviceCatering: {
+    titleSinhala: "ආහාර පාන සැපයීම",
+    titleEnglish: "Signature Catering",
+    descriptionSinhala:
+      "මංගල උත්සව, ආයතනික හමුවීම්, දාන පිංකම් සහ පවුල් සැමරුම් සඳහා ඔබේ අවස්ථාවට ගැළපෙන ලෙස රසවත්, සෞඛ්‍යාරක්ෂිත සහ වෘත්තීයමය ආහාර සැපයීමක් අපි සකස් කරමු.",
+  },
+  serviceRental: {
+    titleSinhala: "උත්සව භාණ්ඩ සැපයීම",
+    titleEnglish: "Event Rentals",
+    descriptionSinhala:
+      "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
+  },
+  gallery: {
+    titleSinhala: galleryHeadingSinhala,
+    titleEnglish: galleryHeadingEnglish,
+    descriptionSinhala: galleryDescription,
+  },
+  reviews: {
+    titleSinhala: reviewsHeadingSinhala,
+    titleEnglish: reviewsHeadingEnglish,
+    descriptionSinhala: reviewsDescription,
+  },
+  contact: {
+    titleSinhala: contactHeading,
+    titleEnglish: contactHeadingEnglish,
+    descriptionSinhala: contactDescription,
+  },
+};
 const homeStructuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
@@ -244,6 +305,7 @@ const navItems = [
 const serviceItems = [
   {
     imageKey: "catering",
+    textKey: "serviceCatering",
     title: "ආහාර පාන සැපයීම",
     label: "Signature Catering",
     href: "/catering",
@@ -252,6 +314,7 @@ const serviceItems = [
   },
   {
     imageKey: "rental",
+    textKey: "serviceRental",
     title: "උත්සව භාණ්ඩ සැපයීම",
     label: "Event Rentals",
     href: "/renting",
@@ -259,6 +322,13 @@ const serviceItems = [
       "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
   },
 ];
+
+function getWebText(webTexts, textKey) {
+  return {
+    ...(defaultWebTexts[textKey] || {}),
+    ...(webTexts?.[textKey] || {}),
+  };
+}
 
 function findServiceImageByKey(serviceImages, imageKey, fallbackIndex) {
   const images = serviceImages || [];
@@ -361,6 +431,13 @@ export function HomePage() {
   const galleryVideoRef = useRef(null);
 
   const siteConfig = content?.siteConfig;
+  const webTexts = content?.webTexts || {};
+  const heroText = getWebText(webTexts, "hero");
+  const aboutText = getWebText(webTexts, "about");
+  const servicesText = getWebText(webTexts, "services");
+  const galleryText = getWebText(webTexts, "gallery");
+  const reviewsText = getWebText(webTexts, "reviews");
+  const contactText = getWebText(webTexts, "contact");
   const heroSlides = (content?.bannerImages || []).slice(0, 5).map((item) => ({
     image: item.imageUrl,
     label: item.title || "Banner image",
@@ -376,6 +453,9 @@ export function HomePage() {
   const serviceImages = content?.serviceImages || [];
   const homepageServices = serviceItems.map((service, index) => ({
     ...service,
+    title: getWebText(webTexts, service.textKey).titleSinhala || service.title,
+    label: getWebText(webTexts, service.textKey).titleEnglish || service.label,
+    description: getWebText(webTexts, service.textKey).descriptionSinhala || service.description,
     image: findServiceImageByKey(serviceImages, service.imageKey, index)?.imageUrl || "",
   }));
   const homepageGallery = (content?.gallery || []).map((item, index) => ({
@@ -732,11 +812,11 @@ export function HomePage() {
 
         <div className="premium-hero-content">
           <div className="premium-hero-panel">
-            <h1>SGL කේටරින් සර්විස්</h1>
-            <span className="premium-hero-subtitle">SGL Catering Service</span>
+            <h1>{heroText.titleSinhala}</h1>
+            <span className="premium-hero-subtitle">{heroText.titleEnglish}</span>
             <strong className="premium-hero-search-title">Catering Service in Anuradhapura</strong>
-            <p>{heroDescription}</p>
-            <p className="premium-hero-local">{localSearchIntro}</p>
+            <p>{heroText.descriptionSinhala}</p>
+            {heroText.descriptionEnglish ? <p className="premium-hero-local">{heroText.descriptionEnglish}</p> : null}
 
             <div className="premium-hero-actions">
               <button type="button" className="premium-button premium-button-primary" onClick={(event) => handleNavAnchorClick(event, "#services")}>
@@ -780,20 +860,12 @@ export function HomePage() {
           </div>
 
           <div className="premium-about-card premium-reveal premium-reveal-card" data-reveal>
-            <h2>{aboutHeading}</h2>
-            <p>{aboutBody}</p>
+            <h2>{aboutText.titleSinhala}</h2>
+            <p>{aboutText.descriptionSinhala}</p>
 
             <div className="premium-about-local" aria-labelledby="about-local-catering-heading">
-              <h3 id="about-local-catering-heading">{aboutLocalTitle}</h3>
-              <p>
-                SGL Catering Service provides catering services in Anuradhapura for{" "}
-                <strong>Wedding catering in Anuradhapura</strong>,{" "}
-                <strong>Birthday and home function catering</strong>,{" "}
-                <strong>Almsgiving and family event food service</strong>, and{" "}
-                <strong>Office event and buffet catering</strong>. If you need a catering service in
-                Anuradhapura, our team can help plan the menu, food quantities, serving style, and event
-                rental items.
-              </p>
+              <h3 id="about-local-catering-heading">{aboutText.titleEnglish}</h3>
+              <p>{aboutText.descriptionEnglish}</p>
             </div>
           </div>
         </div>
@@ -802,12 +874,9 @@ export function HomePage() {
       <section className="premium-services" id="services">
         <div className="premium-services-shell">
           <div className="premium-services-heading premium-reveal premium-reveal-heading" data-reveal>
-            <span>Professional Event Solutions</span>
-            <h2>අපගේ සේවාවන්</h2>
-            <p>
-              ඔබගේ උත්සව අවශ්‍යතාවයට ගැළපෙන පරිදි ආහාර සේවාවන් සහ උත්සව භාණ්ඩ සැපයුම් එක්ම විශ්වාසනීය
-              ස්ථානයකින් ලබාදීමට අපි සූදානම්.
-            </p>
+            <span>{servicesText.titleEnglish}</span>
+            <h2>{servicesText.titleSinhala}</h2>
+            <p>{servicesText.descriptionSinhala}</p>
           </div>
 
           <div className="premium-services-grid">
@@ -867,12 +936,9 @@ export function HomePage() {
 
         <div className="premium-gallery-shell">
           <div className="premium-gallery-heading premium-reveal premium-reveal-heading" data-reveal>
-            <span>Curated Event Moments</span>
-            <h2>ඡායාරූප</h2>
-            <p>
-              අප විසින් සකස් කළ උත්සව භෝජන සැකසුම්, රසවත් ආහාර තේරීම් සහ අලංකාර සේවා අවස්ථා අතරින්
-              තෝරාගත් රූප කිහිපයක් මෙහි නරඹන්න.
-            </p>
+            <span>{galleryText.titleEnglish}</span>
+            <h2>{galleryText.titleSinhala}</h2>
+            <p>{galleryText.descriptionSinhala}</p>
           </div>
 
           {homepageGallery.length > 0 ? (
@@ -902,12 +968,9 @@ export function HomePage() {
         <section className="premium-reviews" id="reviews">
           <div className="premium-reviews-shell">
             <div className="premium-reviews-heading premium-reveal premium-reveal-heading" data-reveal>
-              <span>Client Testimonials</span>
-              <h2>පාරිභෝගික අදහස්</h2>
-              <p>
-                අපගේ සේවාවන් භාවිතා කළ පාරිභෝගිකයින්ගේ අත්දැකීම් අතරින් තෝරාගත් අදහස් කිහිපයක් මෙහි
-                නරඹන්න.
-              </p>
+              <span>{reviewsText.titleEnglish}</span>
+              <h2>{reviewsText.titleSinhala}</h2>
+              <p>{reviewsText.descriptionSinhala}</p>
             </div>
 
             <div className="premium-reviews-stage premium-reveal premium-reveal-review" data-reveal>
@@ -970,9 +1033,9 @@ export function HomePage() {
       <section className="premium-contact" id="contact">
         <div className="premium-contact-shell">
           <div className="premium-contact-heading premium-reveal premium-reveal-heading" data-reveal>
-            <span>Reach Out To SGL</span>
-            <h2>{contactHeading}</h2>
-            <p>{contactDescription}</p>
+            <span>{contactText.titleEnglish}</span>
+            <h2>{contactText.titleSinhala}</h2>
+            <p>{contactText.descriptionSinhala}</p>
           </div>
 
           <div className="premium-contact-layout">
