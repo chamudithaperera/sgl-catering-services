@@ -9,6 +9,7 @@ const {
   foodPackageSchema,
   rentalItemSchema,
   galleryItemSchema,
+  webImageSchema,
   reviewSchema,
 } = require("../utils/validators");
 
@@ -49,12 +50,31 @@ const router = express.Router();
 const reorderModels = {
   foodPackages: prisma.cateringMenu,
   rentalItems: prisma.rentalItem,
+  bannerImages: prisma.webImage,
+  aboutImages: prisma.webImage,
+  serviceImages: prisma.webImage,
   galleryItems: prisma.gallery,
   reviews: prisma.review,
 };
 
+const webImageGroups = {
+  bannerImages: { imageKey: "banner", maxItems: 5 },
+  aboutImages: { imageKey: "about", maxItems: 1 },
+  serviceImages: { imageKey: "services", maxItems: 2 },
+};
+
 const galleryAdminSelect = {
   id: true,
+  title: true,
+  imageUrl: true,
+  sortOrder: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
+const webImageAdminSelect = {
+  id: true,
+  imageKey: true,
   title: true,
   imageUrl: true,
   sortOrder: true,
@@ -68,6 +88,9 @@ router.get("/dashboard", async (request, response) => {
   const [
     foodPackages,
     rentalItems,
+    bannerImages,
+    aboutImages,
+    serviceImages,
     galleryItems,
     reviews,
     contactMessages,
@@ -75,6 +98,9 @@ router.get("/dashboard", async (request, response) => {
   ] = await Promise.all([
     prisma.cateringMenu.count(),
     prisma.rentalItem.count(),
+    prisma.webImage.count({ where: { imageKey: "banner" } }),
+    prisma.webImage.count({ where: { imageKey: "about" } }),
+    prisma.webImage.count({ where: { imageKey: "services" } }),
     prisma.gallery.count(),
     prisma.review.count(),
     prisma.message.count(),
@@ -84,6 +110,10 @@ router.get("/dashboard", async (request, response) => {
   response.json({
     foodPackages,
     rentalItems,
+    bannerImages,
+    aboutImages,
+    serviceImages,
+    webImages: bannerImages + aboutImages + serviceImages + galleryItems,
     galleryItems,
     reviews,
     contactMessages,
@@ -112,12 +142,19 @@ router.patch("/reorder", async (request, response) => {
     return response.status(400).json({ message: "Invalid reorder request" });
   }
 
+  const webImageGroup = webImageGroups[resource];
+
   await prisma.$transaction(
     orderedIds.map((id, index) =>
-      model.update({
-        where: { id: Number(id) },
-        data: { sortOrder: index + 1 },
-      }),
+      webImageGroup
+        ? model.updateMany({
+            where: { id: Number(id), imageKey: webImageGroup.imageKey },
+            data: { sortOrder: index + 1 },
+          })
+        : model.update({
+            where: { id: Number(id) },
+            data: { sortOrder: index + 1 },
+          }),
     ),
   );
 
@@ -189,6 +226,93 @@ router.put("/rental-items/:id", async (request, response) => {
 
 router.delete("/rental-items/:id", async (request, response) => {
   await prisma.rentalItem.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
+});
+
+router.get("/web-images/:resource", async (request, response) => {
+  const group = webImageGroups[request.params.resource];
+
+  if (!group) {
+    return response.status(404).json({ message: "Unknown web image group" });
+  }
+
+  const items = await prisma.webImage.findMany({
+    where: { imageKey: group.imageKey },
+    orderBy: { sortOrder: "asc" },
+    select: webImageAdminSelect,
+  });
+
+  response.json(items);
+});
+
+router.post("/web-images/:resource", async (request, response) => {
+  const group = webImageGroups[request.params.resource];
+
+  if (!group) {
+    return response.status(404).json({ message: "Unknown web image group" });
+  }
+
+  const currentCount = await prisma.webImage.count({ where: { imageKey: group.imageKey } });
+
+  if (currentCount >= group.maxItems) {
+    return response.status(400).json({ message: `You can add up to ${group.maxItems} image${group.maxItems === 1 ? "" : "s"} here.` });
+  }
+
+  const data = webImageSchema.parse(request.body);
+  const item = await prisma.webImage.create({
+    data: {
+      ...data,
+      imageKey: group.imageKey,
+    },
+    select: webImageAdminSelect,
+  });
+
+  response.status(201).json(item);
+});
+
+router.put("/web-images/:resource/:id", async (request, response) => {
+  const group = webImageGroups[request.params.resource];
+
+  if (!group) {
+    return response.status(404).json({ message: "Unknown web image group" });
+  }
+
+  const data = webImageSchema.parse(request.body);
+  const existingItem = await prisma.webImage.findFirst({
+    where: { id: Number(request.params.id), imageKey: group.imageKey },
+    select: { id: true },
+  });
+
+  if (!existingItem) {
+    return response.status(404).json({ message: "Image not found" });
+  }
+
+  const item = await prisma.webImage.update({
+    where: { id: existingItem.id },
+    data,
+    select: webImageAdminSelect,
+  });
+
+  response.json(item);
+});
+
+router.delete("/web-images/:resource/:id", async (request, response) => {
+  const group = webImageGroups[request.params.resource];
+
+  if (!group) {
+    return response.status(404).json({ message: "Unknown web image group" });
+  }
+
+  const existingItem = await prisma.webImage.findFirst({
+    where: { id: Number(request.params.id), imageKey: group.imageKey },
+    select: { id: true },
+  });
+
+  if (!existingItem) {
+    return response.status(404).json({ message: "Image not found" });
+  }
+
+  await prisma.webImage.delete({ where: { id: existingItem.id } });
   response.status(204).send();
 });
 

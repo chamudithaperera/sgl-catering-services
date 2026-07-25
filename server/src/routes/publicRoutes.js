@@ -10,23 +10,60 @@ const galleryPublicSelect = {
   sortOrder: true,
 };
 
+const webImagePublicSelect = {
+  title: true,
+  imageUrl: true,
+  sortOrder: true,
+};
+
+function groupWebImages(webImages) {
+  return webImages.reduce(
+    (groups, item) => {
+      if (item.imageKey === "banner") {
+        groups.bannerImages.push(item);
+      } else if (item.imageKey === "about") {
+        groups.aboutImages.push(item);
+      } else if (item.imageKey === "services") {
+        groups.serviceImages.push(item);
+      }
+
+      return groups;
+    },
+    {
+      bannerImages: [],
+      aboutImages: [],
+      serviceImages: [],
+    },
+  );
+}
+
 router.get("/health", (request, response) => {
   response.json({ ok: true });
 });
 
 router.get("/home", async (request, response) => {
-  const [contactDetails, gallery, reviews] = await Promise.all([
+  const [contactDetails, gallery, webImages, reviews] = await Promise.all([
     prisma.contactDetails.findUnique({ where: { id: 1 } }),
     prisma.gallery.findMany({
       orderBy: { sortOrder: "asc" },
       select: galleryPublicSelect,
     }),
+    prisma.webImage.findMany({
+      where: { imageKey: { in: ["banner", "about", "services"] } },
+      orderBy: [{ imageKey: "asc" }, { sortOrder: "asc" }],
+      select: {
+        imageKey: true,
+        ...webImagePublicSelect,
+      },
+    }),
     prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
+  const groupedImages = groupWebImages(webImages);
 
   response.json({
     siteConfig: contactDetails,
     contactDetails,
+    ...groupedImages,
     gallery,
     reviews,
   });
@@ -38,6 +75,7 @@ router.get("/content", async (request, response) => {
     cateringMenus,
     rentalItems,
     gallery,
+    webImages,
     reviews,
   ] = await Promise.all([
     prisma.contactDetails.findUnique({ where: { id: 1 } }),
@@ -47,12 +85,22 @@ router.get("/content", async (request, response) => {
       orderBy: { sortOrder: "asc" },
       select: galleryPublicSelect,
     }),
+    prisma.webImage.findMany({
+      where: { imageKey: { in: ["banner", "about", "services"] } },
+      orderBy: [{ imageKey: "asc" }, { sortOrder: "asc" }],
+      select: {
+        imageKey: true,
+        ...webImagePublicSelect,
+      },
+    }),
     prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
+  const groupedImages = groupWebImages(webImages);
 
   response.json({
     siteConfig: contactDetails,
     contactDetails,
+    ...groupedImages,
     foodPackages: cateringMenus,
     cateringMenus,
     rentalItems,

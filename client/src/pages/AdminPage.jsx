@@ -124,6 +124,75 @@ const resourceConfigs = [
     ],
   },
   {
+    key: "bannerImages",
+    label: "Banner Images",
+    eyebrow: "Up to 5 homepage banner slider images",
+    endpoint: "/admin/web-images/bannerImages",
+    icon: Camera,
+    maxItems: 5,
+    form: {
+      title: "",
+      imageUrl: "",
+      sortOrder: 0,
+    },
+    fields: [
+      { name: "title", label: "Title" },
+      { name: "imageUrl", label: "Image URL", type: "image" },
+      { name: "sortOrder", label: "Sort order", type: "number" },
+    ],
+    columns: [
+      { name: "title", label: "Title" },
+      { name: "imageUrl", label: "Image" },
+      { name: "sortOrder", label: "Order" },
+    ],
+  },
+  {
+    key: "aboutImages",
+    label: "About Image",
+    eyebrow: "Homepage about section image",
+    endpoint: "/admin/web-images/aboutImages",
+    icon: ImageUp,
+    maxItems: 1,
+    form: {
+      title: "",
+      imageUrl: "",
+      sortOrder: 0,
+    },
+    fields: [
+      { name: "title", label: "Title" },
+      { name: "imageUrl", label: "Image URL", type: "image" },
+      { name: "sortOrder", label: "Sort order", type: "number" },
+    ],
+    columns: [
+      { name: "title", label: "Title" },
+      { name: "imageUrl", label: "Image" },
+      { name: "sortOrder", label: "Order" },
+    ],
+  },
+  {
+    key: "serviceImages",
+    label: "Services Images",
+    eyebrow: "Two homepage service card images",
+    endpoint: "/admin/web-images/serviceImages",
+    icon: GalleryHorizontalEnd,
+    maxItems: 2,
+    form: {
+      title: "",
+      imageUrl: "",
+      sortOrder: 0,
+    },
+    fields: [
+      { name: "title", label: "Title" },
+      { name: "imageUrl", label: "Image URL", type: "image" },
+      { name: "sortOrder", label: "Sort order", type: "number" },
+    ],
+    columns: [
+      { name: "title", label: "Title" },
+      { name: "imageUrl", label: "Image" },
+      { name: "sortOrder", label: "Order" },
+    ],
+  },
+  {
     key: "galleryItems",
     label: "Gallery",
     eyebrow: "Gallery images and display order",
@@ -131,7 +200,7 @@ const resourceConfigs = [
     icon: Camera,
     form: {
       title: "",
-      imageUrl: "/assets/sgl-images/hero-buffet.jpg",
+      imageUrl: "",
       sortOrder: 0,
     },
     fields: [
@@ -198,9 +267,29 @@ const groupedSections = {
     icon: Boxes,
     tabs: [{ key: "rentalItems", label: "Items" }],
   },
+  webImages: {
+    label: "Web Images",
+    eyebrow: "Manage homepage and gallery images",
+    icon: ImageUp,
+    tabs: [
+      { key: "bannerImages", label: "Banner Images" },
+      { key: "aboutImages", label: "About Image" },
+      { key: "serviceImages", label: "Services Images" },
+      { key: "galleryItems", label: "Gallery" },
+    ],
+  },
 };
 
-const popupCrudKeys = ["foodPackages", "rentalItems", "galleryItems", "reviews"];
+const resourceGroupByKey = {
+  foodPackages: "catering",
+  rentalItems: "rental",
+  bannerImages: "webImages",
+  aboutImages: "webImages",
+  serviceImages: "webImages",
+  galleryItems: "webImages",
+};
+
+const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "serviceImages", "galleryItems", "reviews"];
 const sortableKeys = popupCrudKeys;
 
 const navItems = [
@@ -209,7 +298,8 @@ const navItems = [
   ...resourceConfigs.filter((config) => config.key === "siteConfig"),
   { key: "catering", label: "Catering", icon: Utensils },
   { key: "rental", label: "Rental", icon: Boxes },
-  ...resourceConfigs.filter((config) => ["galleryItems", "reviews"].includes(config.key)),
+  { key: "webImages", label: "Web Images", icon: ImageUp },
+  ...resourceConfigs.filter((config) => ["reviews"].includes(config.key)),
 ];
 
 function buildInitialForms() {
@@ -356,6 +446,7 @@ export function AdminPage() {
   const [activeGroupTabs, setActiveGroupTabs] = useState({
     catering: "foodPackages",
     rental: "rentalItems",
+    webImages: "bannerImages",
   });
   const [crudModalKey, setCrudModalKey] = useState("");
   const [draggedItem, setDraggedItem] = useState(null);
@@ -383,6 +474,8 @@ export function AdminPage() {
   const usesPopupCrud = Boolean(activeConfig && popupCrudKeys.includes(activeConfig.key));
   const activeTitle = activeGroup?.label || activeConfig?.label || "Dashboard";
   const activeEyebrow = activeGroup?.eyebrow || activeConfig?.eyebrow || "Control room for editable website content";
+  const activeRecordCount = activeConfig ? records[activeConfig.key]?.length || 0 : 0;
+  const activeLimitReached = Boolean(activeConfig?.maxItems && activeRecordCount >= activeConfig.maxItems);
   const totalRecords = useMemo(
     () =>
       Object.entries(dashboard || {})
@@ -514,12 +607,11 @@ export function AdminPage() {
   }
 
   function beginEdit(config, item) {
-    if (config.key === "foodPackages") {
-      setActiveKey("catering");
-      setActiveGroupTabs((current) => ({ ...current, catering: config.key }));
-    } else if (config.key === "rentalItems") {
-      setActiveKey("rental");
-      setActiveGroupTabs((current) => ({ ...current, rental: config.key }));
+    const groupKey = resourceGroupByKey[config.key];
+
+    if (groupKey) {
+      setActiveKey(groupKey);
+      setActiveGroupTabs((current) => ({ ...current, [groupKey]: config.key }));
     } else {
       setActiveKey(config.key);
     }
@@ -911,6 +1003,8 @@ export function AdminPage() {
   }
 
   function renderGalleryCards(config) {
+    const emptyLabel = config.key === "galleryItems" ? "No gallery images found." : `No ${config.label.toLowerCase()} found.`;
+
     return (
       <div className="sgla-gallery-grid">
         {(records[config.key] || []).map((item) => (
@@ -954,7 +1048,7 @@ export function AdminPage() {
         {!records[config.key]?.length ? (
           <div className="sgla-empty sgla-gallery-empty">
             <PackageCheck size={20} />
-            <span>No gallery images found.</span>
+            <span>{emptyLabel}</span>
           </div>
         ) : null}
       </div>
@@ -1144,7 +1238,7 @@ export function AdminPage() {
                         <button key={item.key} onClick={() => selectSection(item.key)} type="button">
                           <Icon size={18} />
                           <span>{item.label}</span>
-                          <b>{item.key === "siteConfig" ? "Edit" : item.key === "catering" ? dashboard?.foodPackages ?? 0 : item.key === "rental" ? dashboard?.rentalItems ?? 0 : dashboard?.[item.key] ?? 0}</b>
+                          <b>{item.key === "siteConfig" ? "Edit" : item.key === "catering" ? dashboard?.foodPackages ?? 0 : item.key === "rental" ? dashboard?.rentalItems ?? 0 : item.key === "webImages" ? dashboard?.webImages ?? 0 : dashboard?.[item.key] ?? 0}</b>
                         </button>
                       );
                     })}
@@ -1209,15 +1303,21 @@ export function AdminPage() {
                     Refresh
                   </button>
                 ) : usesPopupCrud ? (
-                  <button className="sgla-primary-button" onClick={() => openCreateModal(activeConfig)} type="button">
+                  <button
+                    className="sgla-primary-button"
+                    disabled={activeLimitReached}
+                    onClick={() => openCreateModal(activeConfig)}
+                    title={activeLimitReached ? `Maximum ${activeConfig.maxItems} image${activeConfig.maxItems === 1 ? "" : "s"} added` : undefined}
+                    type="button"
+                  >
                     <Plus size={17} />
-                    Add new {activeConfig.label.toLowerCase()}
+                    {activeLimitReached ? "Limit reached" : `Add new ${activeConfig.label.toLowerCase()}`}
                   </button>
                 ) : (
                   <GalleryHorizontalEnd size={20} />
                 )}
               </div>
-              {activeConfig.key === "galleryItems" ? (
+              {["bannerImages", "aboutImages", "serviceImages", "galleryItems"].includes(activeConfig.key) ? (
                 renderGalleryCards(activeConfig)
               ) : (
                 <div className="sgla-table-wrap">
