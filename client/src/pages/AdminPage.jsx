@@ -41,6 +41,49 @@ const siteConfigForm = {
   instagramUrl: "",
 };
 
+const webTextFields = {
+  hero: [
+    { name: "titleSinhala", label: "Title Sinhala" },
+    { name: "titleEnglish", label: "Title English" },
+    { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
+    { name: "descriptionEnglish", label: "Description English", type: "textarea" },
+  ],
+  about: [
+    { name: "titleSinhala", label: "Title Sinhala" },
+    { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
+    { name: "titleEnglish", label: "Title English" },
+    { name: "descriptionEnglish", label: "Description English", type: "textarea" },
+  ],
+  section: [
+    { name: "titleEnglish", label: "Title English" },
+    { name: "titleSinhala", label: "Title Sinhala" },
+    { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
+  ],
+};
+
+function buildWebTextConfig({ key, label, textKey, fields, eyebrow, layout }) {
+  const form = fields.reduce((fieldsForm, field) => {
+    fieldsForm[field.name] = "";
+    return fieldsForm;
+  }, {});
+
+  return {
+    key,
+    label,
+    eyebrow,
+    endpoint: `/admin/web-texts/${textKey}`,
+    icon: ClipboardList,
+    singleton: true,
+    webTextLayout: layout,
+    form,
+    fields,
+    columns: [
+      { name: "titleEnglish", label: "English" },
+      { name: "titleSinhala", label: "Sinhala" },
+    ],
+  };
+}
+
 const resourceConfigs = [
   {
     key: "siteConfig",
@@ -69,6 +112,68 @@ const resourceConfigs = [
       { name: "email", label: "Email" },
     ],
   },
+  buildWebTextConfig({
+    key: "heroTexts",
+    label: "Hero",
+    textKey: "hero",
+    fields: webTextFields.hero,
+    eyebrow: "Homepage hero Sinhala and English text",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "aboutTexts",
+    label: "About",
+    textKey: "about",
+    fields: webTextFields.about,
+    eyebrow: "Homepage about section text",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "servicesTexts",
+    label: "Services",
+    textKey: "services",
+    fields: webTextFields.section,
+    eyebrow: "Homepage services section and service card text",
+    layout: "services",
+  }),
+  buildWebTextConfig({
+    key: "serviceCateringTexts",
+    label: "Catering Service Text",
+    textKey: "serviceCatering",
+    fields: webTextFields.section,
+    eyebrow: "Homepage catering service card text",
+  }),
+  buildWebTextConfig({
+    key: "serviceRentalTexts",
+    label: "Rental Service Text",
+    textKey: "serviceRental",
+    fields: webTextFields.section,
+    eyebrow: "Homepage rental service card text",
+  }),
+  buildWebTextConfig({
+    key: "galleryTexts",
+    label: "Gallery",
+    textKey: "gallery",
+    fields: webTextFields.section,
+    eyebrow: "Homepage gallery section text",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "reviewsTexts",
+    label: "Reviews",
+    textKey: "reviews",
+    fields: webTextFields.section,
+    eyebrow: "Homepage reviews section text",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "contactTexts",
+    label: "Contact us",
+    textKey: "contact",
+    fields: webTextFields.section,
+    eyebrow: "Homepage contact section text",
+    layout: "formOnly",
+  }),
   {
     key: "foodPackages",
     label: "Menus",
@@ -278,6 +383,19 @@ const groupedSections = {
       { key: "galleryItems", label: "Gallery" },
     ],
   },
+  webTexts: {
+    label: "Web Texts",
+    eyebrow: "Manage homepage section text",
+    icon: ClipboardList,
+    tabs: [
+      { key: "heroTexts", label: "Hero" },
+      { key: "aboutTexts", label: "About" },
+      { key: "servicesTexts", label: "Services" },
+      { key: "galleryTexts", label: "Gallery" },
+      { key: "reviewsTexts", label: "Reviews" },
+      { key: "contactTexts", label: "Contact us" },
+    ],
+  },
 };
 
 const resourceGroupByKey = {
@@ -287,6 +405,12 @@ const resourceGroupByKey = {
   aboutImages: "webImages",
   serviceImages: "webImages",
   galleryItems: "webImages",
+  heroTexts: "webTexts",
+  aboutTexts: "webTexts",
+  servicesTexts: "webTexts",
+  galleryTexts: "webTexts",
+  reviewsTexts: "webTexts",
+  contactTexts: "webTexts",
 };
 
 const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "galleryItems", "reviews"];
@@ -304,6 +428,7 @@ const navItems = [
   { key: "catering", label: "Catering", icon: Utensils },
   { key: "rental", label: "Rental", icon: Boxes },
   { key: "webImages", label: "Web Images", icon: ImageUp },
+  { key: "webTexts", label: "Web Texts", icon: ClipboardList },
   ...resourceConfigs.filter((config) => ["reviews"].includes(config.key)),
 ];
 
@@ -466,6 +591,7 @@ export function AdminPage() {
     catering: "foodPackages",
     rental: "rentalItems",
     webImages: "bannerImages",
+    webTexts: "heroTexts",
   });
   const [crudModalKey, setCrudModalKey] = useState("");
   const [draggedItem, setDraggedItem] = useState(null);
