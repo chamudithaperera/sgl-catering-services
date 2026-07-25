@@ -74,6 +74,13 @@ const webImageSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
+const webTextSchema = z.object({
+  titleSinhala: z.string().optional().default(""),
+  titleEnglish: z.string().optional().default(""),
+  descriptionSinhala: z.string().optional().default(""),
+  descriptionEnglish: z.string().optional().default(""),
+});
+
 const reviewSchema = z.object({
   customerName: z.string().min(2),
   eventType: z.string().min(2),
@@ -95,6 +102,7 @@ module.exports = {
   rentalItemSchema,
   galleryItemSchema,
   webImageSchema,
+  webTextSchema,
   reviewSchema,
   contactMessageSchema,
 };

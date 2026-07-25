@@ -100,6 +100,19 @@ model WebImage {
   @@map("web_images")
 }
 
+model WebText {
+  id                 Int      @id @default(autoincrement())
+  textKey            String   @unique @map("text_key")
+  titleSinhala       String   @map("title_sinhala")
+  titleEnglish       String   @map("title_english")
+  descriptionSinhala String   @map("description_sinhala") @db.Text
+  descriptionEnglish String   @map("description_english") @db.Text
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("web_texts")
+}
+
 model Review {
   id           Int      @id @default(autoincrement())
   customerName String   @map("customer_name")
