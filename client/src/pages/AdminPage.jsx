@@ -421,6 +421,8 @@ const serviceImageSlots = [
   { key: "rental", title: "Rental", sortOrder: 2 },
 ];
 
+const serviceTextCardKeys = ["serviceCateringTexts", "serviceRentalTexts"];
+
 const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   ...resourceConfigs.filter((config) => config.key === "contactMessages"),
@@ -618,6 +620,8 @@ export function AdminPage() {
   const crudModalConfig = useMemo(() => resourceConfigs.find((config) => config.key === crudModalKey), [crudModalKey]);
   const usesPopupCrud = Boolean(activeConfig && popupCrudKeys.includes(activeConfig.key));
   const usesFixedServiceImageCards = activeConfig?.key === "serviceImages";
+  const usesWebTextFormOnly = activeConfig?.webTextLayout === "formOnly";
+  const usesServicesTextEditor = activeConfig?.webTextLayout === "services";
   const activeTitle = activeGroup?.label || activeConfig?.label || "Dashboard";
   const activeEyebrow = activeGroup?.eyebrow || activeConfig?.eyebrow || "Control room for editable website content";
   const activeRecordCount = activeConfig ? records[activeConfig.key]?.length || 0 : 0;
@@ -745,11 +749,25 @@ export function AdminPage() {
   }
 
   function closeCrudModal() {
-    if (crudModalConfig) {
+    if (crudModalConfig && !crudModalConfig.singleton) {
       resetForm(crudModalConfig);
     }
     setCrudModalKey("");
     setBundleDraft({ itemId: "", count: 1, price: "" });
+  }
+
+  function openWebTextModal(config) {
+    const item = records[config.key]?.[0];
+
+    if (item) {
+      setForms((current) => ({ ...current, [config.key]: normalizeForForm(config, item) }));
+    }
+
+    dirtyFormsRef.current[config.key] = false;
+    setEditingIds((current) => ({ ...current, [config.key]: item?.id || null }));
+    setCrudModalKey(config.key);
+    setStatusMessage("");
+    setErrorMessage("");
   }
 
   function beginEdit(config, item) {
@@ -1265,6 +1283,46 @@ export function AdminPage() {
     );
   }
 
+  function renderServicesTextEditor(config) {
+    const serviceTextConfigs = serviceTextCardKeys
+      .map((key) => resourceConfigs.find((candidate) => candidate.key === key))
+      .filter(Boolean);
+
+    return (
+      <section className="sgla-crud-grid">
+        {renderCrudForm(config)}
+
+        <section className="sgla-panel sgla-web-text-services-panel">
+          <div className="sgla-panel-head">
+            <div>
+              <p>Available services</p>
+              <h2>Service card text</h2>
+            </div>
+            <ClipboardList size={20} />
+          </div>
+
+          <div className="sgla-web-text-service-grid">
+            {serviceTextConfigs.map((serviceConfig) => {
+              const item = records[serviceConfig.key]?.[0] || forms[serviceConfig.key] || {};
+
+              return (
+                <button className="sgla-web-text-service-card" key={serviceConfig.key} onClick={() => openWebTextModal(serviceConfig)} type="button">
+                  <span>{item.titleEnglish || serviceConfig.label}</span>
+                  <strong>{item.titleSinhala || serviceConfig.label}</strong>
+                  <p>{item.descriptionSinhala || "No Sinhala description added."}</p>
+                  <b>
+                    <Pencil size={15} />
+                    Edit
+                  </b>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      </section>
+    );
+  }
+
   if (!token) {
     return (
       <main className="sgla-login-page">
@@ -1499,6 +1557,11 @@ export function AdminPage() {
         {activeConfig?.key === "siteConfig" ? renderContactProfile(activeConfig) : null}
 
         {activeConfig && activeConfig.key !== "siteConfig" ? (
+          usesWebTextFormOnly ? (
+            renderCrudForm(activeConfig)
+          ) : usesServicesTextEditor ? (
+            renderServicesTextEditor(activeConfig)
+          ) : (
           <section className={`sgla-crud-grid ${activeConfig.readOnly || usesPopupCrud || usesFixedServiceImageCards ? "is-full" : ""}`}>
             {!activeConfig.readOnly && !usesPopupCrud && !usesFixedServiceImageCards ? renderCrudForm(activeConfig) : null}
 
@@ -1620,6 +1683,7 @@ export function AdminPage() {
               )}
             </section>
           </section>
+          )
         ) : null}
       </section>
       {crudModalConfig ? (
