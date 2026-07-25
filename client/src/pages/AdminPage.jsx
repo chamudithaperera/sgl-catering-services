@@ -1163,10 +1163,8 @@ export function AdminPage() {
       { label: "Phone 3", value: contact.tertiaryPhone },
       { label: "Email", value: contact.email },
       { label: "Address", value: contact.address },
-      { label: "Business hours", value: contact.businessHours },
       { label: "Map URL", value: contact.mapUrl },
       { label: "Facebook", value: contact.facebookUrl },
-      { label: "Instagram", value: contact.instagramUrl },
     ];
 
     if (contactEditing) {
