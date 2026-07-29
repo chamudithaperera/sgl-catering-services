@@ -6,12 +6,12 @@ import { api } from "../lib/api";
 import "./ReviewsPage.css";
 
 const eventOptions = [
-  "මංගල උත්සවය",
-  "උපන්දින උත්සවය",
-  "ආයතනික උත්සවය",
-  "දාන පිංකම",
-  "නිවසේ උත්සවය",
-  "වෙනත්",
+  { sinhala: "මංගල උත්සවය", english: "Wedding" },
+  { sinhala: "උපන්දින උත්සවය", english: "Birthday party" },
+  { sinhala: "ආයතනික උත්සවය", english: "Corporate event" },
+  { sinhala: "දාන පිංකම", english: "Almsgiving" },
+  { sinhala: "නිවසේ උත්සවය", english: "Home function" },
+  { sinhala: "වෙනත්", english: "Other" },
 ];
 
 const initialReviewForm = {
@@ -36,9 +36,19 @@ function buildTelUrl(phoneNumber) {
   return digits ? `tel:${digits}` : "#";
 }
 
+function BilingualText({ as: Component = "span", className = "", english, sinhala }) {
+  return (
+    <Component className={`reviews-bilingual${className ? ` ${className}` : ""}`}>
+      <span>{sinhala}</span>
+      <small>{english}</small>
+    </Component>
+  );
+}
+
 export default function ReviewsPage() {
   const [form, setForm] = useState(initialReviewForm);
   const [status, setStatus] = useState("");
+  const [statusEnglish, setStatusEnglish] = useState("");
   const [statusType, setStatusType] = useState("success");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pageContent, setPageContent] = useState(null);
@@ -69,6 +79,7 @@ export default function ReviewsPage() {
     event.preventDefault();
     setIsSubmitting(true);
     setStatus("");
+    setStatusEnglish("");
 
     try {
       await api.post("/public/reviews", {
@@ -80,10 +91,12 @@ export default function ReviewsPage() {
       setForm(initialReviewForm);
       setStatusType("success");
       setStatus("ඔබගේ අදහස ලැබුණා. අනුමත කිරීමෙන් පසු එය වෙබ් අඩවියේ පෙන්වනු ලැබේ.");
+      setStatusEnglish("Your review has been received. It will be shown on the website after approval.");
     } catch (error) {
       console.error(error);
       setStatusType("error");
       setStatus("අදහස යැවීමේදී දෝෂයක් ඇතිවිය. කරුණාකර නැවත උත්සාහ කරන්න.");
+      setStatusEnglish("Something went wrong while sending your review. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -106,8 +119,12 @@ export default function ReviewsPage() {
           </span>
         </Link>
         <nav aria-label="Primary">
-          <Link to="/">මුල් පිටුව</Link>
-          <Link className="is-active" to="/reviews">අදහස්</Link>
+          <Link to="/">
+            <BilingualText english="Home" sinhala="මුල් පිටුව" />
+          </Link>
+          <Link className="is-active" to="/reviews">
+            <BilingualText english="Reviews" sinhala="අදහස්" />
+          </Link>
         </nav>
         <a className="reviews-call-button" href={buildTelUrl(callPhone)}>
           <PhoneCall size={17} />
@@ -118,7 +135,10 @@ export default function ReviewsPage() {
       <section className="reviews-hero">
         <div className="reviews-hero-copy">
           <span>{reviewsText.titleEnglish}</span>
-          <h1>{reviewsText.titleSinhala}</h1>
+          <h1>
+            <span>{reviewsText.titleSinhala}</span>
+            <small>{reviewsText.titleEnglish}</small>
+          </h1>
           <p>{reviewsText.descriptionSinhala}</p>
           {reviewsText.descriptionEnglish ? <p className="reviews-hero-english">{reviewsText.descriptionEnglish}</p> : null}
         </div>
@@ -127,36 +147,36 @@ export default function ReviewsPage() {
       <section className="reviews-content">
         <form className="reviews-form" onSubmit={handleSubmit}>
           <div className="reviews-form-head">
-            <span>නව අදහසක්</span>
-            <h2>අදහස යවන්න</h2>
+            <BilingualText className="reviews-form-eyebrow" english="New review" sinhala="නව අදහසක්" />
+            <BilingualText as="h2" english="Submit your review" sinhala="අදහස යවන්න" />
           </div>
 
           <label className="reviews-field">
-            <span>නම</span>
+            <BilingualText english="Name" sinhala="නම" />
             <input
               minLength={2}
               name="customerName"
               onChange={updateField}
-              placeholder="ඔබගේ නම"
+              placeholder="ඔබගේ නම / Your name"
               required
               value={form.customerName}
             />
           </label>
 
           <label className="reviews-field">
-            <span>උත්සව වර්ගය</span>
+            <BilingualText english="Event type" sinhala="උත්සව වර්ගය" />
             <select name="eventType" onChange={updateField} required value={form.eventType}>
-              <option value="">උත්සව වර්ගය තෝරන්න</option>
+              <option value="">උත්සව වර්ගය තෝරන්න / Select event type</option>
               {eventOptions.map((eventType) => (
-                <option key={eventType} value={eventType}>
-                  {eventType}
+                <option key={eventType.sinhala} value={eventType.sinhala}>
+                  {eventType.sinhala} / {eventType.english}
                 </option>
               ))}
             </select>
           </label>
 
           <div className="reviews-field">
-            <span>තරු අගය</span>
+            <BilingualText english="Rating" sinhala="තරු අගය" />
             <div className="reviews-rating-picker" role="radiogroup" aria-label="Rating">
               {[1, 2, 3, 4, 5].map((rating) => (
                 <button
@@ -174,12 +194,12 @@ export default function ReviewsPage() {
           </div>
 
           <label className="reviews-field">
-            <span>අදහස</span>
+            <BilingualText english="Review" sinhala="අදහස" />
             <textarea
               minLength={10}
               name="note"
               onChange={updateField}
-              placeholder="සේවාව, රසය, කාලයට පැමිණීම හෝ ඔබ කැමති වූ දේ ගැන ලියන්න"
+              placeholder="සේවාව, රසය, කාලයට පැමිණීම හෝ ඔබ කැමති වූ දේ ගැන ලියන්න / Write about the service, taste, timing, or what you liked"
               required
               rows={6}
               value={form.note}
@@ -187,14 +207,14 @@ export default function ReviewsPage() {
           </label>
 
           <button className="reviews-submit" disabled={isSubmitting} type="submit">
-            <span>{isSubmitting ? "යවමින්..." : "අදහස යවන්න"}</span>
+            <BilingualText english={isSubmitting ? "Sending..." : "Submit review"} sinhala={isSubmitting ? "යවමින්..." : "අදහස යවන්න"} />
             <Send size={18} />
           </button>
 
           {status ? (
             <div className={`reviews-alert is-${statusType}`} role="alert">
               {statusType === "success" ? <CheckCircle2 size={18} /> : null}
-              <span>{status}</span>
+              <BilingualText english={statusEnglish} sinhala={status} />
             </div>
           ) : null}
         </form>
