@@ -1432,6 +1432,70 @@ export function AdminPage() {
     return <section className="sgla-crud-grid is-full">{configs.map((config) => renderCrudForm(config))}</section>;
   }
 
+  function renderReviewPreviewModal() {
+    if (!reviewPreview) return null;
+
+    const detailItems = [
+      { label: "Status", value: reviewPreview.isApproved ? "Approved" : "Pending" },
+      { label: "Customer", value: reviewPreview.customerName },
+      { label: "Event", value: reviewPreview.eventType },
+      { label: "Rating", value: `${reviewPreview.rating} / 5` },
+      { label: "Sort order", value: reviewPreview.sortOrder },
+      { label: "Created", value: formatCell(reviewPreview.createdAt) },
+    ];
+
+    return (
+      <div className="sgla-modal-backdrop" role="presentation">
+        <div className="sgla-modal-shell" role="dialog" aria-modal="true" aria-label="Review details">
+          <section className="sgla-panel sgla-review-preview">
+            <div className="sgla-panel-head">
+              <div>
+                <p>Review details</p>
+                <h2>{reviewPreview.customerName}</h2>
+              </div>
+              <button className="sgla-icon-button" onClick={() => setReviewPreview(null)} type="button" aria-label="Close review details">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="sgla-review-preview-grid">
+              {detailItems.map((detail) => (
+                <article key={detail.label}>
+                  <span>{detail.label}</span>
+                  <strong>{detail.value || "-"}</strong>
+                </article>
+              ))}
+            </div>
+
+            <div className="sgla-review-preview-note">
+              <span>Note</span>
+              <p>{reviewPreview.quote}</p>
+            </div>
+
+            <div className="sgla-form-actions">
+              {!reviewPreview.isApproved ? (
+                <button
+                  className="sgla-primary-button"
+                  onClick={() => {
+                    handleApproveReview(reviewPreview);
+                    setReviewPreview(null);
+                  }}
+                  type="button"
+                >
+                  <CheckCircle2 size={17} />
+                  Approve
+                </button>
+              ) : null}
+              <button className="sgla-light-button" onClick={() => setReviewPreview(null)} type="button">
+                Close
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    );
+  }
+
   if (!token) {
     return (
       <main className="sgla-login-page">
@@ -1764,6 +1828,21 @@ export function AdminPage() {
                                   {item.isRead ? "Unread" : "Read"}
                                 </button>
                               ) : null}
+                              {activeConfig.key === "reviews" ? (
+                                <button onClick={() => setReviewPreview(item)} title="View review" type="button">
+                                  <Eye size={16} />
+                                </button>
+                              ) : null}
+                              {activeConfig.key === "reviews" && !item.isApproved ? (
+                                <button
+                                  className="sgla-text-action"
+                                  onClick={() => handleApproveReview(item)}
+                                  title="Approve review"
+                                  type="button"
+                                >
+                                  Approve
+                                </button>
+                              ) : null}
                               {!activeConfig.readOnly && !activeConfig.singleton ? (
                                 <button onClick={() => beginEdit(activeConfig, item)} title="Edit" type="button">
                                   <Pencil size={16} />
@@ -1804,6 +1883,7 @@ export function AdminPage() {
           </div>
         </div>
       ) : null}
+      {renderReviewPreviewModal()}
     </main>
   );
 }

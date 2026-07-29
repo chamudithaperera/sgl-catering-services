@@ -955,6 +955,16 @@
   background: #edf0f4;
 }
 
+.sgla-status-chip.is-approved {
+  color: #0f4d26;
+  background: #dff8e8;
+}
+
+.sgla-status-chip.is-pending {
+  color: #7a4a08;
+  background: #fff2cf;
+}
+
 .sgla-table-actions {
   gap: 8px;
   flex-wrap: wrap;
@@ -1056,6 +1066,52 @@
 
 .sgla-modal-form {
   box-shadow: none;
+}
+
+.sgla-review-preview {
+  box-shadow: none;
+}
+
+.sgla-review-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.sgla-review-preview-grid article,
+.sgla-review-preview-note {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--sgla-line);
+  border-radius: 8px;
+  background: var(--sgla-surface-soft);
+}
+
+.sgla-review-preview-grid span,
+.sgla-review-preview-note span {
+  color: var(--sgla-muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sgla-review-preview-grid strong {
+  color: var(--sgla-text);
+  line-height: 1.45;
+}
+
+.sgla-review-preview-note {
+  margin: 14px 0 18px;
+}
+
+.sgla-review-preview-note p {
+  margin: 0;
+  color: var(--sgla-text);
+  line-height: 1.7;
+  white-space: pre-wrap;
 }
 
 .sgla-mobile-menu,
@@ -1191,6 +1247,10 @@
   }
 
   .sgla-contact-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sgla-review-preview-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
