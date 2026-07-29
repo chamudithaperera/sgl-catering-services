@@ -156,6 +156,13 @@
   line-height: 1.86;
 }
 
+.reviews-hero-english {
+  color: rgba(255, 248, 239, 0.68);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: clamp(0.98rem, 1.45vw, 1.08rem);
+  line-height: 1.72;
+}
+
 .reviews-content {
   width: min(720px, 100%);
   margin: 0 auto;

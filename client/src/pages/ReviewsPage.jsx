@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircle2, PhoneCall, Send, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
@@ -21,6 +21,15 @@ const initialReviewForm = {
   note: "",
 };
 
+const defaultReviewsText = {
+  titleSinhala: "ඔබගේ අත්දැකීම අප සමඟ බෙදාගන්න",
+  titleEnglish: "Customer Reviews",
+  descriptionSinhala:
+    "ඔබගේ උත්සවය ගැන කෙටි අදහසක් එක් කරන්න. අපගේ කණ්ඩායම එය සමාලෝචනය කර අනුමත කිරීමෙන් පසු වෙබ් අඩවියේ පෙන්වනු ලැබේ.",
+  descriptionEnglish:
+    "Share a short review about your event. After our team reviews and approves it, your feedback will be shown on the website.",
+};
+
 function buildTelUrl(phoneNumber) {
   const digits = phoneNumber?.replace(/[^\d+]/g, "");
 
@@ -32,7 +41,21 @@ export default function ReviewsPage() {
   const [status, setStatus] = useState("");
   const [statusType, setStatusType] = useState("success");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const callPhone = "0703324350";
+  const [pageContent, setPageContent] = useState(null);
+  const reviewsText = {
+    ...defaultReviewsText,
+    ...(pageContent?.webTexts?.reviews || {}),
+  };
+  const callPhone = pageContent?.siteConfig?.phone || "";
+
+  useEffect(() => {
+    api
+      .get("/public/home")
+      .then((response) => setPageContent(response.data))
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   function updateField(event) {
     const { name, value } = event.target;
@@ -69,8 +92,8 @@ export default function ReviewsPage() {
   return (
     <main className="reviews-page">
       <Seo
-        title="Customer Reviews | SGL Catering Services"
-        description="Share your SGL Catering Services experience with a customer review."
+        title={`${reviewsText.titleEnglish} | SGL Catering Services`}
+        description={reviewsText.descriptionEnglish || reviewsText.descriptionSinhala}
         canonicalPath="/reviews"
         image="/assets/sgl-logo.png"
         siteName="SGL Catering Services"
@@ -94,9 +117,10 @@ export default function ReviewsPage() {
 
       <section className="reviews-hero">
         <div className="reviews-hero-copy">
-          <span>Customer Reviews</span>
-          <h1>ඔබගේ අත්දැකීම අප සමඟ බෙදාගන්න</h1>
-          <p>ඔබගේ උත්සවය ගැන කෙටි අදහසක් එක් කරන්න. අපගේ කණ්ඩායම එය සමාලෝචනය කර අනුමත කිරීමෙන් පසු වෙබ් අඩවියේ පෙන්වනු ලැබේ.</p>
+          <span>{reviewsText.titleEnglish}</span>
+          <h1>{reviewsText.titleSinhala}</h1>
+          <p>{reviewsText.descriptionSinhala}</p>
+          {reviewsText.descriptionEnglish ? <p className="reviews-hero-english">{reviewsText.descriptionEnglish}</p> : null}
         </div>
       </section>
 

@@ -77,6 +77,15 @@ Object.assign(webTextDefaults, {
       "ඔබට අවශ්‍ය උපකරණ, ප්‍රමාණය සහ උත්සව දිනය අපට දන්වන්න. ලබා ගැනීමේ හැකියාව, ගාස්තු සහ භාරදීමේ විස්තර පිළිබඳව අපි ඉක්මනින් මගපෙන්වන්නෙමු.",
     descriptionEnglish: "",
   },
+  reviews: {
+    textKey: "reviews",
+    titleSinhala: "ඔබගේ අත්දැකීම අප සමඟ බෙදාගන්න",
+    titleEnglish: "Customer Reviews",
+    descriptionSinhala:
+      "ඔබගේ උත්සවය ගැන කෙටි අදහසක් එක් කරන්න. අපගේ කණ්ඩායම එය සමාලෝචනය කර අනුමත කිරීමෙන් පසු වෙබ් අඩවියේ පෙන්වනු ලැබේ.",
+    descriptionEnglish:
+      "Share a short review about your event. After our team reviews and approves it, your feedback will be shown on the website.",
+  },
 });
 
 function buildWebTextFallback(textKey) {
