@@ -16,7 +16,7 @@ const emptyWebText = {
   descriptionEnglish: "",
 };
 
-function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
+function buildGoogleMapEmbedUrl(mapUrl) {
   const rawMapUrl = String(mapUrl || "")
     .replaceAll("&quot;", "\"")
     .replaceAll("&#34;", "\"")
@@ -26,13 +26,13 @@ function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
   const looseSrcMatch = rawMapUrl.match(/src\s*=\s*["']?(https?:\/\/[^\s"'>]+)/i);
 
   if (/<iframe/i.test(rawMapUrl) && !quotedSrcMatch) {
-    return fallbackEmbedUrl;
+    return "";
   }
 
   const resolvedMapUrl = (quotedSrcMatch?.[1] || looseSrcMatch?.[1] || rawMapUrl).trim();
 
   if (!resolvedMapUrl) {
-    return fallbackEmbedUrl;
+    return "";
   }
 
   try {
@@ -42,10 +42,10 @@ function buildGoogleMapEmbedUrl(mapUrl, fallbackEmbedUrl) {
       return parsedUrl.toString();
     }
   } catch {
-    return fallbackEmbedUrl;
+    return "";
   }
 
-  return fallbackEmbedUrl;
+  return "";
 }
 
 function buildWhatsappUrl(phoneNumber) {
@@ -141,28 +141,50 @@ const serviceItems = [
   {
     imageKey: "catering",
     textKey: "serviceCatering",
-    title: "ආහාර පාන සැපයීම",
-    label: "Signature Catering",
     href: "/catering",
-    description:
-      "මංගල උත්සව, ආයතනික හමුවීම්, දාන පිංකම් සහ පවුල් සැමරුම් සඳහා ඔබේ අවස්ථාවට ගැළපෙන ලෙස රසවත්, සෞඛ්‍යාරක්ෂිත සහ වෘත්තීයමය ආහාර සැපයීමක් අපි සකස් කරමු.",
   },
   {
     imageKey: "rental",
     textKey: "serviceRental",
-    title: "උත්සව භාණ්ඩ සැපයීම",
-    label: "Event Rentals",
     href: "/renting",
-    description:
-      "බෆේ උපකරණ, සේවනාංග, මේස සැකසුම් සහ උත්සව අවශ්‍යතා සඳහා භාවිතා වන විවිධ භාණ්ඩ විශ්වාසයෙන් කුලියට ලබාදී ඔබේ උත්සවය වඩාත් සම්පූර්ණව සංවිධානය කිරීමට අපි සහාය වෙමු.",
   },
 ];
 
 function getWebText(webTexts, textKey) {
   return {
-    ...(defaultWebTexts[textKey] || {}),
+    ...emptyWebText,
     ...(webTexts?.[textKey] || {}),
   };
+}
+
+function buildHomepageStructuredData({ siteConfig, heroText, heroSlides, mapEmbedUrl }) {
+  const name = heroText.titleEnglish || heroText.titleSinhala || "";
+  const description = heroText.descriptionEnglish || heroText.descriptionSinhala || "";
+  const images = heroSlides.map((slide) => slide.image).filter(Boolean).map((image) => buildSiteUrl(image));
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": buildSiteUrl("/#local-business"),
+    url: buildSiteUrl("/"),
+    logo: buildSiteUrl("/assets/sgl-logo.png"),
+  };
+
+  if (name) structuredData.name = name;
+  if (description) structuredData.description = description;
+  if (siteConfig?.phone) structuredData.telephone = siteConfig.phone;
+  if (siteConfig?.email) structuredData.email = siteConfig.email;
+  if (siteConfig?.address) {
+    structuredData.address = {
+      "@type": "PostalAddress",
+      streetAddress: siteConfig.address,
+    };
+  }
+  if (mapEmbedUrl) structuredData.hasMap = mapEmbedUrl;
+  if (images.length > 0) structuredData.image = images;
+
+  return name || description || siteConfig?.phone || siteConfig?.email || siteConfig?.address || images.length > 0
+    ? structuredData
+    : null;
 }
 
 function findServiceImageByKey(serviceImages, imageKey, fallbackIndex) {
@@ -277,20 +299,13 @@ export function HomePage() {
     image: item.imageUrl,
     label: item.title || "Banner image",
   }));
-  const structuredDataImages = heroSlides.map((slide) => slide.image).filter(Boolean).map((image) => buildSiteUrl(image));
-  const homepageStructuredData = structuredDataImages.length
-    ? {
-        ...homeStructuredData,
-        image: structuredDataImages,
-      }
-    : homeStructuredData;
   const aboutImage = content?.aboutImages?.[0]?.imageUrl || "";
   const serviceImages = content?.serviceImages || [];
   const homepageServices = serviceItems.map((service, index) => ({
     ...service,
-    title: getWebText(webTexts, service.textKey).titleSinhala || service.title,
-    label: getWebText(webTexts, service.textKey).titleEnglish || service.label,
-    description: getWebText(webTexts, service.textKey).descriptionSinhala || service.description,
+    title: getWebText(webTexts, service.textKey).titleSinhala,
+    label: getWebText(webTexts, service.textKey).titleEnglish,
+    description: getWebText(webTexts, service.textKey).descriptionSinhala,
     image: findServiceImageByKey(serviceImages, service.imageKey, index)?.imageUrl || "",
   }));
   const homepageGallery = (content?.gallery || []).map((item, index) => ({
@@ -305,23 +320,32 @@ export function HomePage() {
     score: Number(review.rating || 5).toFixed(1),
     quote: review.quote,
   }));
-  const homepagePhone = siteConfig?.phone || contactPhone;
-  const homepageSecondaryPhone = siteConfig?.secondaryPhone || contactSecondaryPhone;
-  const homepageTertiaryPhone = siteConfig?.tertiaryPhone || contactTertiaryPhone;
+  const homepagePhone = siteConfig?.phone || "";
+  const homepageSecondaryPhone = siteConfig?.secondaryPhone || "";
+  const homepageTertiaryPhone = siteConfig?.tertiaryPhone || "";
   const homepagePhoneCards = [
     { label: "ප්‍රධාන දුරකථනය", value: homepagePhone },
     { label: "දුරකථනය 2", value: homepageSecondaryPhone },
     { label: "දුරකථනය 3", value: homepageTertiaryPhone },
-  ];
+  ].filter((phoneCard) => phoneCard.value);
   const homepageWhatsapp = siteConfig?.whatsapp || homepagePhone;
   const homepageWhatsappUrl = buildWhatsappUrl(homepageWhatsapp);
-  const homepageEmail = siteConfig?.email || contactEmail;
+  const homepageEmail = siteConfig?.email || "";
   const homepageMapUrl = siteConfig?.mapUrl || "";
-  const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl, contactMapEmbedUrl);
+  const homepageMapEmbedUrl = buildGoogleMapEmbedUrl(homepageMapUrl);
   const homepageFacebookUrl = buildExternalUrl(siteConfig?.facebookUrl);
   const facebookActionProps = homepageFacebookUrl
     ? { href: homepageFacebookUrl, target: "_blank", rel: "noreferrer" }
     : { href: "#contact" };
+  const seoTitle = [heroText.titleEnglish, heroText.titleSinhala].filter(Boolean).join(" | ");
+  const seoDescription = heroText.descriptionEnglish || heroText.descriptionSinhala || aboutText.descriptionEnglish || aboutText.descriptionSinhala;
+  const homepageStructuredData = buildHomepageStructuredData({
+    siteConfig,
+    heroText,
+    heroSlides,
+    mapEmbedUrl: homepageMapEmbedUrl,
+  });
+  const currentYear = new Date().getFullYear();
 
   useAutoplayVideo(galleryVideoRef, galleryVideoReady);
 
@@ -561,25 +585,17 @@ export function HomePage() {
   return (
     <main className="premium-home">
       <Seo
-        title="Catering Service in Anuradhapura | SGL Catering Service"
-        description="SGL Catering Service is a catering service in Anuradhapura for weddings, home functions, almsgivings, birthdays, office events, buffet menus, and event rentals."
+        title={seoTitle}
+        description={seoDescription}
         canonicalPath="/"
         image={heroSlides[0]?.image || ""}
-        keywords={[
-          "sgl catering service",
-          "catering service in anuradhapura",
-          "catering services in anuradhapura",
-          "catering services anuradhapura",
-          "Anuradhapura catering",
-          "wedding catering Anuradhapura",
-          "buffet catering Sri Lanka",
-        ]}
+        siteName={heroText.titleEnglish || heroText.titleSinhala}
         structuredData={homepageStructuredData}
       />
       <header className="premium-nav">
         <a className="premium-brand" href="#home" onClick={() => setMenuOpen(false)}>
           <span className="premium-brand-logo">
-            <img src="/assets/sgl-logo.png" alt="SGL Catering" />
+            <img src="/assets/sgl-logo.png" alt="Site logo" />
           </span>
         </a>
 
@@ -693,7 +709,7 @@ export function HomePage() {
             {aboutImage ? (
               <img
                 {...responsiveImageProps(aboutImage, "(max-width: 900px) 100vw, 50vw")}
-                alt="SGL Catering about section"
+                alt={aboutText.titleSinhala || aboutText.titleEnglish || "About section"}
                 loading="lazy"
                 decoding="async"
               />
@@ -704,8 +720,8 @@ export function HomePage() {
             <h2>{aboutText.titleSinhala}</h2>
             <p>{aboutText.descriptionSinhala}</p>
 
-            <div className="premium-about-local" aria-labelledby="about-local-catering-heading">
-              <h3 id="about-local-catering-heading">{aboutText.titleEnglish}</h3>
+            <div className="premium-about-local" aria-labelledby="about-local-heading">
+              <h3 id="about-local-heading">{aboutText.titleEnglish}</h3>
               <p>{aboutText.descriptionEnglish}</p>
             </div>
           </div>
@@ -722,7 +738,7 @@ export function HomePage() {
 
           <div className="premium-services-grid">
             {homepageServices.map((service, index) => (
-              <article key={service.title} className="premium-service-card premium-reveal premium-reveal-service" data-reveal>
+              <article key={service.textKey} className="premium-service-card premium-reveal premium-reveal-service" data-reveal>
                 <div className="premium-service-media">
                   {service.image ? (
                     <img
@@ -882,9 +898,8 @@ export function HomePage() {
           <div className="premium-contact-layout">
             <div className="premium-contact-info premium-reveal premium-reveal-card" data-reveal>
               <div className="premium-contact-intro">
-                <img className="premium-contact-logo" src="/assets/sgl-logo.png" alt="SGL Catering" />
-                <h3>SGL කේටරින් සර්විස්</h3>
-                <p>{brandTagline}</p>
+                <img className="premium-contact-logo" src="/assets/sgl-logo.png" alt="Site logo" />
+                <h3>{heroText.titleSinhala || heroText.titleEnglish}</h3>
               </div>
 
               <div className="premium-contact-cards">
@@ -902,7 +917,7 @@ export function HomePage() {
               </div>
 
               <div className="premium-contact-actions" aria-label="Contact options">
-                <a className="premium-contact-action" href={buildTelUrl(homepagePhone)} aria-label="Call SGL Catering" title="Call">
+                <a className="premium-contact-action" href={buildTelUrl(homepagePhone)} aria-label="Call" title="Call">
                   <ContactPhoneIcon size={22} />
                 </a>
                 <a
@@ -910,7 +925,7 @@ export function HomePage() {
                   href={homepageWhatsappUrl}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label="Message SGL Catering on WhatsApp"
+                  aria-label="Message on WhatsApp"
                   title="WhatsApp"
                 >
                   <WhatsAppIcon size={23} />
@@ -918,14 +933,16 @@ export function HomePage() {
                 <a
                   className="premium-contact-action is-facebook"
                   {...facebookActionProps}
-                  aria-label="Open SGL Catering on Facebook"
+                  aria-label="Open Facebook"
                   title="Facebook"
                 >
                   <FacebookIcon size={23} />
                 </a>
-                <a className="premium-contact-action" href={`mailto:${homepageEmail}`} aria-label="Email SGL Catering" title="Email">
-                  <GmailIcon size={23} />
-                </a>
+                {homepageEmail ? (
+                  <a className="premium-contact-action" href={`mailto:${homepageEmail}`} aria-label="Email" title="Email">
+                    <GmailIcon size={23} />
+                  </a>
+                ) : null}
               </div>
             </div>
 
@@ -999,28 +1016,23 @@ export function HomePage() {
             </div>
           </div>
 
-          <div className="premium-contact-map premium-reveal premium-reveal-card" data-reveal aria-label="SGL Catering location map">
-            <iframe
-              title="SGL Catering location in Anuradhapura"
-              src={homepageMapEmbedUrl}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          {homepageMapEmbedUrl ? (
+            <div className="premium-contact-map premium-reveal premium-reveal-card" data-reveal aria-label="Location map">
+              <iframe
+                title="Location map"
+                src={homepageMapEmbedUrl}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          ) : null}
         </div>
       </section>
 
       <footer className="premium-footer">
         <div className="premium-footer-shell">
           <p>
-            © 2026{" "}
-            <a href="https://sglcateringservice.lk/" target="_blank" rel="noreferrer">
-              sglcateringservice.lk
-            </a>{" "}
-            by{" "}
-            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
-              chamudithaperera.online
-            </a>
+            © {currentYear} {heroText.titleEnglish || heroText.titleSinhala}
           </p>
         </div>
       </footer>

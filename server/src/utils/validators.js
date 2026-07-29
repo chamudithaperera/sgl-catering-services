@@ -35,8 +35,8 @@ function normalizeGoogleMapEmbedUrl(value) {
 const siteConfigSchema = z.object({
   phone: z.string().min(2),
   whatsapp: z.string().min(2),
-  secondaryPhone: z.string().min(2).default("0252227538"),
-  tertiaryPhone: z.string().min(2).default("0703324500"),
+  secondaryPhone: z.string().optional().default(""),
+  tertiaryPhone: z.string().optional().default(""),
   email: z.string().email(),
   address: z.string().min(2),
   businessHours: z.string().min(2),

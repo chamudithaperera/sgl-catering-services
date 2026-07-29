@@ -7,9 +7,6 @@ import { responsiveImageProps } from "../lib/imagePerformance";
 import { buildSiteUrl } from "../lib/seo";
 import "./ServiceShowcasePage.css";
 
-const contactPhone = "0703324350";
-const contactEmail = "sudathjayathilakabs@gmail.com";
-
 function buildWhatsappUrl(phoneNumber) {
   const digits = phoneNumber?.replace(/[^\d]/g, "");
 
@@ -242,9 +239,9 @@ function buildManagedRentalPage(page, content) {
 }
 
 function ContactBand({ page, anchorId, contact }) {
-  const phone = contact?.phone || contactPhone;
+  const phone = contact?.phone || "";
   const whatsapp = contact?.whatsapp || phone;
-  const email = contact?.email || contactEmail;
+  const email = contact?.email || "";
 
   return (
     <section className="service-band service-band-footer" id={anchorId}>
@@ -257,23 +254,29 @@ function ContactBand({ page, anchorId, contact }) {
           </div>
 
           <div className="service-contact-actions">
-            <a className="service-contact-icon-link is-call" href={buildTelUrl(phone)} aria-label="Call us">
-              <PhoneIcon size={22} />
-            </a>
+            {phone ? (
+              <a className="service-contact-icon-link is-call" href={buildTelUrl(phone)} aria-label="Call us">
+                <PhoneIcon size={22} />
+              </a>
+            ) : null}
 
-            <a
-              className="service-contact-icon-link is-whatsapp"
-              href={buildWhatsappUrl(whatsapp)}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="WhatsApp us"
-            >
-              <WhatsAppIcon size={22} />
-            </a>
+            {whatsapp ? (
+              <a
+                className="service-contact-icon-link is-whatsapp"
+                href={buildWhatsappUrl(whatsapp)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="WhatsApp us"
+              >
+                <WhatsAppIcon size={22} />
+              </a>
+            ) : null}
 
-            <a className="service-contact-icon-link is-email" href={`mailto:${email}`} aria-label="Email us">
-              <GmailIcon size={22} />
-            </a>
+            {email ? (
+              <a className="service-contact-icon-link is-email" href={`mailto:${email}`} aria-label="Email us">
+                <GmailIcon size={22} />
+              </a>
+            ) : null}
           </div>
         </div>
       </div>
@@ -297,47 +300,44 @@ export function ServiceShowcasePage({ page }) {
   const [managedPage, setManagedPage] = useState(() => buildEmptyManagedPage(page));
   const [contactConfig, setContactConfig] = useState(null);
   const anchorId = managedPage.type === "catering" ? "consultation" : "booking";
-  const servicePhone = contactConfig?.phone || contactPhone;
-  const serviceEmail = contactConfig?.email || contactEmail;
+  const servicePhone = contactConfig?.phone || "";
+  const serviceEmail = contactConfig?.email || "";
   const serviceStructuredData = useMemo(
-    () => ({
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": buildSiteUrl(`${managedPage.seo?.canonicalPath || "/"}#service`),
-      name:
-        managedPage.type === "catering"
-          ? "Catering service in Anuradhapura"
-          : "Event rentals in Anuradhapura",
-      alternateName:
-        managedPage.type === "catering"
-          ? ["Catering services in Anuradhapura", "Catering services Anuradhapura"]
-          : ["Event rental equipment Anuradhapura", "Event rentals in Anuradhapura"],
-      serviceType: managedPage.type === "catering" ? "Catering" : "Event rental equipment",
-      description: managedPage.seo?.description || managedPage.description,
-      url: buildSiteUrl(managedPage.seo?.canonicalPath || "/"),
-      ...(managedPage.image ? { image: buildSiteUrl(managedPage.image) } : {}),
-      areaServed: {
-        "@type": "City",
-        name: "Anuradhapura",
-      },
-      provider: {
+    () => {
+      const serviceData = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": buildSiteUrl(`${managedPage.seo?.canonicalPath || "/"}#service`),
+        name: managedPage.englishTitle || managedPage.title,
+        description: managedPage.seo?.description || managedPage.description,
+        url: buildSiteUrl(managedPage.seo?.canonicalPath || "/"),
+        ...(managedPage.image ? { image: buildSiteUrl(managedPage.image) } : {}),
+      };
+
+      const provider = {
         "@type": "LocalBusiness",
-        additionalType: "https://schema.org/FoodService",
-        "@id": buildSiteUrl("/#sgl-catering-service"),
-        name: "SGL Catering Service",
+        "@id": buildSiteUrl("/#local-business"),
+        name: contactConfig?.businessName || "",
         url: buildSiteUrl("/"),
-        telephone: servicePhone,
-        email: serviceEmail,
-        address: {
+      };
+
+      if (servicePhone) provider.telephone = servicePhone;
+      if (serviceEmail) provider.email = serviceEmail;
+      if (contactConfig?.address) {
+        provider.address = {
           "@type": "PostalAddress",
-          streetAddress: "No.360, National Housing, Stage II",
-          addressLocality: "Anuradhapura",
-          addressCountry: "LK",
-        },
-      },
-    }),
-    [managedPage.description, managedPage.image, managedPage.seo, managedPage.type, serviceEmail, servicePhone]
+          streetAddress: contactConfig.address,
+        };
+      }
+      if (provider.name || provider.telephone || provider.email || provider.address) {
+        serviceData.provider = provider;
+      }
+
+      return serviceData.name || serviceData.description || serviceData.image ? serviceData : null;
+    },
+    [contactConfig, managedPage.description, managedPage.englishTitle, managedPage.image, managedPage.seo, managedPage.title, serviceEmail, servicePhone]
   );
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     setManagedPage(buildEmptyManagedPage(page));
@@ -365,17 +365,18 @@ export function ServiceShowcasePage({ page }) {
   return (
     <main className={`service-page service-page-${managedPage.type}`}>
       <Seo
-        title={managedPage.seo?.title || `${managedPage.title} | SGL Catering Service`}
+        title={managedPage.seo?.title || managedPage.title}
         description={managedPage.seo?.description || managedPage.description}
         canonicalPath={managedPage.seo?.canonicalPath || "/"}
         image={managedPage.image}
-        keywords={managedPage.seo?.keywords || ["sgl catering service", "catering services anuradhapura"]}
+        keywords={managedPage.seo?.keywords || []}
+        siteName={contactConfig?.businessName || ""}
         structuredData={serviceStructuredData}
       />
       <header className="service-page-topbar">
         <Link className="service-page-brand" to="/">
           <span className="service-page-brand-logo">
-            <img src="/assets/sgl-logo.png" alt="SGL Catering" />
+            <img src="/assets/sgl-logo.png" alt="Site logo" />
           </span>
         </Link>
 
@@ -404,14 +405,7 @@ export function ServiceShowcasePage({ page }) {
       <footer className="service-page-footer">
         <div className="service-page-footer-shell">
           <p>
-            © 2026{" "}
-            <a href="https://sglcateringservice.lk/" target="_blank" rel="noreferrer">
-              sglcateringservice.lk
-            </a>{" "}
-            by{" "}
-            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
-              chamudithaperera.online
-            </a>
+            © {currentYear} {contactConfig?.businessName || managedPage.englishTitle || managedPage.title}
           </p>
         </div>
       </footer>

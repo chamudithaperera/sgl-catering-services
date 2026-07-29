@@ -36,33 +36,62 @@ export function Seo({
   canonicalPath = "/",
   image = "",
   keywords = [],
+  siteName = "",
   structuredData,
 }) {
   useEffect(() => {
     const canonicalUrl = buildSiteUrl(canonicalPath);
     const imageUrl = image ? buildSiteUrl(image) : "";
 
-    document.title = title;
+    if (title) {
+      document.title = title;
+    }
     upsertCanonical(canonicalUrl);
-    upsertMeta('meta[name="description"]', { name: "description", content: description });
+    if (description) {
+      upsertMeta('meta[name="description"]', { name: "description", content: description });
+    } else {
+      removeElement('meta[name="description"]');
+    }
     upsertMeta('meta[name="robots"]', { name: "robots", content: "index, follow" });
-    upsertMeta('meta[name="author"]', { name: "author", content: "SGL Catering Service" });
+    if (siteName) {
+      upsertMeta('meta[name="author"]', { name: "author", content: siteName });
+    } else {
+      removeElement('meta[name="author"]');
+    }
 
     if (keywords.length > 0) {
       upsertMeta('meta[name="keywords"]', { name: "keywords", content: keywords.join(", ") });
+    } else {
+      removeElement('meta[name="keywords"]');
     }
 
-    upsertMeta('meta[property="og:title"]', { property: "og:title", content: title });
-    upsertMeta('meta[property="og:description"]', { property: "og:description", content: description });
+    if (title) {
+      upsertMeta('meta[property="og:title"]', { property: "og:title", content: title });
+      upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: title });
+    } else {
+      removeElement('meta[property="og:title"]');
+      removeElement('meta[name="twitter:title"]');
+    }
+
+    if (description) {
+      upsertMeta('meta[property="og:description"]', { property: "og:description", content: description });
+      upsertMeta('meta[name="twitter:description"]', { name: "twitter:description", content: description });
+    } else {
+      removeElement('meta[property="og:description"]');
+      removeElement('meta[name="twitter:description"]');
+    }
+
     upsertMeta('meta[property="og:type"]', { property: "og:type", content: "website" });
     upsertMeta('meta[property="og:url"]', { property: "og:url", content: canonicalUrl });
-    upsertMeta('meta[property="og:site_name"]', {
-      property: "og:site_name",
-      content: "SGL Catering Service",
-    });
+    if (siteName) {
+      upsertMeta('meta[property="og:site_name"]', {
+        property: "og:site_name",
+        content: siteName,
+      });
+    } else {
+      removeElement('meta[property="og:site_name"]');
+    }
     upsertMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
-    upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: title });
-    upsertMeta('meta[name="twitter:description"]', { name: "twitter:description", content: description });
 
     if (imageUrl) {
       upsertMeta('meta[property="og:image"]', { property: "og:image", content: imageUrl });
@@ -72,17 +101,17 @@ export function Seo({
       removeElement('meta[name="twitter:image"]');
     }
 
-    const existingStructuredData = document.head.querySelector("#sgl-local-business-schema");
+    const existingStructuredData = document.head.querySelector("#local-business-schema");
     existingStructuredData?.remove();
 
     if (structuredData) {
       const script = document.createElement("script");
-      script.id = "sgl-local-business-schema";
+      script.id = "local-business-schema";
       script.type = "application/ld+json";
       script.textContent = JSON.stringify(structuredData);
       document.head.appendChild(script);
     }
-  }, [canonicalPath, description, image, keywords, structuredData, title]);
+  }, [canonicalPath, description, image, keywords, siteName, structuredData, title]);
 
   return null;
 }

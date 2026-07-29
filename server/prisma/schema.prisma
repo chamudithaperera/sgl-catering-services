@@ -35,8 +35,8 @@ model ContactDetails {
   id             Int      @id
   phone          String
   whatsapp       String
-  secondaryPhone String   @default("0252227538") @map("secondary_phone")
-  tertiaryPhone  String   @default("0703324500") @map("tertiary_phone")
+  secondaryPhone String   @default("") @map("secondary_phone")
+  tertiaryPhone  String   @default("") @map("tertiary_phone")
   email          String
   address        String
   businessHours  String   @map("business_hours")
