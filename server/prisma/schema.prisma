@@ -119,6 +119,7 @@ model Review {
   eventType    String   @map("event_type")
   rating       Int
   quote        String   @db.Text
+  isApproved   Boolean  @default(true) @map("is_approved")
   sortOrder    Int      @default(0) @map("sort_order")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")

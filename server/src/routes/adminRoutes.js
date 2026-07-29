@@ -409,15 +409,40 @@ router.get("/reviews", async (request, response) => {
 
 router.post("/reviews", async (request, response) => {
   const data = reviewSchema.parse(request.body);
-  const item = await prisma.review.create({ data });
+  const item = await prisma.review.create({
+    data: {
+      ...data,
+      isApproved: true,
+    },
+  });
   response.status(201).json(item);
 });
 
 router.put("/reviews/:id", async (request, response) => {
   const data = reviewSchema.parse(request.body);
+  const existingItem = await prisma.review.findUnique({
+    where: { id: Number(request.params.id) },
+    select: { isApproved: true },
+  });
+
+  if (!existingItem) {
+    return response.status(404).json({ message: "Review not found" });
+  }
+
   const item = await prisma.review.update({
     where: { id: Number(request.params.id) },
-    data,
+    data: {
+      ...data,
+      isApproved: existingItem.isApproved,
+    },
+  });
+  response.json(item);
+});
+
+router.patch("/reviews/:id/approve", async (request, response) => {
+  const item = await prisma.review.update({
+    where: { id: Number(request.params.id) },
+    data: { isApproved: true },
   });
   response.json(item);
 });

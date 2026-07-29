@@ -89,6 +89,8 @@ const reviewSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
+const publicReviewSchema = reviewSchema.omit({ sortOrder: true });
+
 const contactMessageSchema = z.object({
   customerName: z.string().min(2),
   phone: z.string().min(7),
@@ -104,5 +106,6 @@ module.exports = {
   webImageSchema,
   webTextSchema,
   reviewSchema,
+  publicReviewSchema,
   contactMessageSchema,
 };

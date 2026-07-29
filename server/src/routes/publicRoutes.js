@@ -1,6 +1,6 @@
 const express = require("express");
 const { prisma } = require("../config/prisma");
-const { contactMessageSchema } = require("../utils/validators");
+const { contactMessageSchema, publicReviewSchema } = require("../utils/validators");
 const { mergeWebTextFallback, webTextDefaults } = require("../utils/webTextDefaults");
 
 const router = express.Router();
@@ -24,6 +24,14 @@ const webTextPublicSelect = {
   titleEnglish: true,
   descriptionSinhala: true,
   descriptionEnglish: true,
+};
+
+const reviewPublicSelect = {
+  customerName: true,
+  eventType: true,
+  rating: true,
+  quote: true,
+  sortOrder: true,
 };
 
 function groupWebImages(webImages) {
@@ -78,7 +86,11 @@ router.get("/home", async (request, response) => {
       where: { textKey: { in: webTextKeys } },
       select: webTextPublicSelect,
     }),
-    prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.review.findMany({
+      where: { isApproved: true },
+      orderBy: { sortOrder: "asc" },
+      select: reviewPublicSelect,
+    }),
   ]);
   const groupedImages = groupWebImages(webImages);
   const groupedTexts = groupWebTexts(webTexts);
@@ -122,7 +134,11 @@ router.get("/content", async (request, response) => {
       where: { textKey: { in: webTextKeys } },
       select: webTextPublicSelect,
     }),
-    prisma.review.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.review.findMany({
+      where: { isApproved: true },
+      orderBy: { sortOrder: "asc" },
+      select: reviewPublicSelect,
+    }),
   ]);
   const groupedImages = groupWebImages(webImages);
   const groupedTexts = groupWebTexts(webTexts);
@@ -148,6 +164,23 @@ router.post("/inquiries", async (request, response) => {
   response.status(201).json({
     message: "Inquiry received successfully",
     inquiryId: inquiry.id,
+  });
+});
+
+router.post("/reviews", async (request, response) => {
+  const data = publicReviewSchema.parse(request.body);
+
+  const review = await prisma.review.create({
+    data: {
+      ...data,
+      isApproved: false,
+    },
+    select: { id: true },
+  });
+
+  response.status(201).json({
+    message: "Review received successfully",
+    reviewId: review.id,
   });
 });
 
