@@ -59,7 +59,7 @@
   display: flex;
   align-items: center;
   justify-self: center;
-  gap: clamp(28px, 4vw, 54px);
+  gap: clamp(42px, 5vw, 78px);
   padding: 0;
 }
 
