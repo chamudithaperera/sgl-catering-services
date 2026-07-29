@@ -129,13 +129,13 @@ function GmailIcon({ size = 22 }) {
 }
 
 const navItems = [
-  { label: "මුල් පිටුව", href: "#home" },
-  { label: "අප ගැන", href: "#about" },
-  { label: "අපගේ සේවාවන්", href: "#services" },
-  { label: "මිල පැකේජ", to: "/catering" },
-  { label: "ඡායාරූප", href: "#gallery" },
-  { label: "අදහස්", to: "/reviews" },
-  { label: "අප අමතන්න", href: "#contact" },
+  { label: "මුල් පිටුව", englishLabel: "Home", href: "#home" },
+  { label: "අප ගැන", englishLabel: "About", href: "#about" },
+  { label: "අපගේ සේවාවන්", englishLabel: "Services", href: "#services" },
+  { label: "මිල පැකේජ", englishLabel: "Menu Packages", to: "/catering" },
+  { label: "ඡායාරූප", englishLabel: "Gallery", href: "#gallery" },
+  { label: "අදහස්", englishLabel: "Reviews", to: "/reviews" },
+  { label: "අප අමතන්න", englishLabel: "Contact", href: "#contact" },
 ];
 
 const serviceItems = [
@@ -624,7 +624,10 @@ export function HomePage() {
                   to={item.to}
                   onClick={() => setMenuOpen(false)}
                 >
-                  {item.label}
+                  <span className="premium-nav-text">
+                    <span>{item.label}</span>
+                    <small>{item.englishLabel}</small>
+                  </span>
                 </Link>
               ) : (
                 <a
@@ -633,7 +636,10 @@ export function HomePage() {
                   href={item.href}
                   onClick={(event) => handleNavAnchorClick(event, item.href)}
                 >
-                  {item.label}
+                  <span className="premium-nav-text">
+                    <span>{item.label}</span>
+                    <small>{item.englishLabel}</small>
+                  </span>
                 </a>
               )
             ))}

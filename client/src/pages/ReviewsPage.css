@@ -59,7 +59,7 @@
   display: flex;
   align-items: center;
   justify-self: center;
-  gap: clamp(18px, 3vw, 36px);
+  gap: clamp(28px, 4vw, 54px);
   padding: 0;
 }
 
@@ -123,7 +123,9 @@
 
 .reviews-bilingual {
   display: inline-grid;
+  justify-items: center;
   gap: 3px;
+  text-align: center;
 }
 
 .reviews-bilingual small {
@@ -388,7 +390,7 @@
 
   .reviews-nav nav a {
     min-height: 36px;
-    padding: 0 12px;
+    padding: 4px 0;
     font-size: 0.84rem;
   }
 

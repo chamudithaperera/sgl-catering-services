@@ -50,10 +50,10 @@ function WhatsAppIcon({ size = 20 }) {
 }
 
 const primaryLinks = [
-  { label: "මුල් පිටුව", href: "/" },
-  { label: "කේටරින්", href: "/catering", type: "catering" },
-  { label: "කුලී භාණ්ඩ", href: "/renting", type: "renting" },
-  { label: "අදහස්", href: "/reviews" },
+  { label: "මුල් පිටුව", englishLabel: "Home", href: "/" },
+  { label: "කේටරින්", englishLabel: "Catering", href: "/catering", type: "catering" },
+  { label: "කුලී භාණ්ඩ", englishLabel: "Rentals", href: "/renting", type: "renting" },
+  { label: "අදහස්", englishLabel: "Reviews", href: "/reviews" },
 ];
 
 const emptyWebText = {
@@ -446,7 +446,10 @@ export function ServiceShowcasePage({ page }) {
         <nav className="service-page-primary-nav" aria-label="Primary">
           {primaryLinks.map((item) => (
             <Link className={item.type === managedPage.type ? "is-active" : ""} key={item.href} to={item.href}>
-              {item.label}
+              <span className="service-page-nav-text">
+                <span>{item.label}</span>
+                <small>{item.englishLabel}</small>
+              </span>
             </Link>
           ))}
         </nav>
