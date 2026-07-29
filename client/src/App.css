@@ -237,6 +237,17 @@
   font-size: 0.72rem;
 }
 
+.sgla-nav-dot {
+  margin-left: auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow:
+    0 0 0 4px rgba(245, 158, 11, 0.18),
+    0 0 18px rgba(245, 158, 11, 0.42);
+}
+
 .sgla-sidebar-footer {
   display: grid;
   gap: 6px;

@@ -1585,6 +1585,9 @@ export function AdminPage() {
                 <Icon size={19} />
                 <span>{item.label}</span>
                 {item.key === "contactMessages" && dashboard?.unreadMessages ? <b>{dashboard.unreadMessages}</b> : null}
+                {item.key === "reviews" && dashboard?.pendingReviews ? (
+                  <i className="sgla-nav-dot" title={`${dashboard.pendingReviews} pending review${dashboard.pendingReviews === 1 ? "" : "s"}`} aria-label={`${dashboard.pendingReviews} pending review${dashboard.pendingReviews === 1 ? "" : "s"}`} />
+                ) : null}
               </button>
             );
           })}

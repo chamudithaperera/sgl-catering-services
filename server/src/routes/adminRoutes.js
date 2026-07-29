@@ -108,6 +108,7 @@ router.get("/dashboard", async (request, response) => {
     webTexts,
     galleryItems,
     reviews,
+    pendingReviews,
     contactMessages,
     unreadMessages,
   ] = await Promise.all([
@@ -119,6 +120,7 @@ router.get("/dashboard", async (request, response) => {
     prisma.webText.count(),
     prisma.gallery.count(),
     prisma.review.count(),
+    prisma.review.count({ where: { isApproved: false } }),
     prisma.message.count(),
     prisma.message.count({ where: { isRead: false } }),
   ]);
@@ -133,6 +135,7 @@ router.get("/dashboard", async (request, response) => {
     webImages: bannerImages + aboutImages + serviceImages + galleryItems,
     galleryItems,
     reviews,
+    pendingReviews,
     contactMessages,
     unreadMessages,
   });
