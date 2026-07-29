@@ -7,6 +7,7 @@ import { HomePage } from "./pages/HomePage";
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const CateringPage = lazy(() => import("./pages/CateringPage"));
 const RentingPage = lazy(() => import("./pages/RentingPage"));
+const ReviewsPage = lazy(() => import("./pages/ReviewsPage"));
 
 function App() {
   const location = useLocation();
@@ -33,6 +34,14 @@ function App() {
           element={
             <Suspense fallback={null}>
               <RentingPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/reviews"
+          element={
+            <Suspense fallback={null}>
+              <ReviewsPage />
             </Suspense>
           }
         />

@@ -5,6 +5,7 @@ import {
   Camera,
   CheckCircle2,
   ClipboardList,
+  Eye,
   GalleryHorizontalEnd,
   Home,
   ImageUp,
@@ -393,6 +394,7 @@ const resourceConfigs = [
       { name: "sortOrder", label: "Sort order", type: "number" },
     ],
     columns: [
+      { name: "isApproved", label: "Status" },
       { name: "customerName", label: "Customer" },
       { name: "eventType", label: "Event" },
       { name: "rating", label: "Rating" },
@@ -587,6 +589,10 @@ function renderCell(item, column) {
     return <span className={`sgla-status-chip ${item.isRead ? "is-read" : "is-unread"}`}>{item.isRead ? "Read" : "Unread"}</span>;
   }
 
+  if (column.name === "isApproved") {
+    return <span className={`sgla-status-chip ${item.isApproved ? "is-approved" : "is-pending"}`}>{item.isApproved ? "Approved" : "Pending"}</span>;
+  }
+
   const value = formatCell(item[column.name]);
 
   if (column.name === "title" || column.name === "name" || column.name === "customerName") {
@@ -689,6 +695,7 @@ export function AdminPage() {
   const [records, setRecords] = useState(buildInitialRecords);
   const [forms, setForms] = useState(buildInitialForms);
   const [editingIds, setEditingIds] = useState({});
+  const [reviewPreview, setReviewPreview] = useState(null);
   const [contactEditing, setContactEditing] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -960,6 +967,18 @@ export function AdminPage() {
     } catch (error) {
       console.error(error);
       setErrorMessage(getAdminErrorMessage(error, "Could not update message status."));
+    }
+  }
+
+  async function handleApproveReview(item) {
+    try {
+      await api.patch(`/admin/reviews/${item.id}/approve`, {}, adminRequest(token));
+      await loadAdminData(token);
+      setStatusMessage(`Review from ${item.customerName} approved.`);
+      setErrorMessage("");
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(getAdminErrorMessage(error, "Could not approve review."));
     }
   }
 

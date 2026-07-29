@@ -134,6 +134,7 @@ const navItems = [
   { label: "අපගේ සේවාවන්", href: "#services" },
   { label: "මිල පැකේජ", to: "/catering" },
   { label: "ඡායාරූප", href: "#gallery" },
+  { label: "අදහස්", to: "/reviews" },
   { label: "අප අමතන්න", href: "#contact" },
 ];
 
