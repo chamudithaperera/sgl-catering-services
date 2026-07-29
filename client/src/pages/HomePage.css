@@ -319,29 +319,42 @@
 .premium-hero-title-group {
   display: grid;
   justify-items: center;
-  gap: clamp(8px, 1vw, 12px);
+  gap: clamp(10px, 1.2vw, 14px);
+  width: min(980px, 100%);
 }
 
 .premium-hero-panel h1 {
   margin: 0;
   font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
-  font-size: clamp(3.3rem, 6.4vw, 6.35rem);
+  font-size: clamp(3.2rem, 5.9vw, 5.9rem);
   font-weight: 800;
-  line-height: 0.96;
+  line-height: 1;
   color: var(--text-main);
   text-wrap: balance;
   text-shadow:
-    0 18px 46px rgba(0, 0, 0, 0.34),
-    0 2px 0 rgba(58, 20, 12, 0.24);
+    0 16px 38px rgba(0, 0, 0, 0.34),
+    0 2px 0 rgba(58, 20, 12, 0.2);
 }
 
 .premium-hero-subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 18px);
   color: var(--accent-luxury-soft);
-  font-size: clamp(1.05rem, 1.8vw, 1.26rem);
+  font-size: clamp(1rem, 1.55vw, 1.18rem);
   font-weight: 750;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: none;
   text-shadow: 0 10px 28px rgba(0, 0, 0, 0.34);
+}
+
+.premium-hero-subtitle::before,
+.premium-hero-subtitle::after {
+  content: "";
+  width: clamp(34px, 5vw, 72px);
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(241, 214, 164, 0.82), transparent);
 }
 
 .premium-hero-copy {
@@ -1931,13 +1944,19 @@
   }
 
   .premium-hero-panel h1 {
-    font-size: clamp(2.7rem, 14vw, 4.25rem);
+    font-size: clamp(2.58rem, 13vw, 4rem);
   }
 
   .premium-hero-subtitle {
     margin-top: 0;
-    font-size: 1rem;
-    letter-spacing: 0.06em;
+    gap: 10px;
+    font-size: 0.94rem;
+    letter-spacing: 0.04em;
+  }
+
+  .premium-hero-subtitle::before,
+  .premium-hero-subtitle::after {
+    width: 24px;
   }
 
   .premium-hero-content {
