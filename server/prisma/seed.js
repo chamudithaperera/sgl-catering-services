@@ -61,14 +61,14 @@ async function main() {
   await prisma.admin.upsert({
     where: { username: "sgladmin" },
     update: {
-      email: "admin@sglcateringservice.lk",
-      name: "SGL Admin",
+      email: "admin@example.com",
+      name: "Admin",
       passwordHash,
     },
     create: {
-      email: "admin@sglcateringservice.lk",
+      email: "admin@example.com",
       username: "sgladmin",
-      name: "SGL Admin",
+      name: "Admin",
       passwordHash,
     },
   });
