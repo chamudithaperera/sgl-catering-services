@@ -4,9 +4,9 @@ const webTextDefaults = {
     titleSinhala: "SGL කේටරින් සර්විස්",
     titleEnglish: "SGL Catering Service",
     descriptionSinhala:
-      "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.",
+      "SGL කේටරින් සර්විස් වෙත සාදරයෙන් පිළිගනිමු! අනුරාධපුරයේ විශ්වාසදායක සහ හොඳම ආහාර සැපයුම් සේවාවන්ගෙන් එකක් ලෙස, වසර 40කට අධික පළපුරුද්ද සමඟ අපි සාම්ප්‍රදායික ශ්‍රී ලාංකීය රසය හා උසස් සේවාව ඔබ වෙත රැගෙන එන්නෙමු. විවාහ මංගල්‍ය, උත්සව, පවුල් හමුවීම් සහ සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර හා විශ්වාසදායක සේවාව ලබා දීම අපගේ කැපවීමයි.",
     descriptionEnglish:
-      "Looking for a catering service in Anuradhapura? SGL Catering Service offers catering services in Anuradhapura for weddings, home functions, almsgivings, birthdays, office events, and special celebrations.",
+      "Welcome to SGL Catering Service! Recognised as one of the best catering services in Anuradhapura, we have proudly served authentic Sri Lankan cuisine for over 40 years. From weddings and family celebrations to corporate events and special occasions, we are committed to delivering delicious food, exceptional service, and unforgettable memories.",
   },
   about: {
     textKey: "about",

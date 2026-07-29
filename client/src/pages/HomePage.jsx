@@ -14,10 +14,17 @@ const contactSecondaryPhone = "0252227538";
 const contactTertiaryPhone = "0703324500";
 const contactEmail = "sudathjayathilakabs@gmail.com";
 const brandTagline = "Rajarata Symbol of Sri Lankan Traditional Food Art.........";
+const fallbackHeroSlides = [
+  { image: "/assets/sgl-images/hero-buffet.jpg", label: "SGL buffet catering" },
+  { image: "/assets/sgl-images/indoor-buffet.jpg", label: "Indoor buffet setup" },
+  { image: "/assets/sgl-images/curry-selection.jpg", label: "Sri Lankan curry selection" },
+  { image: "/assets/sgl-images/grill-buffet.jpg", label: "Event buffet service" },
+  { image: "/assets/sgl-images/salad-buffet.jpg", label: "Fresh buffet station" },
+];
 const heroDescription =
-  "විවාහ උත්සව, ආයතනික හමුවීම් සහ පවුල් සැමරුම් සඳහා රසය, පිළිවෙළ සහ වෘත්තීයභාවය එක් කරන සුවිශේෂී කේටරින් අත්දැකීමක් අපි ඔබ වෙනුවෙන් සකස් කරමු.";
+  "SGL කේටරින් සර්විස් වෙත සාදරයෙන් පිළිගනිමු! අනුරාධපුරයේ විශ්වාසදායක සහ හොඳම ආහාර සැපයුම් සේවාවන්ගෙන් එකක් ලෙස, වසර 40කට අධික පළපුරුද්ද සමඟ අපි සාම්ප්‍රදායික ශ්‍රී ලාංකීය රසය හා උසස් සේවාව ඔබ වෙත රැගෙන එන්නෙමු. විවාහ මංගල්‍ය, උත්සව, පවුල් හමුවීම් සහ සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර හා විශ්වාසදායක සේවාව ලබා දීම අපගේ කැපවීමයි.";
 const localSearchIntro =
-  "Looking for a catering service in Anuradhapura? SGL Catering Service offers catering services in Anuradhapura for weddings, home functions, almsgivings, birthdays, office events, and special celebrations.";
+  "Welcome to SGL Catering Service! Recognised as one of the best catering services in Anuradhapura, we have proudly served authentic Sri Lankan cuisine for over 40 years. From weddings and family celebrations to corporate events and special occasions, we are committed to delivering delicious food, exceptional service, and unforgettable memories.";
 const aboutHeading = "SGL කේටරින් සර්විස් යනු:";
 const aboutBody =
   "වසර ගණනාවක් පුරා අනුරාධපුරය සහ අවට ප්‍රදේශවල පාරිභෝගික විශ්වාසය දිනාගත්, සෞඛ්‍යාරක්ෂිත හා ප්‍රණීත ආහාර සේවාවක් සපයන කේටරින් සේවාවකි. මංගල උත්සව, නිවසේ උත්සව, දාන පිංකම් සහ අනෙකුත් සියලුම විශේෂ අවස්ථා සඳහා රසවත් ආහාර සපයන අතර, උත්සව සඳහා අවශ්‍ය විවිධ භාණ්ඩද කුලියට ලබාදීමට අප සූදානම්.";
@@ -438,10 +445,11 @@ export function HomePage() {
   const galleryText = getWebText(webTexts, "gallery");
   const reviewsText = getWebText(webTexts, "reviews");
   const contactText = getWebText(webTexts, "contact");
-  const heroSlides = (content?.bannerImages || []).slice(0, 5).map((item) => ({
+  const cmsHeroSlides = (content?.bannerImages || []).slice(0, 5).map((item) => ({
     image: item.imageUrl,
     label: item.title || "Banner image",
   }));
+  const heroSlides = cmsHeroSlides.length > 0 ? cmsHeroSlides : fallbackHeroSlides;
   const structuredDataImages = heroSlides.map((slide) => slide.image).filter(Boolean).map((image) => buildSiteUrl(image));
   const homepageStructuredData = structuredDataImages.length
     ? {
@@ -812,10 +820,17 @@ export function HomePage() {
 
         <div className="premium-hero-content">
           <div className="premium-hero-panel">
-            <h1>{heroText.titleSinhala}</h1>
-            <span className="premium-hero-subtitle">{heroText.titleEnglish}</span>
-            <p>{heroText.descriptionSinhala}</p>
-            {heroText.descriptionEnglish ? <p className="premium-hero-local">{heroText.descriptionEnglish}</p> : null}
+            <div className="premium-hero-title-group">
+              <h1>{heroText.titleSinhala}</h1>
+              <span className="premium-hero-subtitle">{heroText.titleEnglish}</span>
+            </div>
+
+            <div className="premium-hero-copy">
+              <p className="premium-hero-description premium-hero-description-sinhala">{heroText.descriptionSinhala}</p>
+              {heroText.descriptionEnglish ? (
+                <p className="premium-hero-description premium-hero-description-english">{heroText.descriptionEnglish}</p>
+              ) : null}
+            </div>
 
             <div className="premium-hero-actions">
               <button type="button" className="premium-button premium-button-primary" onClick={(event) => handleNavAnchorClick(event, "#services")}>
