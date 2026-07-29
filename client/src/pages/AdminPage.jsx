@@ -59,6 +59,17 @@ const webTextFields = {
     { name: "titleSinhala", label: "Title Sinhala" },
     { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
   ],
+  pageHero: [
+    { name: "descriptionEnglish", label: "Eyebrow" },
+    { name: "titleSinhala", label: "Title Sinhala" },
+    { name: "titleEnglish", label: "Title English" },
+    { name: "descriptionSinhala", label: "Description", type: "textarea" },
+  ],
+  pageSection: [
+    { name: "titleEnglish", label: "Eyebrow" },
+    { name: "titleSinhala", label: "Title" },
+    { name: "descriptionSinhala", label: "Description", type: "textarea" },
+  ],
 };
 
 function buildWebTextConfig({ key, label, textKey, fields, eyebrow, layout }) {
@@ -144,11 +155,59 @@ const resourceConfigs = [
     eyebrow: "Homepage catering service card text",
   }),
   buildWebTextConfig({
+    key: "cateringPageHeroTexts",
+    label: "Page Hero",
+    textKey: "cateringPageHero",
+    fields: webTextFields.pageHero,
+    eyebrow: "Catering page hero title and description",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "cateringPageOverviewTexts",
+    label: "Menu Section Text",
+    textKey: "cateringPageOverview",
+    fields: webTextFields.pageSection,
+    eyebrow: "Catering page menu section heading and description",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "cateringPageConsultationTexts",
+    label: "Booking Section Text",
+    textKey: "cateringPageConsultation",
+    fields: webTextFields.pageSection,
+    eyebrow: "Catering page booking section heading and description",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
     key: "serviceRentalTexts",
     label: "Rental Service Text",
     textKey: "serviceRental",
     fields: webTextFields.section,
     eyebrow: "Homepage rental service card text",
+  }),
+  buildWebTextConfig({
+    key: "rentingPageHeroTexts",
+    label: "Page Hero",
+    textKey: "rentingPageHero",
+    fields: webTextFields.pageHero,
+    eyebrow: "Rental page hero title and description",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "rentingPageOverviewTexts",
+    label: "Items Section Text",
+    textKey: "rentingPageOverview",
+    fields: webTextFields.pageSection,
+    eyebrow: "Rental page items section heading and description",
+    layout: "formOnly",
+  }),
+  buildWebTextConfig({
+    key: "rentingPageConsultationTexts",
+    label: "Booking Section Text",
+    textKey: "rentingPageConsultation",
+    fields: webTextFields.pageSection,
+    eyebrow: "Rental page booking section heading and description",
+    layout: "formOnly",
   }),
   buildWebTextConfig({
     key: "galleryTexts",
@@ -362,15 +421,25 @@ const resourceConfigs = [
 const groupedSections = {
   catering: {
     label: "Catering",
-    eyebrow: "Manage food menus",
+    eyebrow: "Manage catering page text and food menus",
     icon: Utensils,
-    tabs: [{ key: "foodPackages", label: "Menus" }],
+    tabs: [
+      { key: "cateringPageHeroTexts", label: "Page Hero" },
+      { key: "cateringPageOverviewTexts", label: "Menu Text" },
+      { key: "foodPackages", label: "Menus" },
+      { key: "cateringPageConsultationTexts", label: "Booking Text" },
+    ],
   },
   rental: {
     label: "Rental",
-    eyebrow: "Manage rental inventory items",
+    eyebrow: "Manage rental page text and inventory items",
     icon: Boxes,
-    tabs: [{ key: "rentalItems", label: "Items" }],
+    tabs: [
+      { key: "rentingPageHeroTexts", label: "Page Hero" },
+      { key: "rentingPageOverviewTexts", label: "Items Text" },
+      { key: "rentalItems", label: "Items" },
+      { key: "rentingPageConsultationTexts", label: "Booking Text" },
+    ],
   },
   webImages: {
     label: "Web Images",
@@ -400,7 +469,13 @@ const groupedSections = {
 
 const resourceGroupByKey = {
   foodPackages: "catering",
+  cateringPageHeroTexts: "catering",
+  cateringPageOverviewTexts: "catering",
+  cateringPageConsultationTexts: "catering",
   rentalItems: "rental",
+  rentingPageHeroTexts: "rental",
+  rentingPageOverviewTexts: "rental",
+  rentingPageConsultationTexts: "rental",
   bannerImages: "webImages",
   aboutImages: "webImages",
   serviceImages: "webImages",

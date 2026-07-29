@@ -55,6 +55,66 @@ const primaryLinks = [
   { label: "කුලී භාණ්ඩ", href: "/renting", type: "renting" },
 ];
 
+const emptyWebText = {
+  titleSinhala: "",
+  titleEnglish: "",
+  descriptionSinhala: "",
+  descriptionEnglish: "",
+};
+
+const servicePageTextKeys = {
+  catering: {
+    hero: "cateringPageHero",
+    overview: "cateringPageOverview",
+    consultation: "cateringPageConsultation",
+  },
+  renting: {
+    hero: "rentingPageHero",
+    overview: "rentingPageOverview",
+    consultation: "rentingPageConsultation",
+  },
+};
+
+function getWebText(webTexts, textKey) {
+  return {
+    ...emptyWebText,
+    ...(webTexts?.[textKey] || {}),
+  };
+}
+
+function applyManagedPageTexts(page, content) {
+  const textKeys = servicePageTextKeys[page.type] || {};
+  const heroText = getWebText(content?.webTexts, textKeys.hero);
+  const overviewText = getWebText(content?.webTexts, textKeys.overview);
+  const consultationText = getWebText(content?.webTexts, textKeys.consultation);
+
+  return {
+    ...page,
+    eyebrow: heroText.descriptionEnglish,
+    title: heroText.titleSinhala,
+    englishTitle: heroText.titleEnglish,
+    description: heroText.descriptionSinhala,
+    seo: {
+      ...(page.seo || {}),
+      title: [heroText.titleEnglish, heroText.titleSinhala].filter(Boolean).join(" | "),
+      description: heroText.descriptionSinhala || heroText.descriptionEnglish,
+      keywords: [],
+    },
+    overview: {
+      ...(page.overview || {}),
+      eyebrow: overviewText.titleEnglish,
+      title: overviewText.titleSinhala,
+      description: overviewText.descriptionSinhala,
+    },
+    consultation: {
+      ...(page.consultation || {}),
+      eyebrow: consultationText.titleEnglish,
+      title: consultationText.titleSinhala,
+      description: consultationText.descriptionSinhala,
+    },
+  };
+}
+
 function SectionHead({ eyebrow, title, description, light = false, center = false }) {
   return (
     <div className={`service-section-head${light ? " is-light" : ""}${center ? " is-center" : ""}`}>
@@ -208,9 +268,10 @@ function findServiceImageByKey(serviceImages, imageKey, fallbackIndex) {
 function buildManagedCateringPage(page, content) {
   const foodPackages = content?.foodPackages || [];
   const bannerImage = findServiceImageByKey(content?.serviceImages, "catering", 0)?.imageUrl || "";
+  const managedTextPage = applyManagedPageTexts(page, content);
 
   return {
-    ...page,
+    ...managedTextPage,
     image: bannerImage,
     menus: foodPackages.map((item) => ({
       name: item.name,
@@ -224,9 +285,10 @@ function buildManagedCateringPage(page, content) {
 function buildManagedRentalPage(page, content) {
   const rentalItems = content?.rentalItems || [];
   const bannerImage = findServiceImageByKey(content?.serviceImages, "rental", 1)?.imageUrl || "";
+  const managedTextPage = applyManagedPageTexts(page, content);
 
   return {
-    ...page,
+    ...managedTextPage,
     image: bannerImage,
     items: rentalItems.map((item) => ({
       name: item.name,
@@ -248,7 +310,7 @@ function ContactBand({ page, anchorId, contact }) {
       <div className="service-page-shell">
         <div className="service-contact-panel">
           <div className="service-contact-copy">
-            <span>{page.type === "catering" ? "Reservation Desk" : "Rental Booking Desk"}</span>
+            <span>{page.consultation.eyebrow}</span>
             <h2>{page.consultation.title}</h2>
             <p>{page.consultation.description}</p>
           </div>
