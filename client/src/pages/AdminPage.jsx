@@ -454,12 +454,18 @@ const groupedSections = {
   },
   webTexts: {
     label: "Web Texts",
-    eyebrow: "Manage homepage section text",
+    eyebrow: "Manage homepage, catering page, and rental page text",
     icon: ClipboardList,
     tabs: [
       { key: "heroTexts", label: "Hero" },
       { key: "aboutTexts", label: "About" },
       { key: "servicesTexts", label: "Services" },
+      { key: "cateringPageHeroTexts", label: "Catering Hero" },
+      { key: "cateringPageOverviewTexts", label: "Catering Menu" },
+      { key: "cateringPageConsultationTexts", label: "Catering Booking" },
+      { key: "rentingPageHeroTexts", label: "Rental Hero" },
+      { key: "rentingPageOverviewTexts", label: "Rental Items" },
+      { key: "rentingPageConsultationTexts", label: "Rental Booking" },
       { key: "galleryTexts", label: "Gallery" },
       { key: "reviewsTexts", label: "Reviews" },
       { key: "contactTexts", label: "Contact us" },
@@ -469,13 +475,13 @@ const groupedSections = {
 
 const resourceGroupByKey = {
   foodPackages: "catering",
-  cateringPageHeroTexts: "catering",
-  cateringPageOverviewTexts: "catering",
-  cateringPageConsultationTexts: "catering",
+  cateringPageHeroTexts: "webTexts",
+  cateringPageOverviewTexts: "webTexts",
+  cateringPageConsultationTexts: "webTexts",
   rentalItems: "rental",
-  rentingPageHeroTexts: "rental",
-  rentingPageOverviewTexts: "rental",
-  rentingPageConsultationTexts: "rental",
+  rentingPageHeroTexts: "webTexts",
+  rentingPageOverviewTexts: "webTexts",
+  rentingPageConsultationTexts: "webTexts",
   bannerImages: "webImages",
   aboutImages: "webImages",
   serviceImages: "webImages",
@@ -665,8 +671,8 @@ export function AdminPage() {
   const [loginForm, setLoginForm] = useState({ email: "sgladmin", password: "" });
   const [activeKey, setActiveKey] = useState("dashboard");
   const [activeGroupTabs, setActiveGroupTabs] = useState({
-    catering: "foodPackages",
-    rental: "rentalItems",
+    catering: "cateringPageHeroTexts",
+    rental: "rentingPageHeroTexts",
     webImages: "bannerImages",
     webTexts: "heroTexts",
   });
