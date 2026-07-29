@@ -346,9 +346,8 @@
 
 .premium-hero-copy {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
-  gap: clamp(18px, 3vw, 36px);
-  width: min(1040px, 100%);
+  gap: clamp(12px, 1.6vw, 18px);
+  width: min(820px, 100%);
   align-items: start;
 }
 
@@ -360,19 +359,24 @@
   color: rgba(255, 248, 239, 0.84);
   font-size: clamp(0.91rem, 1.12vw, 1.02rem);
   line-height: 1.82;
-  text-align: left;
+  text-align: center;
   text-shadow: 0 8px 24px rgba(0, 0, 0, 0.36);
 }
 
 .premium-hero-description::before {
   content: "";
   position: absolute;
-  top: 8px;
-  bottom: 8px;
-  left: 0;
-  width: 2px;
+  left: 50%;
+  bottom: -4px;
+  width: min(120px, 36%);
+  height: 1px;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(241, 214, 164, 0.72), rgba(132, 49, 26, 0.2));
+  transform: translateX(-50%);
+}
+
+.premium-hero-description-english::before {
+  display: none;
 }
 
 .premium-hero-description-sinhala {
@@ -1780,13 +1784,12 @@
   }
 
   .premium-hero-copy {
-    grid-template-columns: 1fr;
     gap: 14px;
     width: min(760px, 100%);
   }
 
   .premium-hero-description {
-    padding: 0 0 0 20px;
+    padding: 0;
     font-size: 0.96rem;
     line-height: 1.72;
   }
@@ -1951,7 +1954,7 @@
   }
 
   .premium-hero-description {
-    padding-left: 16px;
+    padding: 0;
     font-size: 0.9rem;
     line-height: 1.62;
   }
