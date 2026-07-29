@@ -13,7 +13,7 @@ const {
   webTextSchema,
   reviewSchema,
 } = require("../utils/validators");
-const { buildWebTextFallback, webTextDefaults } = require("../utils/webTextDefaults");
+const { buildWebTextFallback, mergeWebTextFallback, webTextDefaults } = require("../utils/webTextDefaults");
 
 const uploadsDirectory = path.resolve(__dirname, "../../uploads");
 
@@ -345,7 +345,7 @@ router.get("/web-texts/:textKey", async (request, response) => {
     select: webTextAdminSelect,
   });
 
-  response.json(item || buildWebTextFallback(textKey));
+  response.json(mergeWebTextFallback(textKey, item));
 });
 
 router.put("/web-texts/:textKey", async (request, response) => {

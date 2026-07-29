@@ -1,7 +1,7 @@
 const express = require("express");
 const { prisma } = require("../config/prisma");
 const { contactMessageSchema } = require("../utils/validators");
-const { webTextDefaults } = require("../utils/webTextDefaults");
+const { mergeWebTextFallback, webTextDefaults } = require("../utils/webTextDefaults");
 
 const router = express.Router();
 const webTextKeys = Object.keys(webTextDefaults);
@@ -50,7 +50,7 @@ function groupWebImages(webImages) {
 function groupWebTexts(webTexts) {
   return webTextKeys.reduce((groups, textKey) => {
     const item = webTexts.find((candidate) => candidate.textKey === textKey);
-    groups[textKey] = item || webTextDefaults[textKey];
+    groups[textKey] = mergeWebTextFallback(textKey, item);
     return groups;
   }, {});
 }

@@ -421,25 +421,15 @@ const resourceConfigs = [
 const groupedSections = {
   catering: {
     label: "Catering",
-    eyebrow: "Manage catering page text and food menus",
+    eyebrow: "Manage catering page food menus",
     icon: Utensils,
-    tabs: [
-      { key: "cateringPageHeroTexts", label: "Page Hero" },
-      { key: "cateringPageOverviewTexts", label: "Menu Text" },
-      { key: "foodPackages", label: "Menus" },
-      { key: "cateringPageConsultationTexts", label: "Booking Text" },
-    ],
+    tabs: [{ key: "foodPackages", label: "Menus" }],
   },
   rental: {
     label: "Rental",
-    eyebrow: "Manage rental page text and inventory items",
+    eyebrow: "Manage rental inventory items",
     icon: Boxes,
-    tabs: [
-      { key: "rentingPageHeroTexts", label: "Page Hero" },
-      { key: "rentingPageOverviewTexts", label: "Items Text" },
-      { key: "rentalItems", label: "Items" },
-      { key: "rentingPageConsultationTexts", label: "Booking Text" },
-    ],
+    tabs: [{ key: "rentalItems", label: "Items" }],
   },
   webImages: {
     label: "Web Images",
@@ -460,16 +450,21 @@ const groupedSections = {
       { key: "heroTexts", label: "Hero" },
       { key: "aboutTexts", label: "About" },
       { key: "servicesTexts", label: "Services" },
-      { key: "cateringPageHeroTexts", label: "Catering Hero" },
-      { key: "cateringPageOverviewTexts", label: "Catering Menu" },
-      { key: "cateringPageConsultationTexts", label: "Catering Booking" },
-      { key: "rentingPageHeroTexts", label: "Rental Hero" },
-      { key: "rentingPageOverviewTexts", label: "Rental Items" },
-      { key: "rentingPageConsultationTexts", label: "Rental Booking" },
+      { key: "cateringPageTexts", label: "Catering" },
+      { key: "rentingPageTexts", label: "Rental" },
       { key: "galleryTexts", label: "Gallery" },
       { key: "reviewsTexts", label: "Reviews" },
       { key: "contactTexts", label: "Contact us" },
     ],
+  },
+};
+
+const pageTextGroups = {
+  cateringPageTexts: {
+    configKeys: ["cateringPageHeroTexts", "cateringPageOverviewTexts", "cateringPageConsultationTexts"],
+  },
+  rentingPageTexts: {
+    configKeys: ["rentingPageHeroTexts", "rentingPageOverviewTexts", "rentingPageConsultationTexts"],
   },
 };
 
@@ -492,6 +487,15 @@ const resourceGroupByKey = {
   galleryTexts: "webTexts",
   reviewsTexts: "webTexts",
   contactTexts: "webTexts",
+};
+
+const resourceTabByKey = {
+  cateringPageHeroTexts: "cateringPageTexts",
+  cateringPageOverviewTexts: "cateringPageTexts",
+  cateringPageConsultationTexts: "cateringPageTexts",
+  rentingPageHeroTexts: "rentingPageTexts",
+  rentingPageOverviewTexts: "rentingPageTexts",
+  rentingPageConsultationTexts: "rentingPageTexts",
 };
 
 const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "galleryItems", "reviews"];
@@ -671,8 +675,8 @@ export function AdminPage() {
   const [loginForm, setLoginForm] = useState({ email: "sgladmin", password: "" });
   const [activeKey, setActiveKey] = useState("dashboard");
   const [activeGroupTabs, setActiveGroupTabs] = useState({
-    catering: "cateringPageHeroTexts",
-    rental: "rentingPageHeroTexts",
+    catering: "foodPackages",
+    rental: "rentalItems",
     webImages: "bannerImages",
     webTexts: "heroTexts",
   });
@@ -698,6 +702,7 @@ export function AdminPage() {
   const activeResourceKey = groupedSections[activeKey]?.tabs.find((tab) => tab.key === activeGroupTabs[activeKey])?.key || activeKey;
   const activeGroup = groupedSections[activeKey];
   const activeConfig = useMemo(() => resourceConfigs.find((config) => config.key === activeResourceKey), [activeResourceKey]);
+  const activePageTextGroup = pageTextGroups[activeResourceKey];
   const crudModalConfig = useMemo(() => resourceConfigs.find((config) => config.key === crudModalKey), [crudModalKey]);
   const usesPopupCrud = Boolean(activeConfig && popupCrudKeys.includes(activeConfig.key));
   const usesFixedServiceImageCards = activeConfig?.key === "serviceImages";
@@ -856,7 +861,7 @@ export function AdminPage() {
 
     if (groupKey) {
       setActiveKey(groupKey);
-      setActiveGroupTabs((current) => ({ ...current, [groupKey]: config.key }));
+      setActiveGroupTabs((current) => ({ ...current, [groupKey]: resourceTabByKey[config.key] || config.key }));
     } else {
       setActiveKey(config.key);
     }
@@ -1402,6 +1407,12 @@ export function AdminPage() {
     );
   }
 
+  function renderPageTextGroup(group) {
+    const configs = group.configKeys.map((key) => resourceConfigs.find((candidate) => candidate.key === key)).filter(Boolean);
+
+    return <section className="sgla-crud-grid is-full">{configs.map((config) => renderCrudForm(config))}</section>;
+  }
+
   if (!token) {
     return (
       <main className="sgla-login-page">
@@ -1634,6 +1645,8 @@ export function AdminPage() {
         ) : null}
 
         {activeConfig?.key === "siteConfig" ? renderContactProfile(activeConfig) : null}
+
+        {activePageTextGroup ? renderPageTextGroup(activePageTextGroup) : null}
 
         {activeConfig && activeConfig.key !== "siteConfig" ? (
           usesWebTextFormOnly ? (
