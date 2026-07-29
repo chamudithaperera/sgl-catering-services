@@ -59,11 +59,8 @@
   display: flex;
   align-items: center;
   justify-self: center;
-  gap: 3px;
-  padding: 5px;
-  border: 1px solid rgba(255, 248, 239, 0.09);
-  border-radius: 999px;
-  background: rgba(255, 248, 239, 0.045);
+  gap: clamp(18px, 3vw, 36px);
+  padding: 0;
 }
 
 .reviews-nav nav a {
@@ -72,10 +69,8 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  min-height: 38px;
-  padding: 0 clamp(10px, 1.2vw, 15px);
-  border: 1px solid transparent;
-  border-radius: 999px;
+  min-height: auto;
+  padding: 4px 0;
   color: var(--text-muted);
   font-size: 0.9rem;
   font-weight: 650;
@@ -85,9 +80,7 @@
 
 .reviews-nav nav a:hover,
 .reviews-nav nav a.is-active {
-  color: var(--text-main);
-  border-color: rgba(197, 154, 79, 0.2);
-  background: rgba(var(--accent-rgb), 0.22);
+  color: var(--accent-luxury);
 }
 
 .reviews-call-button {
