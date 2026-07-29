@@ -1176,7 +1176,7 @@ export function AdminPage() {
         <div className="sgla-contact-hero">
           <div>
             <p>Contact Profile</p>
-            <h2>SGL Catering Services</h2>
+            <h2>{contact.email || contact.phone ? "Contact Details" : "No contact details added"}</h2>
             <span>{contact.email || "No email added"}</span>
           </div>
           <button className="sgla-primary-button" onClick={() => setContactEditing(true)} type="button">
