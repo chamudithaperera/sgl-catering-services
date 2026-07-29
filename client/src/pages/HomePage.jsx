@@ -286,6 +286,7 @@ export function HomePage() {
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0]));
   const [galleryVideoReady, setGalleryVideoReady] = useState(false);
   const gallerySectionRef = useRef(null);
+  const galleryTrackRef = useRef(null);
   const galleryVideoRef = useRef(null);
 
   const siteConfig = content?.siteConfig;
@@ -516,6 +517,19 @@ export function HomePage() {
     });
     setActiveSlide(slideIndex);
     setMenuOpen(false);
+  }
+
+  function scrollGallery(direction) {
+    const track = galleryTrackRef.current;
+
+    if (!track) {
+      return;
+    }
+
+    track.scrollBy({
+      left: direction * Math.max(track.clientWidth * 0.78, 320),
+      behavior: "smooth",
+    });
   }
 
   function handleNavAnchorClick(event, href) {
@@ -800,23 +814,41 @@ export function HomePage() {
           </div>
 
           {homepageGallery.length > 0 ? (
-            <div className="premium-gallery-grid">
-              {homepageGallery.map((item) => (
-                <article
-                  key={item.title}
-                  className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
-                  data-reveal
-                >
-                  <img
-                    {...responsiveImageProps(item.image, "(max-width: 680px) 50vw, 25vw")}
-                    alt={item.title}
-                    loading="lazy"
-                    decoding="async"
-                    fetchPriority="low"
-                    style={{ objectPosition: item.position }}
-                  />
-                </article>
-              ))}
+            <div className="premium-gallery-stage">
+              <button
+                aria-label="Scroll gallery left"
+                className="premium-gallery-arrow premium-gallery-arrow-left"
+                onClick={() => scrollGallery(-1)}
+                type="button"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <div className="premium-gallery-grid" ref={galleryTrackRef}>
+                {homepageGallery.map((item) => (
+                  <article
+                    key={`${item.title}-${item.image}`}
+                    className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
+                    data-reveal
+                  >
+                    <img
+                      {...responsiveImageProps(item.image, "(max-width: 680px) 62vw, 28vw")}
+                      alt={item.title}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
+                      style={{ objectPosition: item.position }}
+                    />
+                  </article>
+                ))}
+              </div>
+              <button
+                aria-label="Scroll gallery right"
+                className="premium-gallery-arrow premium-gallery-arrow-right"
+                onClick={() => scrollGallery(1)}
+                type="button"
+              >
+                <ChevronRight size={24} />
+              </button>
             </div>
           ) : null}
         </div>
