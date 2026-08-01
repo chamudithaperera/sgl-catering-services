@@ -831,9 +831,11 @@
 .premium-gallery-shell {
   position: relative;
   z-index: 2;
-  width: min(1380px, 100%);
+  width: 100%;
+  max-width: 1428px;
   margin: 0 auto;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 34px;
 }
 
@@ -872,6 +874,10 @@
 
 .premium-gallery-stage {
   position: relative;
+  width: 100%;
+  max-width: 1428px;
+  min-width: 0;
+  margin-inline: auto;
 }
 
 .premium-gallery-grid {
@@ -880,12 +886,13 @@
   grid-auto-columns: clamp(58px, 5.2vw, 76px);
   grid-template-rows: repeat(5, 52px);
   gap: 14px;
+  width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-inline: contain;
-  padding: 2px 64px 8px;
+  padding: 2px clamp(54px, 4.4vw, 64px) 8px;
   scroll-behavior: smooth;
-  scroll-padding-inline: 64px;
+  scroll-padding-inline: clamp(54px, 4.4vw, 64px);
   scroll-snap-type: x proximity;
   scrollbar-width: none;
 }
