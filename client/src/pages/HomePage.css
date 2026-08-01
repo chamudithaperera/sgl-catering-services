@@ -1089,8 +1089,16 @@
 .premium-why-heading {
   display: grid;
   justify-items: center;
-  gap: 12px;
+  gap: 14px;
   text-align: center;
+}
+
+.premium-why-heading span {
+  color: var(--accent-luxury);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
 }
 
 .premium-why-heading h2 {
@@ -1104,16 +1112,6 @@
   text-shadow:
     0 2px 0 rgba(255, 255, 255, 0.8),
     0 18px 34px rgba(74, 25, 12, 0.08);
-}
-
-.premium-why-heading p {
-  max-width: 560px;
-  margin: 0;
-  color: #84311a;
-  font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
-  font-size: clamp(1rem, 1.5vw, 1.14rem);
-  font-weight: 700;
-  line-height: 1.68;
 }
 
 .premium-why-grid {
@@ -2344,10 +2342,9 @@
     font-size: clamp(2.55rem, 12vw, 4.2rem);
   }
 
-  .premium-why-heading p {
-    max-width: 320px;
-    font-size: 0.96rem;
-    line-height: 1.64;
+  .premium-why-heading span {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
   }
 
   .premium-reviews-heading h2 {

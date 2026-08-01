@@ -176,16 +176,6 @@ function buildWhyChooseItems(text) {
   })).filter((item) => item.english || item.sinhala);
 }
 
-function formatWhyChooseHeading(title) {
-  const heading = String(title || "").trim();
-
-  if (!heading || /^why choose us\??$/i.test(heading)) {
-    return "Why choose us?";
-  }
-
-  return heading.endsWith("?") ? heading : `${heading}?`;
-}
-
 function buildHomepageStructuredData({ siteConfig, heroText, heroSlides, mapEmbedUrl }) {
   const name = heroText.titleEnglish || heroText.titleSinhala || "";
   const description = heroText.descriptionEnglish || heroText.descriptionSinhala || "";
@@ -346,7 +336,6 @@ export function HomePage() {
     position: "center center",
   }));
   const whyChooseItems = buildWhyChooseItems(whyChooseText);
-  const whyChooseHeading = formatWhyChooseHeading(whyChooseText.titleEnglish);
   const homepageReviews = (content?.reviews || []).map((review) => ({
     name: review.customerName,
     event: review.eventType,
@@ -896,8 +885,8 @@ export function HomePage() {
           <div className="premium-why-path" aria-hidden="true" />
           <div className="premium-why-shell">
             <div className="premium-why-heading premium-reveal premium-reveal-heading" data-reveal>
-              <h2>{whyChooseHeading}</h2>
-              {whyChooseText.titleSinhala ? <p>{whyChooseText.titleSinhala}</p> : null}
+              <span>{whyChooseText.titleEnglish || "Why Choose us"}</span>
+              <h2>{whyChooseText.titleSinhala || "අප තෝරාගත යුත්තේ ඇයි"}</h2>
             </div>
 
             <div className="premium-why-grid" role="list">
