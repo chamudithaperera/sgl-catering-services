@@ -2175,6 +2175,13 @@
     gap: 30px;
   }
 
+  .premium-why-heading {
+    justify-items: center;
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
   .premium-reviews {
     padding: 76px 20px 98px;
   }
@@ -2190,11 +2197,6 @@
 
   .premium-why-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .premium-why-card:nth-child(2),
-  .premium-why-card:nth-child(2):hover {
-    transform: none;
   }
 
   .premium-contact-layout {
@@ -2465,7 +2467,7 @@
   }
 
   .premium-why-heading h2 {
-    font-size: clamp(2.55rem, 12vw, 4.2rem);
+    font-size: clamp(2.2rem, 9vw, 3.1rem);
   }
 
   .premium-why-heading span {
@@ -2491,10 +2493,14 @@
     line-height: 1.76;
   }
 
+  .premium-why-heading p {
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
   .premium-why-card {
-    grid-template-columns: auto minmax(0, 1fr);
     min-height: auto;
-    gap: 14px;
+    gap: 16px;
     padding: 20px 18px;
   }
 
@@ -2507,8 +2513,12 @@
     height: 36px;
   }
 
+  .premium-why-index {
+    font-size: 1.55rem;
+  }
+
   .premium-why-card-copy {
-    gap: 6px;
+    gap: 7px;
   }
 
   .premium-why-card-copy strong {
