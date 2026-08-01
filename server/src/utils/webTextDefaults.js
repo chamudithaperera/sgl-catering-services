@@ -92,9 +92,9 @@ Object.assign(webTextDefaults, {
     titleSinhala: "අප තෝරාගත යුත්තේ ඇයි",
     titleEnglish: "Why Choose us",
     descriptionSinhala:
-      "වසර 40කට වැඩි පළපුරුද්ද\nසාම්ප්‍රදායික ශ්‍රී ලාංකීය රස\nනැවුම් හා ගුණාත්මක අමුද්‍රව්‍ය\nවෘත්තීය හා මිත්‍රශීලී සේවාව\nසාධාරණ මිල ගණන්\nසෞඛ්‍යාරක්ෂිත ආහාර සැකසීම",
+      "ඔබේ විශේෂ අවස්ථාව සඳහා රසවත් ආහාර, පිරිසිදු සැකසීම සහ විශ්වාසදායක සේවාව එකට ලබා දෙන අපගේ ප්‍රධාන හේතු මෙන්න.",
     descriptionEnglish:
-      "Over 40 Years of Experience\nAuthentic Traditional Sri Lankan Recipes\nFresh & High-Quality Ingredients\nProfessional and Friendly Service\nAffordable Prices\nHygienic Food Preparation",
+      "SGL Catering Service brings careful preparation, warm service, and trusted Sri Lankan flavour to every event.",
   },
 });
 

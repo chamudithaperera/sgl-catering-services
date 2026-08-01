@@ -17,6 +17,39 @@ const contactDetails = {
   instagramUrl: "",
 };
 
+const whyChooseItems = [
+  {
+    titleSinhala: "වසර 40කට වැඩි පළපුරුද්ද",
+    titleEnglish: "Over 40 Years of Experience",
+    sortOrder: 1,
+  },
+  {
+    titleSinhala: "සාම්ප්‍රදායික ශ්‍රී ලාංකීය රස",
+    titleEnglish: "Authentic Traditional Sri Lankan Recipes",
+    sortOrder: 2,
+  },
+  {
+    titleSinhala: "නැවුම් හා ගුණාත්මක අමුද්‍රව්‍ය",
+    titleEnglish: "Fresh & High-Quality Ingredients",
+    sortOrder: 3,
+  },
+  {
+    titleSinhala: "වෘත්තීය හා මිත්‍රශීලී සේවාව",
+    titleEnglish: "Professional and Friendly Service",
+    sortOrder: 4,
+  },
+  {
+    titleSinhala: "සාධාරණ මිල ගණන්",
+    titleEnglish: "Affordable Prices",
+    sortOrder: 5,
+  },
+  {
+    titleSinhala: "සෞඛ්‍යාරක්ෂිත ආහාර සැකසීම",
+    titleEnglish: "Hygienic Food Preparation",
+    sortOrder: 6,
+  },
+];
+
 async function seedIfEmpty(model, data) {
   const count = await model.count();
 
@@ -75,6 +108,7 @@ async function main() {
 
   await seedContactDetailsIfMissing();
   await seedWebTextsIfMissing();
+  await seedIfEmpty(prisma.whyChooseItem, whyChooseItems);
 
 }
 

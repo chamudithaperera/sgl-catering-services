@@ -9,6 +9,7 @@ const {
   foodPackageSchema,
   rentalItemSchema,
   galleryItemSchema,
+  whyChooseItemSchema,
   webImageSchema,
   webTextSchema,
   reviewSchema,
@@ -56,6 +57,7 @@ const reorderModels = {
   aboutImages: prisma.webImage,
   serviceImages: prisma.webImage,
   galleryItems: prisma.gallery,
+  whyChooseItems: prisma.whyChooseItem,
   reviews: prisma.review,
 };
 
@@ -70,6 +72,15 @@ const galleryAdminSelect = {
   id: true,
   title: true,
   imageUrl: true,
+  sortOrder: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
+const whyChooseAdminSelect = {
+  id: true,
+  titleSinhala: true,
+  titleEnglish: true,
   sortOrder: true,
   createdAt: true,
   updatedAt: true,
@@ -107,6 +118,7 @@ router.get("/dashboard", async (request, response) => {
     serviceImages,
     webTexts,
     galleryItems,
+    whyChooseItems,
     reviews,
     pendingReviews,
     contactMessages,
@@ -119,6 +131,7 @@ router.get("/dashboard", async (request, response) => {
     prisma.webImage.count({ where: { imageKey: "services" } }),
     prisma.webText.count(),
     prisma.gallery.count(),
+    prisma.whyChooseItem.count(),
     prisma.review.count(),
     prisma.review.count({ where: { isApproved: false } }),
     prisma.message.count(),
@@ -134,6 +147,7 @@ router.get("/dashboard", async (request, response) => {
     webTexts,
     webImages: bannerImages + aboutImages + serviceImages + galleryItems,
     galleryItems,
+    whyChooseItems,
     reviews,
     pendingReviews,
     contactMessages,
@@ -402,6 +416,38 @@ router.put("/gallery-items/:id", async (request, response) => {
 
 router.delete("/gallery-items/:id", async (request, response) => {
   await prisma.gallery.delete({ where: { id: Number(request.params.id) } });
+  response.status(204).send();
+});
+
+router.get("/why-choose-items", async (request, response) => {
+  const items = await prisma.whyChooseItem.findMany({
+    orderBy: { sortOrder: "asc" },
+    select: whyChooseAdminSelect,
+  });
+  response.json(items);
+});
+
+router.post("/why-choose-items", async (request, response) => {
+  const data = whyChooseItemSchema.parse(request.body);
+  const item = await prisma.whyChooseItem.create({
+    data,
+    select: whyChooseAdminSelect,
+  });
+  response.status(201).json(item);
+});
+
+router.put("/why-choose-items/:id", async (request, response) => {
+  const data = whyChooseItemSchema.parse(request.body);
+  const item = await prisma.whyChooseItem.update({
+    where: { id: Number(request.params.id) },
+    data,
+    select: whyChooseAdminSelect,
+  });
+  response.json(item);
+});
+
+router.delete("/why-choose-items/:id", async (request, response) => {
+  await prisma.whyChooseItem.delete({ where: { id: Number(request.params.id) } });
   response.status(204).send();
 });
 

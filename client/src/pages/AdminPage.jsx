@@ -63,8 +63,8 @@ const webTextFields = {
   whyChoose: [
     { name: "titleEnglish", label: "Title English" },
     { name: "titleSinhala", label: "Title Sinhala" },
-    { name: "descriptionEnglish", label: "English reasons", type: "lines" },
-    { name: "descriptionSinhala", label: "Sinhala reasons", type: "lines" },
+    { name: "descriptionSinhala", label: "Intro Sinhala", type: "textarea" },
+    { name: "descriptionEnglish", label: "Intro English", type: "textarea" },
   ],
   pageHero: [
     { name: "descriptionEnglish", label: "Eyebrow" },
@@ -226,10 +226,10 @@ const resourceConfigs = [
   }),
   buildWebTextConfig({
     key: "whyChooseUsTexts",
-    label: "Why Choose us",
+    label: "Why Choose us Intro",
     textKey: "whyChooseUs",
     fields: webTextFields.whyChoose,
-    eyebrow: "Homepage reasons shown after the gallery",
+    eyebrow: "Homepage Why Choose us heading and intro text",
     layout: "formOnly",
   }),
   buildWebTextConfig({
@@ -394,6 +394,28 @@ const resourceConfigs = [
     ],
   },
   {
+    key: "whyChooseItems",
+    label: "Why Choose us",
+    eyebrow: "Manage the reason cards shown after the gallery",
+    endpoint: "/admin/why-choose-items",
+    icon: CheckCircle2,
+    form: {
+      titleEnglish: "",
+      titleSinhala: "",
+      sortOrder: 0,
+    },
+    fields: [
+      { name: "titleEnglish", label: "English reason" },
+      { name: "titleSinhala", label: "Sinhala reason" },
+      { name: "sortOrder", label: "Sort order", type: "number" },
+    ],
+    columns: [
+      { name: "titleEnglish", label: "English" },
+      { name: "titleSinhala", label: "Sinhala" },
+      { name: "sortOrder", label: "Order" },
+    ],
+  },
+  {
     key: "reviews",
     label: "Reviews",
     eyebrow: "Customer testimonials and ratings",
@@ -469,7 +491,7 @@ const groupedSections = {
       { key: "cateringPageTexts", label: "Catering" },
       { key: "rentingPageTexts", label: "Rental" },
       { key: "galleryTexts", label: "Gallery" },
-      { key: "whyChooseUsTexts", label: "Why Choose us" },
+      { key: "whyChooseUsTexts", label: "Why Intro" },
       { key: "reviewsTexts", label: "Reviews" },
       { key: "contactTexts", label: "Contact us" },
     ],
@@ -517,7 +539,7 @@ const resourceTabByKey = {
 };
 
 const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "galleryItems", "reviews"];
-const sortableKeys = popupCrudKeys;
+const sortableKeys = [...popupCrudKeys, "whyChooseItems"];
 
 const serviceImageSlots = [
   { key: "catering", title: "Catering", sortOrder: 1 },
@@ -534,7 +556,7 @@ const navItems = [
   { key: "rental", label: "Rental", icon: Boxes },
   { key: "webImages", label: "Web Images", icon: ImageUp },
   { key: "webTexts", label: "Web Texts", icon: ClipboardList },
-  ...resourceConfigs.filter((config) => ["reviews"].includes(config.key)),
+  ...resourceConfigs.filter((config) => ["whyChooseItems", "reviews"].includes(config.key)),
 ];
 
 function buildInitialForms() {
@@ -958,7 +980,9 @@ export function AdminPage() {
   }
 
   async function handleDelete(config, item) {
-    if (!window.confirm(`Delete "${item.name || item.title || item.customerName || item.item}"?`)) return;
+    const itemLabel = item.name || item.title || item.titleEnglish || item.titleSinhala || item.customerName || item.item || "this item";
+
+    if (!window.confirm(`Delete "${itemLabel}"?`)) return;
 
     try {
       await api.delete(`${config.endpoint}/${item.id}`, adminRequest(token));

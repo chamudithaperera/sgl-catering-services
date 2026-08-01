@@ -87,6 +87,17 @@ model Gallery {
   @@map("gallery")
 }
 
+model WhyChooseItem {
+  id           Int      @id @default(autoincrement())
+  titleSinhala String   @map("title_sinhala")
+  titleEnglish String   @map("title_english")
+  sortOrder    Int      @default(0) @map("sort_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("why_choose_items")
+}
+
 model WebImage {
   id        Int      @id @default(autoincrement())
   imageKey  String   @map("image_key")

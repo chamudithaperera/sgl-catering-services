@@ -165,7 +165,7 @@ function splitReasonLines(value) {
     .filter(Boolean);
 }
 
-function buildWhyChooseItems(text) {
+function buildLegacyWhyChooseItems(text) {
   const englishItems = splitReasonLines(text.descriptionEnglish);
   const sinhalaItems = splitReasonLines(text.descriptionSinhala);
   const itemCount = Math.max(englishItems.length, sinhalaItems.length);
@@ -336,7 +336,12 @@ export function HomePage() {
     layout: ["hero", "portrait", "compact", "square", "landscape"][index % 5],
     position: "center center",
   }));
-  const whyChooseItems = buildWhyChooseItems(whyChooseText);
+  const whyChooseItems = Array.isArray(content?.whyChooseItems)
+    ? content.whyChooseItems.map((item) => ({
+        english: item.titleEnglish,
+        sinhala: item.titleSinhala,
+      }))
+    : buildLegacyWhyChooseItems(whyChooseText);
   const homepageReviews = (content?.reviews || []).map((review) => ({
     name: review.customerName,
     event: review.eventType,
@@ -929,7 +934,9 @@ export function HomePage() {
             <div className="premium-why-heading premium-reveal premium-reveal-heading" data-reveal>
               <span>{whyChooseText.titleEnglish || "Why Choose us"}</span>
               <h2>{whyChooseText.titleSinhala || "අප තෝරාගත යුත්තේ ඇයි"}</h2>
-              <p>SGL Catering Service brings careful preparation, warm service, and trusted Sri Lankan flavour to every event.</p>
+              {whyChooseText.descriptionSinhala || whyChooseText.descriptionEnglish ? (
+                <p>{whyChooseText.descriptionSinhala || whyChooseText.descriptionEnglish}</p>
+              ) : null}
             </div>
 
             <div className="premium-why-grid" role="list">

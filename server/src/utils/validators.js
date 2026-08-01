@@ -68,6 +68,12 @@ const galleryItemSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
+const whyChooseItemSchema = z.object({
+  titleSinhala: z.string().min(2),
+  titleEnglish: z.string().min(2),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
 const webImageSchema = z.object({
   title: z.string().min(2),
   imageUrl: z.string().min(2),
@@ -103,6 +109,7 @@ module.exports = {
   foodPackageSchema,
   rentalItemSchema,
   galleryItemSchema,
+  whyChooseItemSchema,
   webImageSchema,
   webTextSchema,
   reviewSchema,

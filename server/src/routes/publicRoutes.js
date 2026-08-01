@@ -12,6 +12,12 @@ const galleryPublicSelect = {
   sortOrder: true,
 };
 
+const whyChoosePublicSelect = {
+  titleSinhala: true,
+  titleEnglish: true,
+  sortOrder: true,
+};
+
 const webImagePublicSelect = {
   title: true,
   imageUrl: true,
@@ -68,11 +74,15 @@ router.get("/health", (request, response) => {
 });
 
 router.get("/home", async (request, response) => {
-  const [contactDetails, gallery, webImages, webTexts, reviews] = await Promise.all([
+  const [contactDetails, gallery, whyChooseItems, webImages, webTexts, reviews] = await Promise.all([
     prisma.contactDetails.findUnique({ where: { id: 1 } }),
     prisma.gallery.findMany({
       orderBy: { sortOrder: "asc" },
       select: galleryPublicSelect,
+    }),
+    prisma.whyChooseItem.findMany({
+      orderBy: { sortOrder: "asc" },
+      select: whyChoosePublicSelect,
     }),
     prisma.webImage.findMany({
       where: { imageKey: { in: ["banner", "about", "services"] } },
@@ -101,6 +111,7 @@ router.get("/home", async (request, response) => {
     ...groupedImages,
     webTexts: groupedTexts,
     gallery,
+    whyChooseItems,
     reviews,
   });
 });
@@ -111,6 +122,7 @@ router.get("/content", async (request, response) => {
     cateringMenus,
     rentalItems,
     gallery,
+    whyChooseItems,
     webImages,
     webTexts,
     reviews,
@@ -121,6 +133,10 @@ router.get("/content", async (request, response) => {
     prisma.gallery.findMany({
       orderBy: { sortOrder: "asc" },
       select: galleryPublicSelect,
+    }),
+    prisma.whyChooseItem.findMany({
+      orderBy: { sortOrder: "asc" },
+      select: whyChoosePublicSelect,
     }),
     prisma.webImage.findMany({
       where: { imageKey: { in: ["banner", "about", "services"] } },
@@ -152,6 +168,7 @@ router.get("/content", async (request, response) => {
     cateringMenus,
     rentalItems,
     gallery,
+    whyChooseItems,
     reviews,
   });
 });
