@@ -929,14 +929,18 @@ export function HomePage() {
             <div className="premium-why-heading premium-reveal premium-reveal-heading" data-reveal>
               <span>{whyChooseText.titleEnglish || "Why Choose us"}</span>
               <h2>{whyChooseText.titleSinhala || "අප තෝරාගත යුත්තේ ඇයි"}</h2>
+              <p>SGL Catering Service brings careful preparation, warm service, and trusted Sri Lankan flavour to every event.</p>
             </div>
 
             <div className="premium-why-grid" role="list">
               {whyChooseItems.map((item, index) => (
                 <article className="premium-why-card premium-reveal premium-reveal-choice" data-reveal key={`${index}-${item.english}-${item.sinhala}`} role="listitem">
-                  <span className="premium-why-icon" aria-hidden="true">
-                    <CheckCircle2 size={20} />
-                  </span>
+                  <div className="premium-why-card-top">
+                    <span className="premium-why-icon" aria-hidden="true">
+                      <CheckCircle2 size={20} />
+                    </span>
+                    <span className="premium-why-index">{String(index + 1).padStart(2, "0")}</span>
+                  </div>
                   <div className="premium-why-card-copy">
                     {item.english ? <strong>{item.english}</strong> : null}
                     {item.sinhala ? <p>{item.sinhala}</p> : null}
