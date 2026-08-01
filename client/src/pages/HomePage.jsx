@@ -130,9 +130,9 @@ function GmailIcon({ size = 22 }) {
 
 const navItems = [
   { label: "මුල් පිටුව", englishLabel: "Home", href: "#home" },
-  { label: "අප ගැන", englishLabel: "About", href: "#about" },
   { label: "අපගේ සේවාවන්", englishLabel: "Services", href: "#services" },
-  { label: "මිල පැකේජ", englishLabel: "Menu Packages", to: "/catering" },
+  { label: "කේටරින්", englishLabel: "Catering", to: "/catering" },
+  { label: "කුලී භාණ්ඩ", englishLabel: "Rentals", to: "/renting" },
   { label: "ඡායාරූප", englishLabel: "Gallery", href: "#gallery" },
   { label: "අදහස්", englishLabel: "Reviews", to: "/reviews" },
   { label: "අප අමතන්න", englishLabel: "Contact", href: "#contact" },

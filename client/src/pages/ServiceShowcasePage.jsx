@@ -53,7 +53,6 @@ const primaryLinks = [
   { label: "මුල් පිටුව", englishLabel: "Home", href: "/" },
   { label: "කේටරින්", englishLabel: "Catering", href: "/catering", type: "catering" },
   { label: "කුලී භාණ්ඩ", englishLabel: "Rentals", href: "/renting", type: "renting" },
-  { label: "අදහස්", englishLabel: "Reviews", href: "/reviews" },
 ];
 
 const emptyWebText = {
