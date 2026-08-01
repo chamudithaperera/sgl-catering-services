@@ -897,6 +897,7 @@ export function HomePage() {
           <div className="premium-why-shell">
             <div className="premium-why-heading premium-reveal premium-reveal-heading" data-reveal>
               <h2>{whyChooseHeading}</h2>
+              {whyChooseText.titleSinhala ? <p>{whyChooseText.titleSinhala}</p> : null}
             </div>
 
             <div className="premium-why-grid" role="list">
