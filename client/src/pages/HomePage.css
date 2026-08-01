@@ -1040,50 +1040,48 @@
 .premium-why {
   position: relative;
   isolation: isolate;
-  padding: 92px 24px 118px;
+  padding: 96px 24px 110px;
   overflow: hidden;
   background:
-    linear-gradient(180deg, #0b0f10 0%, #15100e 48%, #130d0b 100%);
+    linear-gradient(180deg, #f7f5f0 0%, #ffffff 56%, #f3f0ea 100%);
 }
 
 .premium-why::before {
   content: "";
   position: absolute;
-  top: -80px;
+  top: 0;
   left: 0;
   right: 0;
-  height: clamp(160px, 16vw, 230px);
+  height: 1px;
   z-index: 0;
   pointer-events: none;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(9, 12, 13, 0) 0%,
-      rgba(11, 15, 16, 0.7) 46%,
-      rgba(11, 15, 16, 0.96) 100%
-    );
+  background: rgba(132, 49, 26, 0.14);
 }
 
 .premium-why-shell {
   position: relative;
   z-index: 1;
-  width: min(1180px, 100%);
+  width: min(1120px, 100%);
   margin: 0 auto;
   display: grid;
-  gap: 34px;
+  grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
 }
 
 .premium-why-heading {
   display: grid;
-  justify-items: center;
-  gap: 14px;
-  text-align: center;
+  justify-items: start;
+  gap: 12px;
+  padding-left: 20px;
+  text-align: left;
+  border-left: 4px solid var(--accent-primary);
 }
 
 .premium-why-heading span {
-  color: var(--accent-luxury);
+  color: #84311a;
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
-  font-size: clamp(1rem, 1.45vw, 1.12rem);
+  font-size: clamp(0.98rem, 1.25vw, 1.08rem);
   font-weight: 700;
   line-height: 1.62;
 }
@@ -1091,59 +1089,52 @@
 .premium-why-heading h2 {
   margin: 0;
   font-family: "Abhaya Libre", "Noto Sans Sinhala", "Iskoola Pota", serif;
-  font-size: clamp(2.35rem, 4.2vw, 4rem);
+  font-size: clamp(2.3rem, 3.5vw, 3.45rem);
   font-weight: 800;
-  line-height: 0.98;
-  color: var(--text-main);
+  line-height: 1;
+  color: #191b1f;
 }
 
 .premium-why-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgba(132, 49, 26, 0.14);
+  border-radius: 8px;
+  background: rgba(132, 49, 26, 0.1);
+  box-shadow: 0 20px 46px rgba(36, 30, 25, 0.1);
 }
 
 .premium-why-card {
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 16px;
-  min-height: 132px;
-  padding: 24px 76px 24px 24px;
-  overflow: hidden;
-  border: 1px solid rgba(184, 154, 106, 0.16);
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(39, 33, 29, 0.94) 0%, rgba(25, 22, 20, 0.98) 100%);
-  box-shadow:
-    0 22px 40px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  gap: 14px;
+  min-height: 116px;
+  padding: 24px;
+  background: #ffffff;
   transition:
-    transform 0.28s ease,
-    border-color 0.28s ease,
-    background-color 0.28s ease,
-    box-shadow 0.28s ease;
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 .premium-why-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(197, 154, 79, 0.3);
-  box-shadow:
-    0 26px 48px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: #fbfaf7;
+  box-shadow: inset 4px 0 0 rgba(132, 49, 26, 0.7);
 }
 
 .premium-why-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
+  margin-top: 2px;
+  border: 1px solid rgba(132, 49, 26, 0.16);
   border-radius: 50%;
-  color: #fff8ef;
-  background: linear-gradient(180deg, var(--accent-primary-light) 0%, var(--accent-primary) 100%);
-  box-shadow:
-    0 12px 24px rgba(var(--accent-rgb), 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  color: #84311a;
+  background: #fff8ef;
 }
 
 .premium-why-card-copy {
@@ -1153,8 +1144,8 @@
 }
 
 .premium-why-card-copy strong {
-  color: var(--text-main);
-  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  color: #191b1f;
+  font-size: clamp(1rem, 1.32vw, 1.1rem);
   font-weight: 800;
   line-height: 1.3;
 }
@@ -1162,20 +1153,9 @@
 .premium-why-card-copy p {
   margin: 0;
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
-  color: var(--text-muted);
-  font-size: clamp(0.98rem, 1.35vw, 1.08rem);
-  line-height: 1.74;
-}
-
-.premium-why-number {
-  position: absolute;
-  right: 22px;
-  bottom: 18px;
-  color: rgba(197, 154, 79, 0.18);
-  font-family: "Abhaya Libre", "Noto Sans Sinhala", serif;
-  font-size: clamp(2.5rem, 4.2vw, 3.8rem);
-  font-weight: 800;
-  line-height: 0.82;
+  color: rgba(25, 27, 31, 0.68);
+  font-size: clamp(0.96rem, 1.18vw, 1.02rem);
+  line-height: 1.68;
 }
 
 .premium-why-grid .premium-why-card:nth-child(2) {
@@ -1996,6 +1976,11 @@
     padding: 76px 20px 98px;
   }
 
+  .premium-why-shell {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
   .premium-reviews {
     padding: 76px 20px 98px;
   }
@@ -2304,13 +2289,12 @@
     grid-template-columns: auto minmax(0, 1fr);
     min-height: auto;
     gap: 14px;
-    padding: 20px 58px 21px 18px;
-    border-radius: 22px;
+    padding: 20px 18px;
   }
 
   .premium-why-icon {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
   }
 
   .premium-why-card-copy {
@@ -2325,12 +2309,6 @@
   .premium-why-card-copy p {
     font-size: 0.95rem;
     line-height: 1.68;
-  }
-
-  .premium-why-number {
-    right: 16px;
-    bottom: 16px;
-    font-size: 2.55rem;
   }
 
   .premium-reviews-heading p {

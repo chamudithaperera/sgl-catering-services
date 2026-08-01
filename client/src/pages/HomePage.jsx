@@ -888,19 +888,16 @@ export function HomePage() {
               <h2>{whyChooseText.titleEnglish || "Why Choose us"}</h2>
             </div>
 
-            <div className="premium-why-grid">
+            <div className="premium-why-grid" role="list">
               {whyChooseItems.map((item, index) => (
-                <article className="premium-why-card premium-reveal premium-reveal-choice" data-reveal key={`${index}-${item.english}-${item.sinhala}`}>
+                <article className="premium-why-card premium-reveal premium-reveal-choice" data-reveal key={`${index}-${item.english}-${item.sinhala}`} role="listitem">
                   <span className="premium-why-icon" aria-hidden="true">
-                    <CheckCircle2 size={22} />
+                    <CheckCircle2 size={20} />
                   </span>
                   <div className="premium-why-card-copy">
                     {item.english ? <strong>{item.english}</strong> : null}
                     {item.sinhala ? <p>{item.sinhala}</p> : null}
                   </div>
-                  <span className="premium-why-number" aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
                 </article>
               ))}
             </div>
