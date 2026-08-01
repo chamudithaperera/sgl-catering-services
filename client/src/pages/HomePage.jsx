@@ -961,7 +961,7 @@ export function HomePage() {
 
       {whyChooseItems.length > 0 && homepageReviews.length > 0 ? (
         <div className="premium-food-divider" aria-hidden="true">
-          <img src="/assets/food-line-divider.png" alt="" loading="eager" decoding="async" fetchPriority="high" />
+          <img src="/assets/food-line-divider-wide.png" alt="" loading="eager" decoding="async" fetchPriority="high" />
         </div>
       ) : null}
 
