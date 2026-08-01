@@ -884,8 +884,8 @@ export function HomePage() {
         <section className="premium-why" id="why-choose-us">
           <div className="premium-why-shell">
             <div className="premium-why-heading premium-reveal premium-reveal-heading" data-reveal>
-              {whyChooseText.titleSinhala ? <span>{whyChooseText.titleSinhala}</span> : null}
-              <h2>{whyChooseText.titleEnglish || "Why Choose us"}</h2>
+              <span>{whyChooseText.titleEnglish || "Why Choose us"}</span>
+              <h2>{whyChooseText.titleSinhala || "අප තෝරාගත යුත්තේ ඇයි"}</h2>
             </div>
 
             <div className="premium-why-grid" role="list">
