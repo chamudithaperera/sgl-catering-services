@@ -947,10 +947,15 @@
 
 .premium-gallery-card {
   position: relative;
+  display: block;
   overflow: hidden;
+  padding: 0;
   border: 1px solid rgba(18, 27, 31, 0.14);
   border-radius: 24px;
+  appearance: none;
   background: rgba(13, 17, 18, 0.98);
+  color: inherit;
+  cursor: zoom-in;
   box-shadow:
     0 20px 38px rgba(17, 24, 29, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -968,6 +973,11 @@
     0 24px 46px rgba(17, 24, 29, 0.18),
     0 0 0 1px rgba(var(--accent-rgb), 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.premium-gallery-card:focus-visible {
+  outline: 3px solid rgba(var(--accent-rgb), 0.42);
+  outline-offset: 4px;
 }
 
 .premium-gallery-card img {
@@ -1042,6 +1052,74 @@
 
 .premium-reveal-gallery {
   transform: translate3d(0, 28px, 0) scale(0.992);
+}
+
+.premium-gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 3vw, 44px);
+  background: rgba(4, 5, 5, 0.86);
+  backdrop-filter: blur(12px);
+  cursor: zoom-out;
+}
+
+.premium-gallery-lightbox-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(1500px, 100%);
+  max-height: min(88vh, 980px);
+  cursor: default;
+}
+
+.premium-gallery-lightbox-frame img {
+  width: auto;
+  max-width: 100%;
+  max-height: min(88vh, 980px);
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(13, 17, 18, 0.98);
+  box-shadow:
+    0 34px 86px rgba(0, 0, 0, 0.52),
+    0 0 0 1px rgba(255, 248, 239, 0.12);
+}
+
+.premium-gallery-lightbox-close {
+  position: absolute;
+  top: clamp(8px, 1.2vw, 14px);
+  right: clamp(8px, 1.2vw, 14px);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(255, 248, 239, 0.24);
+  border-radius: 50%;
+  color: #fff8ef;
+  background: rgba(19, 13, 11, 0.84);
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.premium-gallery-lightbox-close:hover {
+  border-color: rgba(var(--accent-rgb), 0.42);
+  background: rgba(150, 62, 34, 0.92);
+  transform: scale(1.04);
+}
+
+.premium-gallery-lightbox-close:focus-visible {
+  outline: 3px solid rgba(var(--accent-rgb), 0.42);
+  outline-offset: 3px;
 }
 
 .premium-why {
@@ -2456,6 +2534,20 @@
 
   .premium-gallery-arrow-right {
     right: 0;
+  }
+
+  .premium-gallery-lightbox {
+    padding: 14px;
+  }
+
+  .premium-gallery-lightbox-frame,
+  .premium-gallery-lightbox-frame img {
+    max-height: 84vh;
+  }
+
+  .premium-gallery-lightbox-close {
+    width: 42px;
+    height: 42px;
   }
 
   .premium-reviews-controls {

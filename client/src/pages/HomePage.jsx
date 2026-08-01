@@ -303,6 +303,7 @@ export function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0]));
   const [galleryVideoReady, setGalleryVideoReady] = useState(false);
+  const [selectedGalleryItem, setSelectedGalleryItem] = useState(null);
   const gallerySectionRef = useRef(null);
   const galleryTrackRef = useRef(null);
   const galleryVideoRef = useRef(null);
@@ -450,6 +451,29 @@ export function HomePage() {
       setActiveReview(0);
     }
   }, [activeReview, homepageReviews.length]);
+
+  useEffect(() => {
+    if (!selectedGalleryItem) {
+      return undefined;
+    }
+
+    const previousBodyOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setSelectedGalleryItem(null);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedGalleryItem]);
 
   useEffect(() => {
     const revealItems = Array.from(document.querySelectorAll("[data-reveal]:not(.is-visible)"));
@@ -851,10 +875,13 @@ export function HomePage() {
               </button>
               <div className="premium-gallery-grid" ref={galleryTrackRef}>
                 {homepageGallery.map((item) => (
-                  <article
+                  <button
                     key={`${item.title}-${item.image}`}
                     className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
                     data-reveal
+                    type="button"
+                    aria-label={`Open ${item.title || "gallery image"}`}
+                    onClick={() => setSelectedGalleryItem(item)}
                   >
                     <img
                       {...responsiveImageProps(item.image, "(max-width: 680px) 62vw, 28vw")}
@@ -864,7 +891,7 @@ export function HomePage() {
                       fetchPriority="low"
                       style={{ objectPosition: item.position }}
                     />
-                  </article>
+                  </button>
                 ))}
               </div>
               <button
@@ -879,6 +906,21 @@ export function HomePage() {
           ) : null}
         </div>
       </section>
+
+      {selectedGalleryItem ? (
+        <div className="premium-gallery-lightbox" role="dialog" aria-modal="true" aria-label={selectedGalleryItem.title || "Gallery image"} onClick={() => setSelectedGalleryItem(null)}>
+          <div className="premium-gallery-lightbox-frame" onClick={(event) => event.stopPropagation()}>
+            <button className="premium-gallery-lightbox-close" type="button" aria-label="Close image" onClick={() => setSelectedGalleryItem(null)}>
+              <X size={24} />
+            </button>
+            <img
+              {...responsiveImageProps(selectedGalleryItem.image, "100vw")}
+              alt={selectedGalleryItem.title || "Gallery image"}
+              decoding="async"
+            />
+          </div>
+        </div>
+      ) : null}
 
       {whyChooseItems.length > 0 ? (
         <section className="premium-why" id="why-choose-us">
