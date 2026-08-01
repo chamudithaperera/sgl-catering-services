@@ -59,15 +59,16 @@ const webTextFields = {
     { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
   ],
   pageHero: [
-    { name: "descriptionEnglish", label: "Eyebrow" },
     { name: "titleSinhala", label: "Title Sinhala" },
     { name: "titleEnglish", label: "Title English" },
-    { name: "descriptionSinhala", label: "Description", type: "textarea" },
+    { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
+    { name: "descriptionEnglish", label: "Description English", type: "textarea" },
   ],
   pageSection: [
-    { name: "titleEnglish", label: "Eyebrow" },
-    { name: "titleSinhala", label: "Title" },
-    { name: "descriptionSinhala", label: "Description", type: "textarea" },
+    { name: "titleSinhala", label: "Title Sinhala" },
+    { name: "titleEnglish", label: "Title English" },
+    { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
+    { name: "descriptionEnglish", label: "Description English", type: "textarea" },
   ],
 };
 

@@ -259,7 +259,6 @@
 }
 
 .service-banner-copy > span,
-.service-section-head span,
 .service-contact-copy span {
   color: var(--accent-luxury);
   font-size: 0.8rem;
@@ -290,7 +289,14 @@
   text-transform: uppercase;
 }
 
-.service-banner-copy p {
+.service-banner-descriptions,
+.service-section-descriptions {
+  display: grid;
+  gap: 10px;
+  justify-items: inherit;
+}
+
+.service-banner-descriptions p {
   max-width: 760px;
   margin: 0;
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
@@ -348,9 +354,24 @@
   line-height: 0.98;
 }
 
+.service-section-head h2 {
+  display: grid;
+  gap: 10px;
+  justify-items: inherit;
+}
+
 .service-section-head h2,
 .service-contact-copy h2 {
   font-size: clamp(2.5rem, 4vw, 3.7rem);
+}
+
+.service-section-head h2 small {
+  font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
+  font-size: clamp(1rem, 1.45vw, 1.28rem);
+  font-weight: 700;
+  line-height: 1.24;
+  color: var(--accent-primary);
+  text-transform: uppercase;
 }
 
 .service-section-head p,
@@ -362,6 +383,37 @@
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
   font-size: 1rem;
   line-height: 1.84;
+}
+
+.service-section-call-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  gap: 10px;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 0 18px;
+  border: 1px solid rgba(var(--accent-rgb), 0.24);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent-primary-light) 0%, var(--accent-primary) 100%);
+  color: var(--text-main);
+  font-size: 0.92rem;
+  font-weight: 760;
+  box-shadow:
+    0 16px 30px rgba(var(--accent-rgb), 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.service-section-call-button:hover {
+  transform: translateY(-1px);
+  color: var(--text-main);
+  box-shadow:
+    0 20px 36px rgba(var(--accent-rgb), 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .service-band-dark .service-section-head h2 {
@@ -980,7 +1032,7 @@
     grid-column: 1 / -1;
     grid-row: 2;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     justify-self: stretch;
     width: 100%;
     padding: 0;
@@ -1099,7 +1151,8 @@
     width: 100%;
   }
 
-  .service-banner-button {
+  .service-banner-button,
+  .service-section-call-button {
     width: 100%;
   }
 

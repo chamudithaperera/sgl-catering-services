@@ -13,6 +13,7 @@ export const servicePageContent = {
       keywords: [],
     },
     description: "",
+    englishDescription: "",
     sectionNav: [
       { id: "menus", label: "මෙනු සහ මිල" },
       { id: "consultation", label: "වෙන්කරවා ගැනීම" },
@@ -20,7 +21,9 @@ export const servicePageContent = {
     overview: {
       eyebrow: "",
       title: "",
+      englishTitle: "",
       description: "",
+      englishDescription: "",
     },
     menus: [],
     consultation: {
@@ -41,6 +44,7 @@ export const servicePageContent = {
       keywords: [],
     },
     description: "",
+    englishDescription: "",
     sectionNav: [
       { id: "items", label: "භාණ්ඩ මිල" },
       { id: "booking", label: "වෙන්කරවා ගැනීම" },
@@ -48,7 +52,9 @@ export const servicePageContent = {
     overview: {
       eyebrow: "",
       title: "",
+      englishTitle: "",
       description: "",
+      englishDescription: "",
     },
     items: [],
     consultation: {

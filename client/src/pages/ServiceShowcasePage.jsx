@@ -90,10 +90,10 @@ function applyManagedPageTexts(page, content) {
 
   return {
     ...page,
-    eyebrow: heroText.descriptionEnglish,
     title: heroText.titleSinhala,
     englishTitle: heroText.titleEnglish,
     description: heroText.descriptionSinhala,
+    englishDescription: heroText.descriptionEnglish,
     seo: {
       ...(page.seo || {}),
       title: [heroText.titleEnglish, heroText.titleSinhala].filter(Boolean).join(" | "),
@@ -102,25 +102,38 @@ function applyManagedPageTexts(page, content) {
     },
     overview: {
       ...(page.overview || {}),
-      eyebrow: overviewText.titleEnglish,
       title: overviewText.titleSinhala,
+      englishTitle: overviewText.titleEnglish,
       description: overviewText.descriptionSinhala,
+      englishDescription: overviewText.descriptionEnglish,
     },
     consultation: {
       ...(page.consultation || {}),
-      eyebrow: consultationText.titleEnglish,
       title: consultationText.titleSinhala,
+      englishTitle: consultationText.titleEnglish,
       description: consultationText.descriptionSinhala,
+      englishDescription: consultationText.descriptionEnglish,
     },
   };
 }
 
-function SectionHead({ eyebrow, title, description, light = false, center = false }) {
+function SectionHead({ callHref, description, englishTitle, descriptionEnglish, light = false, center = false, title }) {
   return (
     <div className={`service-section-head${light ? " is-light" : ""}${center ? " is-center" : ""}`}>
-      <span>{eyebrow}</span>
-      <h2>{title}</h2>
-      <p>{description}</p>
+      <h2>
+        {title ? <span>{title}</span> : null}
+        {englishTitle ? <small>{englishTitle}</small> : null}
+      </h2>
+      <div className="service-section-descriptions">
+        {description ? <p>{description}</p> : null}
+        {descriptionEnglish ? <p>{descriptionEnglish}</p> : null}
+      </div>
+      {callHref ? (
+        <a className="service-section-call-button" href={callHref}>
+          <PhoneCall size={18} />
+          <span>Call Now</span>
+        </a>
+      ) : null}
     </div>
   );
 }
@@ -142,12 +155,15 @@ function BannerSection({ page, phone }) {
             <span>{page.title}</span>
             {page.englishTitle ? <small>{page.englishTitle}</small> : null}
           </h1>
-          <p>{page.description}</p>
+          <div className="service-banner-descriptions">
+            {page.description ? <p>{page.description}</p> : null}
+            {page.englishDescription ? <p>{page.englishDescription}</p> : null}
+          </div>
 
           <div className="service-banner-actions">
             <a className="service-banner-button" href={buildTelUrl(phone)}>
               <PhoneCall size={18} />
-              <span>අමතන්න</span>
+              <span>Call Now</span>
             </a>
           </div>
         </div>
@@ -207,14 +223,16 @@ function RentalItemCard({ item }) {
   );
 }
 
-function CateringSections({ page }) {
+function CateringSections({ page, phone }) {
   const menus = page.menus || [];
 
   return (
     <section className="service-band service-band-ivory service-catering-menu-band" id="menus">
       <div className="service-page-shell">
         <SectionHead
-          eyebrow={page.overview.eyebrow}
+          callHref={buildTelUrl(phone)}
+          descriptionEnglish={page.overview.englishDescription}
+          englishTitle={page.overview.englishTitle || page.overview.eyebrow}
           title={page.overview.title}
           description={page.overview.description}
           center
@@ -230,14 +248,16 @@ function CateringSections({ page }) {
   );
 }
 
-function RentingSections({ page }) {
+function RentingSections({ page, phone }) {
   const items = page.items || [];
 
   return (
     <section className="service-band service-band-ivory service-rental-item-band" id="items">
       <div className="service-page-shell">
         <SectionHead
-          eyebrow={page.overview.eyebrow}
+          callHref={buildTelUrl(phone)}
+          descriptionEnglish={page.overview.englishDescription}
+          englishTitle={page.overview.englishTitle || page.overview.eyebrow}
           title={page.overview.title}
           description={page.overview.description}
           center
@@ -463,7 +483,7 @@ export function ServiceShowcasePage({ page }) {
 
       <BannerSection page={managedPage} phone={servicePhone} />
 
-      {managedPage.type === "catering" ? <CateringSections page={managedPage} /> : <RentingSections page={managedPage} />}
+      {managedPage.type === "catering" ? <CateringSections page={managedPage} phone={servicePhone} /> : <RentingSections page={managedPage} phone={servicePhone} />}
 
       <ContactBand anchorId={anchorId} contact={contactConfig} page={managedPage} />
 

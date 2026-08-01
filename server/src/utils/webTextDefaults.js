@@ -44,16 +44,18 @@ Object.assign(webTextDefaults, {
     titleSinhala: "ආහාර පාන සැපයීම",
     titleEnglish: "Catering Service",
     descriptionSinhala:
-      "අනුරාධපුරයේ විශ්වාසදායක SGL Catering Service වෙතින් විවාහ මංගල්‍ය, පවුල් උත්සව, දානමය වැඩසටහන් සහ ආයතනික අවස්ථා සඳහා රසවත් ශ්‍රී ලාංකීය ආහාර සහ වෘත්තීය සේවාවක් ලබා ගන්න.",
-    descriptionEnglish: "Professional catering for every special occasion",
+      "නැවුම් අමුද්‍රව්‍ය සහ සාම්ප්‍රදායික වට්ටෝරු භාවිතයෙන් සකස් කරන රසවත් ශ්‍රී ලාංකීය ආහාර සමඟ ඔබගේ උත්සවය තවත් සුවිශේෂී කරගන්න. කුඩා හමුවීම්වල සිට විශාල උත්සව දක්වා සියලුම අවස්ථා සඳහා විශ්වාසදායක ආහාර සැපයුම් සේවාවක් අපෙන්.",
+    descriptionEnglish:
+      "Delight your guests with authentic Sri Lankan cuisine, freshly prepared using quality ingredients. From intimate gatherings to grand celebrations, we provide delicious food and reliable catering services for every occasion.",
   },
   cateringPageOverview: {
     textKey: "cateringPageOverview",
     titleSinhala: "ඔබේ අවස්ථාවට ගැළපෙන මෙනු",
     titleEnglish: "Menu Selection",
     descriptionSinhala:
-      "පහත මෙනු අතරින් ඔබේ උත්සවයට ගැළපෙන ආහාර පැකේජය තෝරාගන්න. අමුත්තන් ගණන, අවස්ථාවේ ස්වභාවය සහ ඔබේ රුචිය අනුව මෙනුව සකස් කිරීමට අපි සූදානම්.",
-    descriptionEnglish: "",
+      "ඔබගේ උත්සවය පිළිබඳ අප සමඟ සාකච්ඡා කර ඔබට අවශ්‍ය පරිදි මෙනුව සකස් කර ගන්න. ඔබට තෝරාගත හැකි ආරම්භක මිල ගණන් පහතින් දැක්වේ.",
+    descriptionEnglish:
+      "Discuss your event with us, and we'll help you create a menu that matches your taste, budget, and preferences. Our starting prices are listed below.",
   },
   cateringPageConsultation: {
     textKey: "cateringPageConsultation",
@@ -68,16 +70,18 @@ Object.assign(webTextDefaults, {
     titleSinhala: "උත්සව උපකරණ කුලියට",
     titleEnglish: "Rental Service",
     descriptionSinhala:
-      "විවාහ, උත්සව, දානමය වැඩසටහන් සහ පවුල් හමුවීම් සඳහා අවශ්‍ය මේස, පුටු, බඳුන් සහ අනෙකුත් උත්සව උපකරණ විශ්වාසයෙන් කුලියට ලබා ගන්න.",
-    descriptionEnglish: "Reliable event equipment rental in Anuradhapura",
+      "ඔබගේ උත්සවය සම්පූර්ණ කිරීමට අවශ්‍ය මේස, පුටු, කූඩාරම්, භාජන සහ අනෙකුත් උත්සව උපකරණ අපෙන් කුලියට ලබා ගන්න. ඔබගේ විශේෂ අවස්ථාව අලංකාරවත්, පහසු සහ සාර්ථක කර ගැනීමට අවශ්‍ය සියල්ල එකම ස්ථානයකින්.",
+    descriptionEnglish:
+      "Complete your event with our high-quality rental items, including tables, chairs, tents, tableware, and more. We provide everything you need to make your special occasion comfortable, elegant, and well-organised.",
   },
   rentingPageOverview: {
     textKey: "rentingPageOverview",
     titleSinhala: "කුලියට ලබා ගත හැකි උපකරණ",
     titleEnglish: "Rental Items",
     descriptionSinhala:
-      "ඔබේ උත්සවය සරලව සැලසුම් කරගැනීමට අවශ්‍ය ප්‍රධාන උපකරණ මෙතැනින් බලන්න. අවශ්‍ය ප්‍රමාණය සහ දිනය අනුව ලබා ගැනීමේ හැකියාව තහවුරු කර දෙන්නෙමු.",
-    descriptionEnglish: "",
+      "ඔබගේ අවශ්‍යතා අප සමඟ සාකච්ඡා කර ඔබගේ උත්සවයට වඩාත් ගැළපෙන උපකරණ තෝරාගන්න. අපගේ ආරම්භක කුලී මිල ගණන් පහතින් දැක්වේ.",
+    descriptionEnglish:
+      "Discuss your event requirements with us, and we'll help you choose the rental items that best suit your occasion. Our starting rental prices are listed below.",
   },
   rentingPageConsultation: {
     textKey: "rentingPageConsultation",
