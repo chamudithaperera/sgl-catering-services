@@ -11,6 +11,7 @@ const webTextKeys = [
   "rentingPageOverview",
   "rentingPageConsultation",
   "gallery",
+  "whyChooseUs",
   "reviews",
   "contact",
 ];
@@ -85,6 +86,15 @@ Object.assign(webTextDefaults, {
       "ඔබගේ උත්සවය ගැන කෙටි අදහසක් එක් කරන්න. අපගේ කණ්ඩායම එය සමාලෝචනය කර අනුමත කිරීමෙන් පසු වෙබ් අඩවියේ පෙන්වනු ලැබේ.",
     descriptionEnglish:
       "Share a short review about your event. After our team reviews and approves it, your feedback will be shown on the website.",
+  },
+  whyChooseUs: {
+    textKey: "whyChooseUs",
+    titleSinhala: "අප තෝරාගත යුත්තේ ඇයි",
+    titleEnglish: "Why Choose us",
+    descriptionSinhala:
+      "වසර 40කට වැඩි පළපුරුද්ද\nසාම්ප්‍රදායික ශ්‍රී ලාංකීය රස\nනැවුම් හා ගුණාත්මක අමුද්‍රව්‍ය\nවෘත්තීය හා මිත්‍රශීලී සේවාව\nසාධාරණ මිල ගණන්\nසෞඛ්‍යාරක්ෂිත ආහාර සැකසීම",
+    descriptionEnglish:
+      "Over 40 Years of Experience\nAuthentic Traditional Sri Lankan Recipes\nFresh & High-Quality Ingredients\nProfessional and Friendly Service\nAffordable Prices\nHygienic Food Preparation",
   },
 });
 

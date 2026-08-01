@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Menu, PhoneCall, Send, X } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Menu, PhoneCall, Send, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
 import galleryBackgroundPoster from "../assets/gallery-background-poster.jpg";
@@ -158,6 +158,24 @@ function getWebText(webTexts, textKey) {
   };
 }
 
+function splitReasonLines(value) {
+  return String(value || "")
+    .split(/\r?\n/)
+    .map((item) => item.replace(/^[\s✔✓•-]+/, "").trim())
+    .filter(Boolean);
+}
+
+function buildWhyChooseItems(text) {
+  const englishItems = splitReasonLines(text.descriptionEnglish);
+  const sinhalaItems = splitReasonLines(text.descriptionSinhala);
+  const itemCount = Math.max(englishItems.length, sinhalaItems.length);
+
+  return Array.from({ length: itemCount }, (_, index) => ({
+    english: englishItems[index] || "",
+    sinhala: sinhalaItems[index] || "",
+  })).filter((item) => item.english || item.sinhala);
+}
+
 function buildHomepageStructuredData({ siteConfig, heroText, heroSlides, mapEmbedUrl }) {
   const name = heroText.titleEnglish || heroText.titleSinhala || "";
   const description = heroText.descriptionEnglish || heroText.descriptionSinhala || "";
@@ -295,6 +313,7 @@ export function HomePage() {
   const aboutText = getWebText(webTexts, "about");
   const servicesText = getWebText(webTexts, "services");
   const galleryText = getWebText(webTexts, "gallery");
+  const whyChooseText = getWebText(webTexts, "whyChooseUs");
   const reviewsText = getWebText(webTexts, "reviews");
   const contactText = getWebText(webTexts, "contact");
   const heroSlides = (content?.bannerImages || []).slice(0, 5).map((item) => ({
@@ -316,6 +335,7 @@ export function HomePage() {
     layout: ["hero", "portrait", "compact", "square", "landscape"][index % 5],
     position: "center center",
   }));
+  const whyChooseItems = buildWhyChooseItems(whyChooseText);
   const homepageReviews = (content?.reviews || []).map((review) => ({
     name: review.customerName,
     event: review.eventType,
@@ -859,6 +879,34 @@ export function HomePage() {
           ) : null}
         </div>
       </section>
+
+      {whyChooseItems.length > 0 ? (
+        <section className="premium-why" id="why-choose-us">
+          <div className="premium-why-shell">
+            <div className="premium-why-heading premium-reveal premium-reveal-heading" data-reveal>
+              {whyChooseText.titleSinhala ? <span>{whyChooseText.titleSinhala}</span> : null}
+              <h2>{whyChooseText.titleEnglish || "Why Choose us"}</h2>
+            </div>
+
+            <div className="premium-why-grid">
+              {whyChooseItems.map((item, index) => (
+                <article className="premium-why-card premium-reveal premium-reveal-choice" data-reveal key={`${index}-${item.english}-${item.sinhala}`}>
+                  <span className="premium-why-icon" aria-hidden="true">
+                    <CheckCircle2 size={22} />
+                  </span>
+                  <div className="premium-why-card-copy">
+                    {item.english ? <strong>{item.english}</strong> : null}
+                    {item.sinhala ? <p>{item.sinhala}</p> : null}
+                  </div>
+                  <span className="premium-why-number" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {homepageReviews.length > 0 ? (
         <section className="premium-reviews" id="reviews">
