@@ -132,18 +132,6 @@ export default function ReviewsPage() {
         </a>
       </header>
 
-      <section className="reviews-hero">
-        <div className="reviews-hero-copy">
-          <span>{reviewsText.titleEnglish}</span>
-          <h1>
-            <span>{reviewsText.titleSinhala}</span>
-            <small>{reviewsText.titleEnglish}</small>
-          </h1>
-          <p>{reviewsText.descriptionSinhala}</p>
-          {reviewsText.descriptionEnglish ? <p className="reviews-hero-english">{reviewsText.descriptionEnglish}</p> : null}
-        </div>
-      </section>
-
       <section className="reviews-content">
         <form className="reviews-form" onSubmit={handleSubmit}>
           <div className="reviews-form-head">
