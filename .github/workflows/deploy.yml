@@ -45,31 +45,71 @@ jobs:
         env:
           CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
           CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
         run: |
+          set -euo pipefail
+
+          : "${CPANEL_HOST:?Missing CPANEL_HOST secret}"
+          : "${CPANEL_USER:?Missing CPANEL_USER secret}"
+          : "${CPANEL_SSH_KEY:?Missing CPANEL_SSH_KEY secret}"
+
           SSH_PORT="${CPANEL_PORT:-22}"
+          CPANEL_HOST="${CPANEL_HOST#http://}"
+          CPANEL_HOST="${CPANEL_HOST#https://}"
+          CPANEL_HOST="${CPANEL_HOST%%/*}"
+          CPANEL_HOST="${CPANEL_HOST#*@}"
+
+          if [[ "$CPANEL_HOST" == *:* ]]; then
+            if [[ -z "${CPANEL_PORT:-}" ]]; then
+              SSH_PORT="${CPANEL_HOST##*:}"
+            fi
+            CPANEL_HOST="${CPANEL_HOST%%:*}"
+          fi
+
+          if ! [[ "$SSH_PORT" =~ ^[0-9]+$ ]]; then
+            echo "::error::CPANEL_PORT must be a number."
+            exit 1
+          fi
+
           mkdir -p ~/.ssh
-          printf '%s\n' "$CPANEL_SSH_KEY" > ~/.ssh/cpanel_deploy_key
+          chmod 700 ~/.ssh
+          printf '%s' "$CPANEL_SSH_KEY" | perl -0pe 's/\\n/\n/g; s/\r//g' > ~/.ssh/cpanel_deploy_key
+          printf '\n' >> ~/.ssh/cpanel_deploy_key
           chmod 600 ~/.ssh/cpanel_deploy_key
-          ssh-keyscan -p "$SSH_PORT" "$CPANEL_HOST" >> ~/.ssh/known_hosts
+          if ! ssh-keygen -y -f ~/.ssh/cpanel_deploy_key > /dev/null; then
+            echo "::error::CPANEL_SSH_KEY must be a valid unencrypted private key."
+            exit 1
+          fi
+
+          touch ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host cpanel
+            HostName $CPANEL_HOST
+            User $CPANEL_USER
+            Port $SSH_PORT
+            IdentityFile ~/.ssh/cpanel_deploy_key
+            IdentitiesOnly yes
+            BatchMode yes
+            StrictHostKeyChecking accept-new
+            UserKnownHostsFile ~/.ssh/known_hosts
+            ConnectTimeout 30
+            ServerAliveInterval 30
+          EOF
+          chmod 600 ~/.ssh/config
 
       - name: Upload deployment archives
         env:
-          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
-          CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
         run: |
-          SSH_PORT="${CPANEL_PORT:-22}"
-          scp -i ~/.ssh/cpanel_deploy_key -P "$SSH_PORT" frontend.tar.gz server.tar.gz "$CPANEL_USER@$CPANEL_HOST:/home/$CPANEL_USER/"
+          scp frontend.tar.gz server.tar.gz "cpanel:/home/$CPANEL_USER/"
 
       - name: Deploy on cPanel
         env:
-          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
-          CPANEL_PORT: ${{ secrets.CPANEL_PORT }}
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
         run: |
-          SSH_PORT="${CPANEL_PORT:-22}"
-          ssh -i ~/.ssh/cpanel_deploy_key -p "$SSH_PORT" "$CPANEL_USER@$CPANEL_HOST" "CPANEL_USER='$CPANEL_USER' bash -s" <<'EOF'
+          ssh cpanel "CPANEL_USER='$CPANEL_USER' bash -s" <<'EOF'
           set -e
 
           APP_ROOT="/home/$CPANEL_USER/sgl-project-git/server"
