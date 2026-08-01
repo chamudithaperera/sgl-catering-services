@@ -50,9 +50,7 @@ const webTextFields = {
     { name: "descriptionEnglish", label: "Description English", type: "textarea" },
   ],
   about: [
-    { name: "titleSinhala", label: "Title Sinhala" },
     { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
-    { name: "titleEnglish", label: "Title English" },
     { name: "descriptionEnglish", label: "Description English", type: "textarea" },
   ],
   section: [

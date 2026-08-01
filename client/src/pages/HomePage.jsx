@@ -787,13 +787,13 @@ export function HomePage() {
           </div>
 
           <div className="premium-about-card premium-reveal premium-reveal-card" data-reveal>
-            <h2>{aboutText.titleSinhala}</h2>
-            <p>{aboutText.descriptionSinhala}</p>
+            {aboutText.descriptionSinhala ? <p>{aboutText.descriptionSinhala}</p> : null}
 
-            <div className="premium-about-local" aria-labelledby="about-local-heading">
-              <h3 id="about-local-heading">{aboutText.titleEnglish}</h3>
-              <p>{aboutText.descriptionEnglish}</p>
-            </div>
+            {aboutText.descriptionEnglish ? (
+              <div className="premium-about-local">
+                <p>{aboutText.descriptionEnglish}</p>
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
