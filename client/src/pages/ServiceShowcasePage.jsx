@@ -490,7 +490,15 @@ export function ServiceShowcasePage({ page }) {
       <footer className="service-page-footer">
         <div className="service-page-footer-shell">
           <p>
-            © {currentYear} {contactConfig?.businessName || managedPage.englishTitle || managedPage.title}
+            © {currentYear}{" "}
+            <a href="https://sglcateringservice.lk/" target="_blank" rel="noreferrer">
+              {contactConfig?.businessName || managedPage.englishTitle || managedPage.title || "SGL Catering Service"}
+            </a>
+            {" | "}
+            Designed & developed by{" "}
+            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
+              Chamuditha Perera
+            </a>
           </p>
         </div>
       </footer>

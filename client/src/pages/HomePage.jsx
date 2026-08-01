@@ -1176,7 +1176,15 @@ export function HomePage() {
       <footer className="premium-footer">
         <div className="premium-footer-shell">
           <p>
-            © {currentYear} {heroText.titleEnglish || heroText.titleSinhala}
+            © {currentYear}{" "}
+            <a href="https://sglcateringservice.lk/" target="_blank" rel="noreferrer">
+              {heroText.titleEnglish || heroText.titleSinhala || "SGL Catering Service"}
+            </a>
+            {" | "}
+            Designed & developed by{" "}
+            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
+              Chamuditha Perera
+            </a>
           </p>
         </div>
       </footer>
