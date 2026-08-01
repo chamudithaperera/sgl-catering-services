@@ -959,6 +959,12 @@ export function HomePage() {
         </section>
       ) : null}
 
+      {whyChooseItems.length > 0 && homepageReviews.length > 0 ? (
+        <div className="premium-food-divider" aria-hidden="true">
+          <img src="/assets/food-line-divider.png" alt="" loading="lazy" decoding="async" />
+        </div>
+      ) : null}
+
       {homepageReviews.length > 0 ? (
         <section className="premium-reviews" id="reviews">
           <div className="premium-reviews-shell">

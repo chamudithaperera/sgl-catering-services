@@ -1125,7 +1125,7 @@
 .premium-why {
   position: relative;
   isolation: isolate;
-  padding: clamp(92px, 9vw, 132px) 24px clamp(98px, 10vw, 140px);
+  padding: clamp(92px, 9vw, 132px) 24px clamp(42px, 4vw, 56px);
   overflow: hidden;
   background:
     radial-gradient(circle at 12% 18%, rgba(var(--accent-rgb), 0.18) 0%, transparent 28%),
@@ -1369,10 +1369,51 @@
   transform: translate3d(0, 28px, 0) scale(0.992);
 }
 
+.premium-food-divider {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  height: clamp(112px, 9vw, 138px);
+  padding-inline: clamp(12px, 3vw, 44px);
+  overflow: hidden;
+  background: linear-gradient(180deg, #110b09 0%, #0d1011 50%, #110b09 100%);
+}
+
+.premium-food-divider::before,
+.premium-food-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: min(16vw, 220px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(241, 214, 164, 0.34));
+}
+
+.premium-food-divider::before {
+  left: 0;
+}
+
+.premium-food-divider::after {
+  right: 0;
+  transform: rotate(180deg);
+}
+
+.premium-food-divider img {
+  width: min(1680px, 112vw);
+  max-width: none;
+  height: 100%;
+  object-fit: fill;
+  opacity: 0.82;
+  filter: drop-shadow(0 0 12px rgba(241, 214, 164, 0.08));
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+
 .premium-reviews {
   position: relative;
   isolation: isolate;
-  padding: 88px 24px 120px;
+  padding: clamp(42px, 4vw, 56px) 24px 120px;
   background:
     radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.12) 0%, transparent 30%),
     radial-gradient(circle at bottom right, rgba(184, 154, 106, 0.08) 0%, transparent 26%),
@@ -2160,7 +2201,7 @@
   }
 
   .premium-why {
-    padding: 76px 20px 98px;
+    padding: 76px 20px 38px;
   }
 
   .premium-why-path {
@@ -2183,7 +2224,12 @@
   }
 
   .premium-reviews {
-    padding: 76px 20px 98px;
+    padding: 38px 20px 98px;
+  }
+
+  .premium-food-divider {
+    height: 100px;
+    padding-inline: 12px;
   }
 
   .premium-contact {
@@ -2395,7 +2441,7 @@
   }
 
   .premium-why {
-    padding: 64px 16px 82px;
+    padding: 64px 16px 30px;
   }
 
   .premium-why-path {
@@ -2406,7 +2452,24 @@
   }
 
   .premium-reviews {
-    padding: 64px 16px 82px;
+    padding: 34px 16px 82px;
+  }
+
+  .premium-food-divider {
+    height: 82px;
+    padding-inline: 0;
+  }
+
+  .premium-food-divider::before,
+  .premium-food-divider::after {
+    display: none;
+  }
+
+  .premium-food-divider img {
+    width: 156vw;
+    opacity: 0.76;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
   }
 
   .premium-contact {
