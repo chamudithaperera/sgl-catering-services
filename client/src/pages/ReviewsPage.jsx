@@ -30,6 +30,11 @@ const defaultReviewsText = {
     "Share a short review about your event. After our team reviews and approves it, your feedback will be shown on the website.",
 };
 
+const reviewsHeroTitle = {
+  english: "Client Testimonials",
+  sinhala: "පාරිභෝගික අදහස්",
+};
+
 function buildTelUrl(phoneNumber) {
   const digits = phoneNumber?.replace(/[^\d+]/g, "");
 
@@ -105,7 +110,7 @@ export default function ReviewsPage() {
   return (
     <main className="reviews-page">
       <Seo
-        title={`${reviewsText.titleEnglish} | SGL Catering Services`}
+        title={`${reviewsHeroTitle.english} | SGL Catering Services`}
         description={reviewsText.descriptionEnglish || reviewsText.descriptionSinhala}
         canonicalPath="/reviews"
         image="/assets/sgl-logo.png"
@@ -134,17 +139,25 @@ export default function ReviewsPage() {
 
       <section className="reviews-hero">
         <div className="reviews-hero-copy">
-          <span>{reviewsText.titleEnglish}</span>
-          <h1>
-            <span>{reviewsText.titleSinhala}</span>
-            <small>{reviewsText.titleEnglish}</small>
-          </h1>
-          <p>{reviewsText.descriptionSinhala}</p>
-          {reviewsText.descriptionEnglish ? <p className="reviews-hero-english">{reviewsText.descriptionEnglish}</p> : null}
+          <span>{reviewsHeroTitle.english}</span>
+          <h1>{reviewsHeroTitle.sinhala}</h1>
         </div>
       </section>
 
       <section className="reviews-content">
+        <aside className="reviews-intro-card">
+          <span>{reviewsText.titleEnglish}</span>
+          <h2>{reviewsText.titleSinhala}</h2>
+          <p>{reviewsText.descriptionSinhala}</p>
+          {reviewsText.descriptionEnglish ? <p className="reviews-intro-english">{reviewsText.descriptionEnglish}</p> : null}
+          {callPhone ? (
+            <a className="reviews-intro-call" href={buildTelUrl(callPhone)}>
+              <PhoneCall size={18} />
+              <span>Call Now</span>
+            </a>
+          ) : null}
+        </aside>
+
         <form className="reviews-form" onSubmit={handleSubmit}>
           <div className="reviews-form-head">
             <BilingualText className="reviews-form-eyebrow" english="New review" sinhala="නව අදහසක්" />
