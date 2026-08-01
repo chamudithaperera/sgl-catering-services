@@ -60,12 +60,6 @@ const webTextFields = {
     { name: "titleSinhala", label: "Title Sinhala" },
     { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
   ],
-  whyChoose: [
-    { name: "titleEnglish", label: "Title English" },
-    { name: "titleSinhala", label: "Title Sinhala" },
-    { name: "descriptionSinhala", label: "Intro Sinhala", type: "textarea" },
-    { name: "descriptionEnglish", label: "Intro English", type: "textarea" },
-  ],
   pageHero: [
     { name: "descriptionEnglish", label: "Eyebrow" },
     { name: "titleSinhala", label: "Title Sinhala" },
@@ -222,14 +216,6 @@ const resourceConfigs = [
     textKey: "gallery",
     fields: webTextFields.section,
     eyebrow: "Homepage gallery section text",
-    layout: "formOnly",
-  }),
-  buildWebTextConfig({
-    key: "whyChooseUsTexts",
-    label: "Why Choose us Intro",
-    textKey: "whyChooseUs",
-    fields: webTextFields.whyChoose,
-    eyebrow: "Homepage Why Choose us heading and intro text",
     layout: "formOnly",
   }),
   buildWebTextConfig({
@@ -491,7 +477,6 @@ const groupedSections = {
       { key: "cateringPageTexts", label: "Catering" },
       { key: "rentingPageTexts", label: "Rental" },
       { key: "galleryTexts", label: "Gallery" },
-      { key: "whyChooseUsTexts", label: "Why Intro" },
       { key: "reviewsTexts", label: "Reviews" },
       { key: "contactTexts", label: "Contact us" },
     ],
@@ -524,7 +509,6 @@ const resourceGroupByKey = {
   aboutTexts: "webTexts",
   servicesTexts: "webTexts",
   galleryTexts: "webTexts",
-  whyChooseUsTexts: "webTexts",
   reviewsTexts: "webTexts",
   contactTexts: "webTexts",
 };
