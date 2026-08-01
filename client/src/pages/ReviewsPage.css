@@ -179,9 +179,11 @@
 }
 
 .reviews-field > .reviews-bilingual {
+  justify-items: start;
   color: var(--text-main);
   font-size: 0.92rem;
   font-weight: 650;
+  text-align: left;
 }
 
 .reviews-field input,
