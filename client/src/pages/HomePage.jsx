@@ -934,13 +934,6 @@ export function HomePage() {
             <div className="premium-why-heading premium-reveal premium-reveal-heading" data-reveal>
               <span>{whyChooseText.titleEnglish || "Why Choose us"}</span>
               <h2>{whyChooseText.titleSinhala || "අප තෝරාගත යුත්තේ ඇයි"}</h2>
-              <div className="premium-why-count" aria-label={`${whyChooseItems.length} why choose us points`}>
-                <strong>{String(whyChooseItems.length).padStart(2, "0")}</strong>
-                <span>
-                  <span>කරුණු</span>
-                  <small>Points</small>
-                </span>
-              </div>
               {whyChooseText.descriptionSinhala || whyChooseText.descriptionEnglish ? (
                 <div className="premium-why-description">
                   {whyChooseText.descriptionSinhala ? <p>{whyChooseText.descriptionSinhala}</p> : null}
@@ -956,7 +949,6 @@ export function HomePage() {
                     <span className="premium-why-icon" aria-hidden="true">
                       <CheckCircle2 size={20} />
                     </span>
-                    <span className="premium-why-index">{String(index + 1).padStart(2, "0")}</span>
                   </div>
                   <div className="premium-why-point-copy">
                     {item.sinhala ? <strong>{item.sinhala}</strong> : null}

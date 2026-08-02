@@ -1214,40 +1214,6 @@
     0 2px 0 rgba(58, 20, 12, 0.2);
 }
 
-.premium-why-count {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: 2px;
-  color: var(--accent-luxury-soft);
-}
-
-.premium-why-count strong {
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
-  font-weight: 850;
-  line-height: 0.9;
-}
-
-.premium-why-count > span {
-  display: grid;
-  gap: 2px;
-  color: rgba(255, 248, 239, 0.78);
-  font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.premium-why-count small {
-  color: rgba(255, 248, 239, 0.5);
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1.1;
-  text-transform: uppercase;
-}
-
 .premium-why-description {
   display: grid;
   gap: 12px;
@@ -1341,14 +1307,6 @@
   border-radius: 50%;
   color: var(--accent-luxury-soft);
   background: rgba(255, 248, 239, 0.08);
-}
-
-.premium-why-index {
-  color: rgba(255, 248, 239, 0.28);
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: clamp(1.35rem, 2vw, 2rem);
-  font-weight: 800;
-  line-height: 1;
 }
 
 .premium-why-point-copy {
@@ -2611,17 +2569,9 @@
     transform: none;
   }
 
-  .premium-why-point-marker {
-    justify-content: space-between;
-  }
-
   .premium-why-icon {
     width: 36px;
     height: 36px;
-  }
-
-  .premium-why-index {
-    font-size: 1.55rem;
   }
 
   .premium-why-point-copy {
