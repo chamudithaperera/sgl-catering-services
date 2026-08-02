@@ -61,9 +61,6 @@ jobs:
           CPANEL_HOST="${CPANEL_HOST#*@}"
 
           if [[ "$CPANEL_HOST" == *:* ]]; then
-            if [[ -z "${CPANEL_PORT:-}" ]]; then
-              SSH_PORT="${CPANEL_HOST##*:}"
-            fi
             CPANEL_HOST="${CPANEL_HOST%%:*}"
           fi
 
@@ -96,14 +93,21 @@ jobs:
             UserKnownHostsFile ~/.ssh/known_hosts
             ConnectTimeout 30
             ServerAliveInterval 30
+            ServerAliveCountMax 3
           EOF
           chmod 600 ~/.ssh/config
+
+          echo "SSH deployment target configured for $CPANEL_USER@$CPANEL_HOST on port $SSH_PORT."
+
+      - name: Test SSH connection
+        run: |
+          ssh cpanel "printf 'SSH connection ready\n'"
 
       - name: Upload deployment archives
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
         run: |
-          scp frontend.tar.gz server.tar.gz "cpanel:/home/$CPANEL_USER/"
+          scp -o ConnectTimeout=30 frontend.tar.gz server.tar.gz "cpanel:/home/$CPANEL_USER/"
 
       - name: Deploy on cPanel
         env:
