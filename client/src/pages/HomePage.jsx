@@ -110,6 +110,15 @@ function GmailIcon({ size = 22 }) {
   );
 }
 
+function ContactBilingualText({ as: Component = "span", className = "", english, sinhala }) {
+  return (
+    <Component className={`premium-contact-bilingual${className ? ` ${className}` : ""}`}>
+      <span>{sinhala}</span>
+      <small>{english}</small>
+    </Component>
+  );
+}
+
 const navItems = [
   { label: "මුල් පිටුව", englishLabel: "Home", href: "#home" },
   { label: "අපගේ සේවාවන්", englishLabel: "Services", href: "#services" },
@@ -281,6 +290,7 @@ export function HomePage() {
     message: "",
   });
   const [contactStatus, setContactStatus] = useState("");
+  const [contactStatusEnglish, setContactStatusEnglish] = useState("");
   const [contactStatusType, setContactStatusType] = useState("success");
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedHeroSlides, setLoadedHeroSlides] = useState(() => new Set([0]));
@@ -594,6 +604,8 @@ export function HomePage() {
     event.preventDefault();
 
     try {
+      setContactStatus("");
+      setContactStatusEnglish("");
       await api.post("/public/inquiries", {
         customerName: contactForm.name,
         phone: contactForm.phone,
@@ -603,10 +615,12 @@ export function HomePage() {
       setContactForm({ name: "", phone: "", eventType: "", message: "" });
       setContactStatusType("success");
       setContactStatus("ඔබගේ පණිවිඩය ලැබුණා. අපි ඉක්මනින් සම්බන්ධ වෙන්නම්.");
+      setContactStatusEnglish("Your message has been received. We will contact you soon.");
     } catch (error) {
       console.error(error);
       setContactStatusType("error");
       setContactStatus("පණිවිඩය යැවීමේදී දෝෂයක් ඇතිවිය. කරුණාකර දුරකථනයෙන් සම්බන්ධවන්න.");
+      setContactStatusEnglish("Something went wrong while sending your message. Please contact us by phone.");
     }
   }
 
@@ -1068,16 +1082,16 @@ export function HomePage() {
             <div className="premium-contact-form-card premium-reveal premium-reveal-card" data-reveal>
               <form className="premium-contact-form" onSubmit={handleContactFormSubmit}>
                 <div className="premium-contact-form-head">
-                  <h3>ඔබගේ අවශ්‍යතාවය අපට දන්වන්න</h3>
+                  <ContactBilingualText as="h3" english="Tell us your requirement" sinhala="ඔබගේ අවශ්‍යතාවය අපට දන්වන්න" />
                 </div>
 
                 <div className="premium-contact-form-grid">
                   <label className="premium-contact-field">
-                    <span>නම</span>
+                    <ContactBilingualText english="Name" sinhala="නම" />
                     <input
                       type="text"
                       name="name"
-                      placeholder="ඔබගේ නම"
+                      placeholder="ඔබගේ නම / Your name"
                       value={contactForm.name}
                       onChange={handleContactFormChange}
                       required
@@ -1085,11 +1099,11 @@ export function HomePage() {
                   </label>
 
                   <label className="premium-contact-field">
-                    <span>දුරකථන අංකය</span>
+                    <ContactBilingualText english="Phone number" sinhala="දුරකථන අංකය" />
                     <input
                       type="tel"
                       name="phone"
-                      placeholder="+94 7X XXX XXXX"
+                      placeholder="+94 7X XXX XXXX / Phone number"
                       value={contactForm.phone}
                       onChange={handleContactFormChange}
                       required
@@ -1098,21 +1112,21 @@ export function HomePage() {
                 </div>
 
                 <label className="premium-contact-field">
-                  <span>උත්සව වර්ගය</span>
+                  <ContactBilingualText english="Event type" sinhala="උත්සව වර්ගය" />
                   <input
                     type="text"
                     name="eventType"
-                    placeholder="මංගල උත්සවය / දාන පිංකම / නිවසේ උත්සවය"
+                    placeholder="මංගල උත්සවය / දාන පිංකම / නිවසේ උත්සවය / Event type"
                     value={contactForm.eventType}
                     onChange={handleContactFormChange}
                   />
                 </label>
 
                 <label className="premium-contact-field">
-                  <span>පණිවිඩය</span>
+                  <ContactBilingualText english="Message" sinhala="පණිවිඩය" />
                   <textarea
                     name="message"
-                    placeholder="ඔබගේ අවශ්‍ය විස්තර මෙහි සදහන් කරන්න"
+                    placeholder="ඔබගේ අවශ්‍ය විස්තර මෙහි සදහන් කරන්න / Write your requirement here"
                     value={contactForm.message}
                     onChange={handleContactFormChange}
                     rows={6}
@@ -1121,14 +1135,14 @@ export function HomePage() {
                 </label>
 
                 <button type="submit" className="premium-contact-submit">
-                  <span>පණිවිඩය යවන්න</span>
+                  <ContactBilingualText english="Send message" sinhala="පණිවිඩය යවන්න" />
                   <span className="premium-contact-submit-icon" aria-hidden="true">
                     <Send size={18} />
                   </span>
                 </button>
                 {contactStatus ? (
                   <div className={`premium-contact-alert is-${contactStatusType}`} role="alert">
-                    {contactStatus}
+                    <ContactBilingualText english={contactStatusEnglish} sinhala={contactStatus} />
                   </div>
                 ) : null}
               </form>

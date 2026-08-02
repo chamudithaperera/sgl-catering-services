@@ -1925,6 +1925,28 @@
   gap: 12px;
 }
 
+.premium-contact-bilingual {
+  display: inline-grid;
+  justify-items: start;
+  gap: 3px;
+  text-align: left;
+}
+
+.premium-contact-bilingual small {
+  color: rgba(255, 248, 239, 0.58);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: 0.86em;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.premium-contact-form-head h3 small {
+  font-size: clamp(0.98rem, 1.35vw, 1.12rem);
+  font-weight: 650;
+  line-height: 1.35;
+}
+
 .premium-contact-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1936,7 +1958,7 @@
   gap: 10px;
 }
 
-.premium-contact-field span {
+.premium-contact-field > .premium-contact-bilingual {
   color: var(--text-main);
   font-size: 0.92rem;
   font-weight: 600;
@@ -1982,7 +2004,7 @@
   justify-content: center;
   gap: 12px;
   min-height: 58px;
-  padding: 0 24px;
+  padding: 8px 24px;
   border: 1px solid rgba(var(--accent-rgb), 0.22);
   border-radius: 999px;
   background: linear-gradient(180deg, var(--accent-primary-light) 0%, var(--accent-primary) 100%);
@@ -1993,6 +2015,16 @@
     transform 0.22s ease,
     box-shadow 0.22s ease,
     filter 0.22s ease;
+}
+
+.premium-contact-submit .premium-contact-bilingual {
+  justify-items: center;
+  text-align: center;
+}
+
+.premium-contact-submit .premium-contact-bilingual small {
+  color: rgba(255, 248, 239, 0.72);
+  font-size: 0.8em;
 }
 
 .premium-contact-submit:hover {
@@ -2014,6 +2046,10 @@
   font-size: 0.94rem;
   line-height: 1.55;
   font-weight: 700;
+}
+
+.premium-contact-alert .premium-contact-bilingual {
+  gap: 4px;
 }
 
 .premium-contact-alert.is-success {
