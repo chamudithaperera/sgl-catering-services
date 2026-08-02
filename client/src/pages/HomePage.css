@@ -1828,20 +1828,12 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
-.premium-contact-card div {
-  display: grid;
-  gap: 5px;
-}
-
-.premium-contact-card strong {
-  font-size: 1rem;
-  font-weight: 700;
+.premium-contact-number {
   color: var(--text-main);
-}
-
-.premium-contact-card span {
-  color: var(--text-muted);
-  line-height: 1.68;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: clamp(1.02rem, 1.2vw, 1.14rem);
+  font-weight: 750;
+  line-height: 1.4;
 }
 
 .premium-contact-actions {
@@ -2753,7 +2745,7 @@
 
   .premium-contact-intro p,
   .premium-contact-form-head p,
-  .premium-contact-card span {
+  .premium-contact-number {
     font-size: 0.96rem;
     line-height: 1.72;
   }

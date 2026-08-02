@@ -66,24 +66,6 @@ function buildTelUrl(phoneNumber) {
   return digits ? `tel:${digits}` : "#contact";
 }
 
-function formatPhoneLabel(phoneNumber) {
-  const digits = phoneNumber?.replace(/[^\d]/g, "");
-
-  if (!digits) {
-    return phoneNumber || "";
-  }
-
-  if (digits.length === 10 && digits.startsWith("0")) {
-    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
-  }
-
-  if (digits.length === 11 && digits.startsWith("94")) {
-    return `+94 ${digits.slice(2, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
-  }
-
-  return phoneNumber;
-}
-
 function buildExternalUrl(url) {
   if (!url) {
     return "";
@@ -348,15 +330,9 @@ export function HomePage() {
     score: Number(review.rating || 5).toFixed(1),
     quote: review.quote,
   }));
-  const homepagePhone = siteConfig?.phone || "";
-  const homepageSecondaryPhone = siteConfig?.secondaryPhone || "";
-  const homepageTertiaryPhone = siteConfig?.tertiaryPhone || "";
-  const homepagePhoneCards = [
-    { label: "ප්‍රධාන දුරකථනය", value: homepagePhone },
-    { label: "දුරකථනය 2", value: homepageSecondaryPhone },
-    { label: "දුරකථනය 3", value: homepageTertiaryPhone },
-  ].filter((phoneCard) => phoneCard.value);
-  const homepageWhatsapp = siteConfig?.whatsapp || homepagePhone;
+  const homepagePhone = "0703324350";
+  const homepagePhoneNumbers = ["0703324350", "0252227538", "0703324500"];
+  const homepageWhatsapp = homepagePhone;
   const homepageWhatsappUrl = buildWhatsappUrl(homepageWhatsapp);
   const homepageEmail = siteConfig?.email || "";
   const homepageMapUrl = siteConfig?.mapUrl || "";
@@ -368,7 +344,7 @@ export function HomePage() {
   const seoTitle = [heroText.titleEnglish, heroText.titleSinhala].filter(Boolean).join(" | ");
   const seoDescription = heroText.descriptionEnglish || heroText.descriptionSinhala || aboutText.descriptionEnglish || aboutText.descriptionSinhala;
   const homepageStructuredData = buildHomepageStructuredData({
-    siteConfig,
+    siteConfig: { ...siteConfig, phone: homepagePhone },
     heroText,
     heroSlides,
     mapEmbedUrl: homepageMapEmbedUrl,
@@ -1049,15 +1025,12 @@ export function HomePage() {
               </div>
 
               <div className="premium-contact-cards">
-                {homepagePhoneCards.map((phoneCard) => (
-                  <a className="premium-contact-card" href={buildTelUrl(phoneCard.value)} key={phoneCard.label}>
+                {homepagePhoneNumbers.map((phoneNumber) => (
+                  <a className="premium-contact-card" href={buildTelUrl(phoneNumber)} key={phoneNumber}>
                     <span className="premium-contact-card-icon" aria-hidden="true">
                       <PhoneCall size={18} />
                     </span>
-                    <div>
-                      <strong>{phoneCard.label}</strong>
-                      <span>{formatPhoneLabel(phoneCard.value)}</span>
-                    </div>
+                    <span className="premium-contact-number">{phoneNumber}</span>
                   </a>
                 ))}
               </div>
