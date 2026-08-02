@@ -1028,7 +1028,12 @@ export function HomePage() {
           <div className="premium-contact-heading premium-reveal premium-reveal-heading" data-reveal>
             <span>{contactText.titleEnglish}</span>
             <h2>{contactText.titleSinhala}</h2>
-            <p>{contactText.descriptionSinhala}</p>
+            {contactText.descriptionSinhala || contactText.descriptionEnglish ? (
+              <div className="premium-contact-heading-copy">
+                {contactText.descriptionSinhala ? <p>{contactText.descriptionSinhala}</p> : null}
+                {contactText.descriptionEnglish ? <p>{contactText.descriptionEnglish}</p> : null}
+              </div>
+            ) : null}
           </div>
 
           <div className="premium-contact-layout">

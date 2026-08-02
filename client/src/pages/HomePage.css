@@ -581,6 +581,7 @@
   font-size: clamp(1rem, 1.85vw, 1.12rem);
   line-height: 1.88;
   color: var(--text-muted);
+  white-space: pre-line;
 }
 
 .premium-services-grid {
@@ -1717,13 +1718,26 @@
   color: var(--text-main);
 }
 
-.premium-contact-heading p {
+.premium-contact-heading-copy {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
   max-width: 760px;
+}
+
+.premium-contact-heading-copy p {
   margin: 0;
   font-family: "Yaldevi", "Noto Sans Sinhala", "Iskoola Pota", "Nirmala UI", sans-serif;
   font-size: clamp(1rem, 1.85vw, 1.12rem);
   line-height: 1.88;
   color: var(--text-muted);
+}
+
+.premium-contact-heading-copy p + p {
+  color: rgba(255, 248, 239, 0.62);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: clamp(0.95rem, 1.2vw, 1.04rem);
+  line-height: 1.72;
 }
 
 .premium-contact-layout {
@@ -2621,9 +2635,14 @@
     line-height: 1.76;
   }
 
-  .premium-contact-heading p {
+  .premium-contact-heading-copy p {
     font-size: 0.98rem;
     line-height: 1.76;
+  }
+
+  .premium-contact-heading-copy p + p {
+    font-size: 0.92rem;
+    line-height: 1.62;
   }
 
   .premium-service-card {

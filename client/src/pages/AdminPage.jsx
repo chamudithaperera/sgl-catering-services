@@ -58,6 +58,12 @@ const webTextFields = {
     { name: "titleSinhala", label: "Title Sinhala" },
     { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
   ],
+  bilingualSection: [
+    { name: "titleEnglish", label: "Title English" },
+    { name: "titleSinhala", label: "Title Sinhala" },
+    { name: "descriptionSinhala", label: "Description Sinhala", type: "textarea" },
+    { name: "descriptionEnglish", label: "Description English", type: "textarea" },
+  ],
   pageHero: [
     { name: "titleSinhala", label: "Title Sinhala" },
     { name: "titleEnglish", label: "Title English" },
@@ -229,7 +235,7 @@ const resourceConfigs = [
     key: "contactTexts",
     label: "Contact us",
     textKey: "contact",
-    fields: webTextFields.section,
+    fields: webTextFields.bilingualSection,
     eyebrow: "Homepage contact section text",
     layout: "formOnly",
   }),

@@ -109,6 +109,15 @@ Object.assign(webTextDefaults, {
     descriptionEnglish:
       "SGL Catering Service brings careful preparation, warm service, and trusted Sri Lankan flavour to every event.",
   },
+  contact: {
+    textKey: "contact",
+    titleSinhala: "අප අමතන්න",
+    titleEnglish: "Reach out to SGL",
+    descriptionSinhala:
+      "ඔබගේ විශේෂ අවස්ථාව සාර්ථක කර ගැනීමට අපි සැමවිටම සූදානම්. ආහාර සැපයුම් සේවා, උත්සව උපකරණ කුලියට ගැනීම, මිල ගණන් විමසීම හෝ වෙන්කරවා ගැනීම සඳහා අදම අප හා සම්බන්ධ වන්න. ඔබට සහාය වීමට අපගේ මිත්‍රශීලී කණ්ඩායම සැමවිටම සූදානමින් සිටී.\nඔබගේ මීළඟ උත්සවයේ විශ්වාසදායක සහකරු වීමට අපි සතුටින් බලාපොරොත්තු වෙමු!",
+    descriptionEnglish:
+      "We're here to help make your special occasion a success. Contact us to discuss your catering or rental requirements, request a quotation, or make a booking. Our friendly team is always ready to assist you.\nGet in touch today—we'd love to be part of your next celebration!",
+  },
 });
 
 function buildWebTextFallback(textKey) {
