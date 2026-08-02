@@ -331,8 +331,14 @@ function ContactBand({ page, anchorId, contact }) {
         <div className="service-contact-panel">
           <div className="service-contact-copy">
             <span>{page.consultation.eyebrow}</span>
-            <h2>{page.consultation.title}</h2>
-            <p>{page.consultation.description}</p>
+            <h2>
+              {page.consultation.title ? <span>{page.consultation.title}</span> : null}
+              {page.consultation.englishTitle ? <small>{page.consultation.englishTitle}</small> : null}
+            </h2>
+            <div className="service-contact-descriptions">
+              {page.consultation.description ? <p>{page.consultation.description}</p> : null}
+              {page.consultation.englishDescription ? <p>{page.consultation.englishDescription}</p> : null}
+            </div>
           </div>
 
           <div className="service-contact-actions">

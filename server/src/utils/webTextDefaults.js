@@ -62,8 +62,9 @@ Object.assign(webTextDefaults, {
     titleSinhala: "වෙන්කරවා ගැනීමට අප අමතන්න",
     titleEnglish: "Booking Support",
     descriptionSinhala:
-      "ඔබේ උත්සව දිනය, අමුත්තන් ගණන සහ අවශ්‍ය මෙනුව අපට දන්වන්න. සුදුසු ආහාර ප්‍රමාණය, සේවා සැලැස්ම සහ මිල ගණන් පිළිබඳව අපි ඔබට පැහැදිලි උපදෙස් ලබා දෙන්නෙමු.",
-    descriptionEnglish: "",
+      "අපගේ ආහාර සැපයුම් සේවාව පිළිබඳ ඔබ උනන්දුවක් දක්වන්නේද? ඔබගේ උත්සවය සඳහා අවශ්‍ය මෙනුව සාකච්ඡා කර ඇණවුම් කිරීමට අදම අප හා සම්බන්ධ වන්න. ඔබගේ විශේෂ දිනය සාර්ථක කර ගැනීමට අපි සූදානම්.",
+    descriptionEnglish:
+      "Interested in our catering services? Contact us today to discuss your event, customize your menu, and place your order. We're happy to help make your special occasion unforgettable.",
   },
   rentingPageHero: {
     textKey: "rentingPageHero",
@@ -88,8 +89,9 @@ Object.assign(webTextDefaults, {
     titleSinhala: "කුලියට ගැනීමට පෙර විස්තර දැනගන්න",
     titleEnglish: "Rental Support",
     descriptionSinhala:
-      "ඔබට අවශ්‍ය උපකරණ, ප්‍රමාණය සහ උත්සව දිනය අපට දන්වන්න. ලබා ගැනීමේ හැකියාව, ගාස්තු සහ භාරදීමේ විස්තර පිළිබඳව අපි ඉක්මනින් මගපෙන්වන්නෙමු.",
-    descriptionEnglish: "",
+      "ඔබගේ උත්සවය සඳහා කුලී උපකරණ අවශ්‍යද? ලබා ගත හැකි උපකරණ පිළිබඳ විමසීමට, ඔබගේ අවශ්‍යතා සාකච්ඡා කිරීමට සහ වෙන්කරවා ගැනීමට අදම අප හා සම්බන්ධ වන්න. අපි ඔබට සහාය වීමට සූදානම්.",
+    descriptionEnglish:
+      "Need rental items for your event? Contact us today to check availability, discuss your requirements, and make your reservation. We're here to help.",
   },
   reviews: {
     textKey: "reviews",
