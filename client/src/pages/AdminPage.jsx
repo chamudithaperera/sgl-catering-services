@@ -99,16 +99,16 @@ const resourceConfigs = [
   {
     key: "siteConfig",
     label: "Contact Details",
-    eyebrow: "Phone numbers, WhatsApp, email, address, hours, map, and social links",
+    eyebrow: "Contact numbers, WhatsApp, email, address, hours, map, and social links",
     endpoint: "/admin/site-config",
     icon: Settings2,
     singleton: true,
     form: siteConfigForm,
     fields: [
-      { name: "phone", label: "Phone" },
-      { name: "whatsapp", label: "WhatsApp" },
-      { name: "secondaryPhone", label: "Phone 2" },
-      { name: "tertiaryPhone", label: "Phone 3" },
+      { name: "phone", label: "Call button number" },
+      { name: "whatsapp", label: "WhatsApp number" },
+      { name: "secondaryPhone", label: "Landline number" },
+      { name: "tertiaryPhone", label: "Additional mobile number" },
       { name: "email", label: "Email", type: "email" },
       { name: "address", label: "Address", type: "textarea" },
       { name: "businessHours", label: "Business hours" },
@@ -117,9 +117,9 @@ const resourceConfigs = [
       { name: "instagramUrl", label: "Instagram URL" },
     ],
     columns: [
-      { name: "phone", label: "Phone" },
-      { name: "secondaryPhone", label: "Phone 2" },
-      { name: "tertiaryPhone", label: "Phone 3" },
+      { name: "phone", label: "Call" },
+      { name: "secondaryPhone", label: "Landline" },
+      { name: "tertiaryPhone", label: "Mobile" },
       { name: "email", label: "Email" },
     ],
   },
@@ -1285,10 +1285,10 @@ export function AdminPage() {
   function renderContactProfile(config) {
     const contact = forms[config.key] || {};
     const profileItems = [
-      { label: "Phone", value: contact.phone },
+      { label: "Call button", value: contact.phone },
       { label: "WhatsApp", value: contact.whatsapp },
-      { label: "Phone 2", value: contact.secondaryPhone },
-      { label: "Phone 3", value: contact.tertiaryPhone },
+      { label: "Landline", value: contact.secondaryPhone },
+      { label: "Additional mobile", value: contact.tertiaryPhone },
       { label: "Email", value: contact.email },
       { label: "Address", value: contact.address },
       { label: "Map URL", value: contact.mapUrl },

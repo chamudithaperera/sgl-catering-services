@@ -5,10 +5,10 @@ const { webTextDefaults } = require("../src/utils/webTextDefaults");
 const prisma = new PrismaClient();
 
 const contactDetails = {
-  phone: "",
-  whatsapp: "",
-  secondaryPhone: "",
-  tertiaryPhone: "",
+  phone: "0703324350",
+  whatsapp: "0703324350",
+  secondaryPhone: "0252227538",
+  tertiaryPhone: "0703324500",
   email: "",
   address: "",
   businessHours: "",

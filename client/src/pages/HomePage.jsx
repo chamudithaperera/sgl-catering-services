@@ -330,9 +330,9 @@ export function HomePage() {
     score: Number(review.rating || 5).toFixed(1),
     quote: review.quote,
   }));
-  const homepagePhone = "0703324350";
-  const homepagePhoneNumbers = ["0703324350", "0252227538", "0703324500"];
-  const homepageWhatsapp = homepagePhone;
+  const homepagePhone = siteConfig?.phone || "";
+  const homepagePhoneNumbers = [siteConfig?.phone, siteConfig?.secondaryPhone, siteConfig?.tertiaryPhone].filter(Boolean);
+  const homepageWhatsapp = siteConfig?.whatsapp || homepagePhone;
   const homepageWhatsappUrl = buildWhatsappUrl(homepageWhatsapp);
   const homepageEmail = siteConfig?.email || "";
   const homepageMapUrl = siteConfig?.mapUrl || "";
@@ -344,7 +344,7 @@ export function HomePage() {
   const seoTitle = [heroText.titleEnglish, heroText.titleSinhala].filter(Boolean).join(" | ");
   const seoDescription = heroText.descriptionEnglish || heroText.descriptionSinhala || aboutText.descriptionEnglish || aboutText.descriptionSinhala;
   const homepageStructuredData = buildHomepageStructuredData({
-    siteConfig: { ...siteConfig, phone: homepagePhone },
+    siteConfig,
     heroText,
     heroSlides,
     mapEmbedUrl: homepageMapEmbedUrl,
