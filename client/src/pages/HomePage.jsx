@@ -935,22 +935,25 @@ export function HomePage() {
               <span>{whyChooseText.titleEnglish || "Why Choose us"}</span>
               <h2>{whyChooseText.titleSinhala || "අප තෝරාගත යුත්තේ ඇයි"}</h2>
               {whyChooseText.descriptionSinhala || whyChooseText.descriptionEnglish ? (
-                <p>{whyChooseText.descriptionSinhala || whyChooseText.descriptionEnglish}</p>
+                <div className="premium-why-description">
+                  {whyChooseText.descriptionSinhala ? <p>{whyChooseText.descriptionSinhala}</p> : null}
+                  {whyChooseText.descriptionEnglish ? <p>{whyChooseText.descriptionEnglish}</p> : null}
+                </div>
               ) : null}
             </div>
 
-            <div className="premium-why-grid" role="list">
+            <div className="premium-why-points" role="list">
               {whyChooseItems.map((item, index) => (
-                <article className="premium-why-card premium-reveal premium-reveal-choice" data-reveal key={`${index}-${item.english}-${item.sinhala}`} role="listitem">
-                  <div className="premium-why-card-top">
+                <article className="premium-why-point premium-reveal premium-reveal-choice" data-reveal key={`${index}-${item.english}-${item.sinhala}`} role="listitem">
+                  <div className="premium-why-point-marker">
                     <span className="premium-why-icon" aria-hidden="true">
                       <CheckCircle2 size={20} />
                     </span>
                     <span className="premium-why-index">{String(index + 1).padStart(2, "0")}</span>
                   </div>
-                  <div className="premium-why-card-copy">
-                    {item.english ? <strong>{item.english}</strong> : null}
-                    {item.sinhala ? <p>{item.sinhala}</p> : null}
+                  <div className="premium-why-point-copy">
+                    {item.sinhala ? <strong>{item.sinhala}</strong> : null}
+                    {item.english ? <p>{item.english}</p> : null}
                   </div>
                 </article>
               ))}
