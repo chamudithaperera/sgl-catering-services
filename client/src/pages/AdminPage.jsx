@@ -532,7 +532,7 @@ const resourceTabByKey = {
 };
 
 const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "reviews"];
-const sortableKeys = [...popupCrudKeys, "whyChooseItems"];
+const sortableKeys = [...popupCrudKeys, "galleryItems", "whyChooseItems"];
 
 const serviceImageSlots = [
   { key: "catering", title: "Catering", sortOrder: 1 },
