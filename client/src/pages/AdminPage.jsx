@@ -42,6 +42,9 @@ const siteConfigForm = {
   instagramUrl: "",
 };
 
+const IMAGE_UPLOAD_ACCEPT = "image/*,.jpg,.jpeg,.png,.webp,.gif,.svg,.avif,.bmp,.heic,.heif,.tif,.tiff";
+const OPTIMIZABLE_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/avif", "image/bmp"]);
+
 const webTextFields = {
   hero: [
     { name: "titleSinhala", label: "Title Sinhala" },
@@ -661,38 +664,45 @@ function loadImageFromFile(file) {
 }
 
 async function optimizeImageBeforeUpload(file) {
-  if (!file.type.startsWith("image/") || file.type === "image/gif" || file.type === "image/svg+xml") {
+  const mimeType = String(file.type || "").toLowerCase();
+
+  if (!mimeType.startsWith("image/") || !OPTIMIZABLE_IMAGE_TYPES.has(mimeType)) {
     return file;
   }
 
-  const image = await loadImageFromFile(file);
-  const largestSide = Math.max(image.naturalWidth, image.naturalHeight);
-  const scale = largestSide > 1600 ? 1600 / largestSide : 1;
-  const width = Math.round(image.naturalWidth * scale);
-  const height = Math.round(image.naturalHeight * scale);
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
+  try {
+    const image = await loadImageFromFile(file);
+    const largestSide = Math.max(image.naturalWidth, image.naturalHeight);
+    const scale = largestSide > 1600 ? 1600 / largestSide : 1;
+    const width = Math.round(image.naturalWidth * scale);
+    const height = Math.round(image.naturalHeight * scale);
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
 
-  if (!context) {
+    if (!context) {
+      return file;
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(image, 0, 0, width, height);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.72));
+
+    if (!blob || blob.size >= file.size) {
+      return file;
+    }
+
+    const fileName = `${file.name.replace(/\.[^.]+$/, "")}.jpg`;
+
+    return new File([blob], fileName, {
+      lastModified: Date.now(),
+      type: "image/jpeg",
+    });
+  } catch (error) {
+    console.warn("Skipping client-side image optimization for unsupported file type.", error);
     return file;
   }
-
-  canvas.width = width;
-  canvas.height = height;
-  context.drawImage(image, 0, 0, width, height);
-
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.72));
-
-  if (!blob || blob.size >= file.size) {
-    return file;
-  }
-
-  const fileName = `${file.name.replace(/\.[^.]+$/, "")}.jpg`;
-
-  return new File([blob], fileName, {
-    lastModified: Date.now(),
-    type: "image/jpeg",
-  });
 }
 
 async function uploadImage(token, file) {
@@ -1229,7 +1239,7 @@ export function AdminPage() {
             <label>
               <ImageUp size={16} />
               <span>Upload</span>
-              <input accept="image/*" onChange={(event) => handleFileChange(config, field, event.target.files?.[0])} type="file" />
+              <input accept={IMAGE_UPLOAD_ACCEPT} onChange={(event) => handleFileChange(config, field, event.target.files?.[0])} type="file" />
             </label>
             {value ? <img alt="" src={value} /> : null}
           </div>
@@ -1400,7 +1410,7 @@ export function AdminPage() {
               )}
               <strong>{slot.title}</strong>
               <input
-                accept="image/*"
+                accept={IMAGE_UPLOAD_ACCEPT}
                 disabled={busy}
                 onChange={(event) => {
                   handleServiceImageUpload(config, slot, event.target.files?.[0]);

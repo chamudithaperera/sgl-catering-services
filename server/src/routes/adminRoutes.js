@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
+const sharp = require("sharp");
 const { prisma } = require("../config/prisma");
 const { requireAuth } = require("../middleware/auth");
 const {
@@ -22,6 +23,57 @@ if (!fs.existsSync(uploadsDirectory)) {
   fs.mkdirSync(uploadsDirectory, { recursive: true });
 }
 
+const acceptedImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif", ".bmp", ".heic", ".heif", ".tif", ".tiff"]);
+const passthroughImageMimeTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml", "image/avif"]);
+const passthroughImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif"]);
+
+function getImageExtension(fileName = "") {
+  return path.extname(fileName).toLowerCase();
+}
+
+function isAcceptedImageUpload(file) {
+  const mimeType = String(file.mimetype || "").toLowerCase();
+  const extension = getImageExtension(file.originalname);
+
+  return mimeType.startsWith("image/") || acceptedImageExtensions.has(extension);
+}
+
+function shouldKeepOriginalUpload(file) {
+  const mimeType = String(file.mimetype || "").toLowerCase();
+  const extension = getImageExtension(file.originalname);
+
+  return passthroughImageMimeTypes.has(mimeType) || passthroughImageExtensions.has(extension);
+}
+
+async function normalizeUploadedImage(file) {
+  if (shouldKeepOriginalUpload(file)) {
+    return file;
+  }
+
+  const convertedFileName = `${path.parse(file.filename).name}.jpg`;
+  const convertedFilePath = path.join(uploadsDirectory, convertedFileName);
+
+  try {
+    await sharp(file.path)
+      .rotate()
+      .flatten({ background: "#ffffff" })
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toFile(convertedFilePath);
+
+    await fs.promises.unlink(file.path);
+
+    return {
+      ...file,
+      filename: convertedFileName,
+      mimetype: "image/jpeg",
+      path: convertedFilePath,
+    };
+  } catch (error) {
+    await fs.promises.rm(convertedFilePath, { force: true });
+    throw new Error("This image format could not be processed for the website.");
+  }
+}
+
 const storage = multer.diskStorage({
   destination: uploadsDirectory,
   filename: (request, file, callback) => {
@@ -36,7 +88,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   fileFilter: (request, file, callback) => {
-    if (!file.mimetype.startsWith("image/")) {
+    if (!isAcceptedImageUpload(file)) {
       callback(new Error("Only image uploads are allowed"));
       return;
     }
@@ -155,16 +207,17 @@ router.get("/dashboard", async (request, response) => {
   });
 });
 
-router.post("/upload", upload.single("image"), (request, response) => {
+router.post("/upload", upload.single("image"), async (request, response) => {
   if (!request.file) {
     return response.status(400).json({ message: "No file uploaded" });
   }
 
-  const fileUrl = `${request.protocol}://${request.get("host")}/uploads/${request.file.filename}`;
+  const processedFile = await normalizeUploadedImage(request.file);
+  const fileUrl = `${request.protocol}://${request.get("host")}/uploads/${processedFile.filename}`;
 
   response.status(201).json({
     url: fileUrl,
-    filename: request.file.filename,
+    filename: processedFile.filename,
   });
 });
 
