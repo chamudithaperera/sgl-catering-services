@@ -63,9 +63,9 @@ const rentalItemSchema = z.object({
 });
 
 const galleryItemSchema = z.object({
-  title: z.string().min(2),
+  title: z.string().trim().optional().default(""),
   imageUrl: z.string().min(2),
-  sortOrder: z.coerce.number().int().min(0).default(0),
+  sortOrder: z.coerce.number().int().min(0).optional().default(0),
 });
 
 const whyChooseItemSchema = z.object({

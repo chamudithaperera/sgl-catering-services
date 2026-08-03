@@ -43,6 +43,7 @@ const siteConfigForm = {
 };
 
 const IMAGE_UPLOAD_ACCEPT = "image/*,.jpg,.jpeg,.png,.webp,.gif,.svg,.avif,.bmp,.heic,.heif,.tif,.tiff";
+const IMAGE_UPLOAD_EXTENSION_PATTERN = /\.(jpg|jpeg|png|webp|gif|svg|avif|bmp|heic|heif|tif|tiff)$/i;
 const OPTIMIZABLE_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/avif", "image/bmp"]);
 
 const webTextFields = {
@@ -530,7 +531,7 @@ const resourceTabByKey = {
   rentingPageConsultationTexts: "rentingPageTexts",
 };
 
-const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "galleryItems", "reviews"];
+const popupCrudKeys = ["foodPackages", "rentalItems", "bannerImages", "aboutImages", "reviews"];
 const sortableKeys = [...popupCrudKeys, "whyChooseItems"];
 
 const serviceImageSlots = [
@@ -663,6 +664,13 @@ function loadImageFromFile(file) {
   });
 }
 
+function isSupportedImageFile(file) {
+  const mimeType = String(file?.type || "").toLowerCase();
+  const fileName = String(file?.name || "");
+
+  return mimeType.startsWith("image/") || IMAGE_UPLOAD_EXTENSION_PATTERN.test(fileName);
+}
+
 async function optimizeImageBeforeUpload(file) {
   const mimeType = String(file.type || "").toLowerCase();
 
@@ -713,6 +721,18 @@ async function uploadImage(token, file) {
   return response.data.url;
 }
 
+async function uploadImages(token, files) {
+  const uploadFiles = await Promise.all(Array.from(files || []).map((file) => optimizeImageBeforeUpload(file)));
+  const formData = new FormData();
+
+  uploadFiles.forEach((file) => {
+    formData.append("images", file);
+  });
+
+  const response = await api.post("/admin/upload/bulk", formData, adminRequest(token));
+  return response.data.files || [];
+}
+
 export function AdminPage() {
   const [token, setToken] = useState(() => window.localStorage.getItem("sgl-admin-token") || "");
   const [loginForm, setLoginForm] = useState({ email: "sgladmin", password: "" });
@@ -737,11 +757,13 @@ export function AdminPage() {
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [galleryDropActive, setGalleryDropActive] = useState(false);
   const dragStateRef = useRef({ completed: false, originalRows: [] });
   const dirtyFormsRef = useRef({});
   const editingIdsRef = useRef({});
   const crudModalKeyRef = useRef("");
   const contactEditingRef = useRef(false);
+  const galleryUploadInputRef = useRef(null);
 
   const activeResourceKey = groupedSections[activeKey]?.tabs.find((tab) => tab.key === activeGroupTabs[activeKey])?.key || activeKey;
   const activeGroup = groupedSections[activeKey];
@@ -750,6 +772,7 @@ export function AdminPage() {
   const crudModalConfig = useMemo(() => resourceConfigs.find((config) => config.key === crudModalKey), [crudModalKey]);
   const usesPopupCrud = Boolean(activeConfig && popupCrudKeys.includes(activeConfig.key));
   const usesFixedServiceImageCards = activeConfig?.key === "serviceImages";
+  const usesGalleryBulkUpload = activeConfig?.key === "galleryItems";
   const usesWebTextFormOnly = activeConfig?.webTextLayout === "formOnly";
   const usesServicesTextEditor = activeConfig?.webTextLayout === "services";
   const activeTitle = activeGroup?.label || activeConfig?.label || "Dashboard";
@@ -1142,6 +1165,52 @@ export function AdminPage() {
     }
   }
 
+  async function handleGalleryBulkUpload(config, fileList) {
+    const files = Array.from(fileList || []).filter((file) => file && isSupportedImageFile(file));
+
+    if (!files.length) return;
+
+    try {
+      setBusy(true);
+      setStatusMessage("");
+      setErrorMessage("");
+      setGalleryDropActive(false);
+
+      const uploadedFiles = await uploadImages(token, files);
+      await api.post(
+        `${config.endpoint}/bulk`,
+        {
+          items: uploadedFiles.map((item) => ({
+            imageUrl: item.url,
+            title: item.filename,
+          })),
+        },
+        adminRequest(token),
+      );
+
+      await loadAdminData(token);
+      setStatusMessage(`${files.length} gallery image${files.length === 1 ? "" : "s"} uploaded successfully.`);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(getAdminErrorMessage(error, "Gallery image upload failed."));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function handleGalleryDropZoneDrag(event) {
+    event.preventDefault();
+    setGalleryDropActive(true);
+  }
+
+  function handleGalleryDropZoneLeave(event) {
+    if (event.currentTarget.contains(event.relatedTarget)) {
+      return;
+    }
+
+    setGalleryDropActive(false);
+  }
+
   function handleLogout() {
     window.localStorage.removeItem("sgl-admin-token");
     setToken("");
@@ -1366,6 +1435,7 @@ export function AdminPage() {
             </div>
             <div className="sgla-gallery-body">
               <div>
+                {config.key === "galleryItems" ? <p>Display order #{item.sortOrder}</p> : null}
                 <h3>{item.title}</h3>
                 <span>{item.imageUrl}</span>
               </div>
@@ -1373,9 +1443,11 @@ export function AdminPage() {
                 <button className="sgla-drag-handle" title="Drag to reorder" type="button">
                   <img alt="" src="/assets/admin-move-icon.png" />
                 </button>
-                <button onClick={() => beginEdit(config, item)} title="Edit" type="button">
-                  <Pencil size={16} />
-                </button>
+                {config.key === "galleryItems" ? null : (
+                  <button onClick={() => beginEdit(config, item)} title="Edit" type="button">
+                    <Pencil size={16} />
+                  </button>
+                )}
                 <button onClick={() => handleDelete(config, item)} title="Delete" type="button">
                   <Trash2 size={16} />
                 </button>
@@ -1390,6 +1462,51 @@ export function AdminPage() {
           </div>
         ) : null}
       </div>
+    );
+  }
+
+  function renderGalleryManager(config) {
+    return (
+      <>
+        <div
+          className={`sgla-gallery-upload-dropzone${galleryDropActive ? " is-active" : ""}${busy ? " is-busy" : ""}`}
+          onDragEnter={handleGalleryDropZoneDrag}
+          onDragLeave={handleGalleryDropZoneLeave}
+          onDragOver={handleGalleryDropZoneDrag}
+          onDrop={(event) => {
+            event.preventDefault();
+            handleGalleryBulkUpload(config, event.dataTransfer?.files);
+          }}
+        >
+          <input
+            accept={IMAGE_UPLOAD_ACCEPT}
+            multiple
+            onChange={(event) => {
+              handleGalleryBulkUpload(config, event.target.files);
+              event.target.value = "";
+            }}
+            ref={galleryUploadInputRef}
+            type="file"
+          />
+          <div className="sgla-gallery-upload-copy">
+            <span className="sgla-gallery-upload-icon">
+              <ImageUp size={22} />
+            </span>
+            <div>
+              <strong>Bulk upload gallery images</strong>
+              <p>Drop multiple images here or choose them from your computer. New images are added to the end automatically.</p>
+            </div>
+          </div>
+          <div className="sgla-gallery-upload-actions">
+            <button className="sgla-primary-button" disabled={busy} onClick={() => galleryUploadInputRef.current?.click()} type="button">
+              <ImageUp size={17} />
+              {busy ? "Uploading..." : "Choose images"}
+            </button>
+            <span>Drag and drop is enabled. You can reorder the gallery later by dragging the cards.</span>
+          </div>
+        </div>
+        {renderGalleryCards(config)}
+      </>
     );
   }
 
@@ -1779,8 +1896,8 @@ export function AdminPage() {
           ) : usesServicesTextEditor ? (
             renderServicesTextEditor(activeConfig)
           ) : (
-          <section className={`sgla-crud-grid ${activeConfig.readOnly || usesPopupCrud || usesFixedServiceImageCards ? "is-full" : ""}`}>
-            {!activeConfig.readOnly && !usesPopupCrud && !usesFixedServiceImageCards ? renderCrudForm(activeConfig) : null}
+          <section className={`sgla-crud-grid ${activeConfig.readOnly || usesPopupCrud || usesFixedServiceImageCards || usesGalleryBulkUpload ? "is-full" : ""}`}>
+            {!activeConfig.readOnly && !usesPopupCrud && !usesFixedServiceImageCards && !usesGalleryBulkUpload ? renderCrudForm(activeConfig) : null}
 
             <section className="sgla-panel sgla-table-panel">
               <div className="sgla-panel-head">
@@ -1791,6 +1908,11 @@ export function AdminPage() {
                 {activeConfig.readOnly ? (
                   <button className="sgla-light-button" onClick={() => loadAdminData(token)} type="button">
                     Refresh
+                  </button>
+                ) : usesGalleryBulkUpload ? (
+                  <button className="sgla-primary-button" disabled={busy} onClick={() => galleryUploadInputRef.current?.click()} type="button">
+                    <ImageUp size={17} />
+                    {busy ? "Uploading..." : "Bulk upload"}
                   </button>
                 ) : usesPopupCrud ? (
                   <button
@@ -1809,7 +1931,9 @@ export function AdminPage() {
               </div>
               {activeConfig.key === "serviceImages" ? (
                 renderServiceImageCards(activeConfig)
-              ) : ["bannerImages", "aboutImages", "galleryItems"].includes(activeConfig.key) ? (
+              ) : activeConfig.key === "galleryItems" ? (
+                renderGalleryManager(activeConfig)
+              ) : ["bannerImages", "aboutImages"].includes(activeConfig.key) ? (
                 renderGalleryCards(activeConfig)
               ) : (
                 <div className="sgla-table-wrap">

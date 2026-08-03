@@ -29,9 +29,80 @@ const heicImageExtensions = new Set([".heic", ".heif"]);
 const heicImageMimeTypes = new Set(["image/heic", "image/heif", "image/heic-sequence", "image/heif-sequence"]);
 const passthroughImageMimeTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml", "image/avif"]);
 const passthroughImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif"]);
+const galleryBulkItemsSchema = require("zod").z.object({
+  items: require("zod").z.array(
+    galleryItemSchema.pick({
+      title: true,
+      imageUrl: true,
+    }),
+  ).min(1),
+});
 
 function getImageExtension(fileName = "") {
   return path.extname(fileName).toLowerCase();
+}
+
+function humanizeFileName(value = "") {
+  return value
+    .replace(/\.[^.]+$/, "")
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildGalleryTitle(imageUrl = "", title = "", fallbackIndex = 0) {
+  const trimmedTitle = String(title || "").trim();
+
+  if (trimmedTitle.length >= 2) {
+    return trimmedTitle;
+  }
+
+  try {
+    const parsedUrl = new URL(imageUrl);
+    const fileName = decodeURIComponent(path.basename(parsedUrl.pathname));
+    const normalized = humanizeFileName(fileName);
+
+    if (normalized.length >= 2) {
+      return normalized;
+    }
+  } catch {
+    const normalized = humanizeFileName(String(imageUrl || ""));
+
+    if (normalized.length >= 2) {
+      return normalized;
+    }
+  }
+
+  return `Gallery image ${fallbackIndex || Date.now()}`;
+}
+
+async function getNextGallerySortOrder(client = prisma) {
+  const lastItem = await client.gallery.findFirst({
+    orderBy: { sortOrder: "desc" },
+    select: { sortOrder: true },
+  });
+
+  return Number(lastItem?.sortOrder || 0) + 1;
+}
+
+async function resequenceGallerySortOrder(client = prisma) {
+  const items = await client.gallery.findMany({
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+    select: { id: true },
+  });
+
+  if (!items.length) {
+    return;
+  }
+
+  await client.$transaction(
+    items.map((item, index) =>
+      client.gallery.update({
+        where: { id: item.id },
+        data: { sortOrder: index + 1 },
+      }),
+    ),
+  );
 }
 
 function isAcceptedImageUpload(file) {
@@ -242,6 +313,23 @@ router.post("/upload", upload.single("image"), async (request, response) => {
   response.status(201).json({
     url: fileUrl,
     filename: processedFile.filename,
+  });
+});
+
+router.post("/upload/bulk", upload.array("images", 30), async (request, response) => {
+  const uploadedFiles = Array.isArray(request.files) ? request.files : [];
+
+  if (!uploadedFiles.length) {
+    return response.status(400).json({ message: "No files uploaded" });
+  }
+
+  const processedFiles = await Promise.all(uploadedFiles.map((file) => normalizeUploadedImage(file)));
+
+  response.status(201).json({
+    files: processedFiles.map((file) => ({
+      filename: file.filename,
+      url: `${request.protocol}://${request.get("host")}/uploads/${file.filename}`,
+    })),
   });
 });
 
@@ -474,18 +562,48 @@ router.get("/gallery-items", async (request, response) => {
 
 router.post("/gallery-items", async (request, response) => {
   const data = galleryItemSchema.parse(request.body);
+  const nextSortOrder = await getNextGallerySortOrder();
   const item = await prisma.gallery.create({
-    data,
+    data: {
+      ...data,
+      title: buildGalleryTitle(data.imageUrl, data.title, nextSortOrder),
+      sortOrder: nextSortOrder,
+    },
     select: galleryAdminSelect,
   });
   response.status(201).json(item);
+});
+
+router.post("/gallery-items/bulk", async (request, response) => {
+  const { items } = galleryBulkItemsSchema.parse(request.body);
+  const createdItems = await prisma.$transaction(async (client) => {
+    const nextSortOrder = await getNextGallerySortOrder(client);
+
+    return Promise.all(
+      items.map((item, index) =>
+        client.gallery.create({
+          data: {
+            imageUrl: item.imageUrl,
+            title: buildGalleryTitle(item.imageUrl, item.title, nextSortOrder + index),
+            sortOrder: nextSortOrder + index,
+          },
+          select: galleryAdminSelect,
+        }),
+      ),
+    );
+  });
+
+  response.status(201).json(createdItems);
 });
 
 router.put("/gallery-items/:id", async (request, response) => {
   const data = galleryItemSchema.parse(request.body);
   const item = await prisma.gallery.update({
     where: { id: Number(request.params.id) },
-    data,
+    data: {
+      ...data,
+      title: buildGalleryTitle(data.imageUrl, data.title),
+    },
     select: galleryAdminSelect,
   });
   response.json(item);
@@ -493,6 +611,7 @@ router.put("/gallery-items/:id", async (request, response) => {
 
 router.delete("/gallery-items/:id", async (request, response) => {
   await prisma.gallery.delete({ where: { id: Number(request.params.id) } });
+  await resequenceGallerySortOrder();
   response.status(204).send();
 });
 
