@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
+const convertHeic = require("heic-convert");
 const sharp = require("sharp");
 const { prisma } = require("../config/prisma");
 const { requireAuth } = require("../middleware/auth");
@@ -24,6 +25,8 @@ if (!fs.existsSync(uploadsDirectory)) {
 }
 
 const acceptedImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif", ".bmp", ".heic", ".heif", ".tif", ".tiff"]);
+const heicImageExtensions = new Set([".heic", ".heif"]);
+const heicImageMimeTypes = new Set(["image/heic", "image/heif", "image/heic-sequence", "image/heif-sequence"]);
 const passthroughImageMimeTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml", "image/avif"]);
 const passthroughImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif"]);
 
@@ -45,6 +48,13 @@ function shouldKeepOriginalUpload(file) {
   return passthroughImageMimeTypes.has(mimeType) || passthroughImageExtensions.has(extension);
 }
 
+function isHeicUpload(file) {
+  const mimeType = String(file.mimetype || "").toLowerCase();
+  const extension = getImageExtension(file.originalname);
+
+  return heicImageMimeTypes.has(mimeType) || heicImageExtensions.has(extension);
+}
+
 async function normalizeUploadedImage(file) {
   if (shouldKeepOriginalUpload(file)) {
     return file;
@@ -54,11 +64,25 @@ async function normalizeUploadedImage(file) {
   const convertedFilePath = path.join(uploadsDirectory, convertedFileName);
 
   try {
-    await sharp(file.path)
-      .rotate()
-      .flatten({ background: "#ffffff" })
-      .jpeg({ quality: 82, mozjpeg: true })
-      .toFile(convertedFilePath);
+    if (isHeicUpload(file)) {
+      const inputBuffer = await fs.promises.readFile(file.path);
+      const convertedBuffer = await convertHeic({
+        buffer: inputBuffer,
+        format: "JPEG",
+        quality: 0.9,
+      });
+
+      await sharp(convertedBuffer)
+        .flatten({ background: "#ffffff" })
+        .jpeg({ quality: 82, mozjpeg: true })
+        .toFile(convertedFilePath);
+    } else {
+      await sharp(file.path)
+        .rotate()
+        .flatten({ background: "#ffffff" })
+        .jpeg({ quality: 82, mozjpeg: true })
+        .toFile(convertedFilePath);
+    }
 
     await fs.promises.unlink(file.path);
 
