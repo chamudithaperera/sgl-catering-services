@@ -561,10 +561,28 @@ export function HomePage() {
       return;
     }
 
-    track.scrollBy({
-      left: direction * Math.max(track.clientWidth * 0.78, 320),
-      behavior: "smooth",
-    });
+    const { scrollLeft, scrollWidth, clientWidth } = track;
+    const maxScroll = scrollWidth - clientWidth;
+
+    if (direction === 1 && scrollLeft + clientWidth >= scrollWidth - 15) {
+      // Loop to beginning
+      track.scrollTo({
+        left: 0,
+        behavior: "smooth",
+      });
+    } else if (direction === -1 && scrollLeft <= 15) {
+      // Loop to end
+      track.scrollTo({
+        left: maxScroll,
+        behavior: "smooth",
+      });
+    } else {
+      // Normal scroll
+      track.scrollBy({
+        left: direction * Math.max(clientWidth * 0.78, 320),
+        behavior: "smooth",
+      });
+    }
   }
 
   function handleNavAnchorClick(event, href) {
