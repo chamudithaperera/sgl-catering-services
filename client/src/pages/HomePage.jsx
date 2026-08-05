@@ -299,6 +299,7 @@ export function HomePage() {
   const gallerySectionRef = useRef(null);
   const galleryTrackRef = useRef(null);
   const galleryVideoRef = useRef(null);
+  const galleryScrollTimeoutRef = useRef(null);
 
   const siteConfig = content?.siteConfig;
   const webTexts = content?.webTexts || {};
@@ -571,21 +572,27 @@ export function HomePage() {
   }
 
   function handleGalleryScroll() {
-    const track = galleryTrackRef.current;
-    if (!track || !content?.gallery?.length) return;
-
-    const baseCount = content.gallery.length;
-    const firstItemOfSecondCopy = track.children[baseCount];
-    if (!firstItemOfSecondCopy) return;
-
-    const oneLoopWidth = firstItemOfSecondCopy.offsetLeft - track.children[0].offsetLeft;
-    const maxScroll = track.scrollWidth - track.clientWidth;
-
-    if (track.scrollLeft > maxScroll - 50) {
-      track.scrollLeft -= oneLoopWidth;
-    } else if (track.scrollLeft < 50) {
-      track.scrollLeft += oneLoopWidth;
+    if (galleryScrollTimeoutRef.current) {
+      clearTimeout(galleryScrollTimeoutRef.current);
     }
+
+    galleryScrollTimeoutRef.current = setTimeout(() => {
+      const track = galleryTrackRef.current;
+      if (!track || !content?.gallery?.length) return;
+
+      const baseCount = content.gallery.length;
+      const firstItemOfSecondCopy = track.children[baseCount];
+      if (!firstItemOfSecondCopy) return;
+
+      const oneLoopWidth = firstItemOfSecondCopy.offsetLeft - track.children[0].offsetLeft;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+
+      if (track.scrollLeft > maxScroll - 50) {
+        track.scrollLeft -= oneLoopWidth;
+      } else if (track.scrollLeft < 50) {
+        track.scrollLeft += oneLoopWidth;
+      }
+    }, 60);
   }
 
   useEffect(() => {
@@ -601,7 +608,12 @@ export function HomePage() {
       }
     }, 150);
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      clearTimeout(timeoutId);
+      if (galleryScrollTimeoutRef.current) {
+        clearTimeout(galleryScrollTimeoutRef.current);
+      }
+    };
   }, [content]);
 
   function handleNavAnchorClick(event, href) {
