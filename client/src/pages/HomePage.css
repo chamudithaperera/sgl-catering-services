@@ -884,9 +884,9 @@
 .premium-gallery-grid {
   display: grid;
   grid-auto-flow: column dense;
-  grid-auto-columns: clamp(58px, 5.2vw, 76px);
-  grid-template-rows: repeat(5, 52px);
-  gap: 14px;
+  grid-auto-columns: clamp(75px, 6.8vw, 98px);
+  grid-template-rows: repeat(5, 68px);
+  gap: 16px;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
@@ -2294,9 +2294,9 @@
   }
 
   .premium-gallery-grid {
-    grid-auto-columns: clamp(58px, 8vw, 74px);
-    grid-template-rows: repeat(4, 68px);
-    gap: 14px;
+    grid-auto-columns: clamp(75px, 10vw, 95px);
+    grid-template-rows: repeat(4, 88px);
+    gap: 16px;
     padding-inline: 58px;
     scroll-padding-inline: 58px;
   }
@@ -2650,9 +2650,9 @@
   }
 
   .premium-gallery-grid {
-    grid-auto-columns: clamp(48px, 13vw, 62px);
-    grid-template-rows: repeat(5, 58px);
-    gap: 10px;
+    grid-auto-columns: clamp(62px, 16vw, 80px);
+    grid-template-rows: repeat(5, 75px);
+    gap: 12px;
     padding-inline: 46px;
     scroll-padding-inline: 46px;
   }

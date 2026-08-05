@@ -817,7 +817,6 @@ export function HomePage() {
                   </div>
 
                   <h3>{service.title}</h3>
-                  <p>{service.description}</p>
 
                   <Link className="premium-service-button" to={service.href}>
                     <span>වැඩි විස්තර</span>
