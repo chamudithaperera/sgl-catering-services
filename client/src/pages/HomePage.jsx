@@ -322,12 +322,15 @@ export function HomePage() {
     description: getWebText(webTexts, service.textKey).descriptionSinhala,
     image: findServiceImageByKey(serviceImages, service.imageKey, index)?.imageUrl || "",
   }));
-  const homepageGallery = (content?.gallery || []).map((item, index) => ({
+  const baseGallery = (content?.gallery || []).map((item, index) => ({
     title: item.title,
     image: item.imageUrl,
     layout: ["hero", "portrait", "compact", "square", "landscape"][index % 5],
     position: "center center",
   }));
+  const homepageGallery = baseGallery.length > 0
+    ? [...baseGallery, ...baseGallery, ...baseGallery]
+    : [];
   const whyChooseItems = Array.isArray(content?.whyChooseItems)
     ? content.whyChooseItems.map((item) => ({
         english: item.titleEnglish,
@@ -561,29 +564,44 @@ export function HomePage() {
       return;
     }
 
-    const { scrollLeft, scrollWidth, clientWidth } = track;
-    const maxScroll = scrollWidth - clientWidth;
+    track.scrollBy({
+      left: direction * Math.max(track.clientWidth * 0.78, 320),
+      behavior: "smooth",
+    });
+  }
 
-    if (direction === 1 && scrollLeft + clientWidth >= scrollWidth - 15) {
-      // Loop to beginning
-      track.scrollTo({
-        left: 0,
-        behavior: "smooth",
-      });
-    } else if (direction === -1 && scrollLeft <= 15) {
-      // Loop to end
-      track.scrollTo({
-        left: maxScroll,
-        behavior: "smooth",
-      });
-    } else {
-      // Normal scroll
-      track.scrollBy({
-        left: direction * Math.max(clientWidth * 0.78, 320),
-        behavior: "smooth",
-      });
+  function handleGalleryScroll() {
+    const track = galleryTrackRef.current;
+    if (!track || !content?.gallery?.length) return;
+
+    const baseCount = content.gallery.length;
+    const firstItemOfSecondCopy = track.children[baseCount];
+    if (!firstItemOfSecondCopy) return;
+
+    const oneLoopWidth = firstItemOfSecondCopy.offsetLeft - track.children[0].offsetLeft;
+
+    if (track.scrollLeft >= oneLoopWidth * 2) {
+      track.scrollLeft -= oneLoopWidth;
+    } else if (track.scrollLeft <= 5) {
+      track.scrollLeft += oneLoopWidth;
     }
   }
+
+  useEffect(() => {
+    const track = galleryTrackRef.current;
+    if (!track || !content?.gallery?.length) return;
+
+    const timeoutId = setTimeout(() => {
+      const baseCount = content.gallery.length;
+      const firstItemOfSecondCopy = track.children[baseCount];
+      if (firstItemOfSecondCopy) {
+        const offset = firstItemOfSecondCopy.offsetLeft - track.children[0].offsetLeft;
+        track.scrollLeft = offset;
+      }
+    }, 150);
+
+    return () => clearTimeout(timeoutId);
+  }, [content]);
 
   function handleNavAnchorClick(event, href) {
     const section = document.getElementById(href.slice(1));
@@ -885,10 +903,10 @@ export function HomePage() {
               >
                 <ChevronLeft size={24} />
               </button>
-              <div className="premium-gallery-grid" ref={galleryTrackRef}>
-                {homepageGallery.map((item) => (
+              <div className="premium-gallery-grid" ref={galleryTrackRef} onScroll={handleGalleryScroll}>
+                {homepageGallery.map((item, index) => (
                   <button
-                    key={`${item.title}-${item.image}`}
+                    key={`${item.title}-${item.image}-${index}`}
                     className={`premium-gallery-card premium-gallery-card-${item.layout} premium-reveal premium-reveal-gallery`}
                     data-reveal
                     type="button"
