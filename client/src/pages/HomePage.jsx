@@ -241,7 +241,7 @@ function useAutoplayVideo(videoRef, shouldPlay) {
       const playPromise = video.play();
 
       if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {});
+        playPromise.catch(() => { });
       }
     };
 
@@ -333,9 +333,9 @@ export function HomePage() {
     : [];
   const whyChooseItems = Array.isArray(content?.whyChooseItems)
     ? content.whyChooseItems.map((item) => ({
-        english: item.titleEnglish,
-        sinhala: item.titleSinhala,
-      }))
+      english: item.titleEnglish,
+      sinhala: item.titleSinhala,
+    }))
     : buildLegacyWhyChooseItems(whyChooseText);
   const homepageReviews = (content?.reviews || []).map((review) => ({
     name: review.customerName,
@@ -579,10 +579,11 @@ export function HomePage() {
     if (!firstItemOfSecondCopy) return;
 
     const oneLoopWidth = firstItemOfSecondCopy.offsetLeft - track.children[0].offsetLeft;
+    const maxScroll = track.scrollWidth - track.clientWidth;
 
-    if (track.scrollLeft >= oneLoopWidth * 2) {
+    if (track.scrollLeft >= maxScroll - 15) {
       track.scrollLeft -= oneLoopWidth;
-    } else if (track.scrollLeft <= 5) {
+    } else if (track.scrollLeft <= 15) {
       track.scrollLeft += oneLoopWidth;
     }
   }
