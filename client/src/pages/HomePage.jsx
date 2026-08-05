@@ -581,9 +581,9 @@ export function HomePage() {
     const oneLoopWidth = firstItemOfSecondCopy.offsetLeft - track.children[0].offsetLeft;
     const maxScroll = track.scrollWidth - track.clientWidth;
 
-    if (track.scrollLeft >= maxScroll - 15) {
+    if (track.scrollLeft > maxScroll - 50) {
       track.scrollLeft -= oneLoopWidth;
-    } else if (track.scrollLeft <= 15) {
+    } else if (track.scrollLeft < 50) {
       track.scrollLeft += oneLoopWidth;
     }
   }
