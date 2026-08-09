@@ -496,14 +496,11 @@ export function ServiceShowcasePage({ page }) {
       <footer className="service-page-footer">
         <div className="service-page-footer-shell">
           <p>
-            © {currentYear}{" "}
-            <a href="https://sglcateringservice.lk/" target="_blank" rel="noreferrer">
-              {contactConfig?.businessName || managedPage.englishTitle || managedPage.title || "SGL Catering Service"}
-            </a>
-            {" | "}
-            Designed & developed by{" "}
+            © 2026 SGL Catering Service. All Rights Reserved.
+            <br />
+            Designed and developed by{" "}
             <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
-              Chamuditha Perera
+              chamudithaperera.online
             </a>
           </p>
         </div>

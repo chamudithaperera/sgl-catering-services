@@ -1218,14 +1218,11 @@ export function HomePage() {
       <footer className="premium-footer">
         <div className="premium-footer-shell">
           <p>
-            © {currentYear}{" "}
-            <a href="https://sglcateringservice.lk/" target="_blank" rel="noreferrer">
-              {heroText.titleEnglish || heroText.titleSinhala || "SGL Catering Service"}
-            </a>
-            {" | "}
-            Designed & developed by{" "}
+            © 2026 SGL Catering Service. All Rights Reserved.
+            <br />
+            Designed and developed by{" "}
             <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
-              Chamuditha Perera
+              chamudithaperera.online
             </a>
           </p>
         </div>
