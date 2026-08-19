@@ -27,8 +27,8 @@ if (!fs.existsSync(uploadsDirectory)) {
 const acceptedImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif", ".bmp", ".heic", ".heif", ".tif", ".tiff"]);
 const heicImageExtensions = new Set([".heic", ".heif"]);
 const heicImageMimeTypes = new Set(["image/heic", "image/heif", "image/heic-sequence", "image/heif-sequence"]);
-const passthroughImageMimeTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml", "image/avif"]);
-const passthroughImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif"]);
+const passthroughImageMimeTypes = new Set(["image/gif", "image/svg+xml"]);
+const passthroughImageExtensions = new Set([".gif", ".svg"]);
 const galleryBulkItemsSchema = require("zod").z.object({
   items: require("zod").z.array(
     galleryItemSchema.pick({
@@ -144,14 +144,27 @@ async function normalizeUploadedImage(file) {
       });
 
       await sharp(convertedBuffer)
+        .rotate()
+        .resize({
+          width: 1200,
+          height: 1200,
+          fit: "inside",
+          withoutEnlargement: true,
+        })
         .flatten({ background: "#ffffff" })
-        .jpeg({ quality: 82, mozjpeg: true })
+        .jpeg({ quality: 80, mozjpeg: true })
         .toFile(convertedFilePath);
     } else {
       await sharp(file.path)
         .rotate()
+        .resize({
+          width: 1200,
+          height: 1200,
+          fit: "inside",
+          withoutEnlargement: true,
+        })
         .flatten({ background: "#ffffff" })
-        .jpeg({ quality: 82, mozjpeg: true })
+        .jpeg({ quality: 80, mozjpeg: true })
         .toFile(convertedFilePath);
     }
 
