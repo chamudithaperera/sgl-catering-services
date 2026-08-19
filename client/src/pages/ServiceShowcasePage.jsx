@@ -499,7 +499,7 @@ export function ServiceShowcasePage({ page }) {
             © 2026 SGL Catering Service. All Rights Reserved.
             <br />
             Designed and developed by{" "}
-            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer">
+            <a href="https://chamudithaperera.online" target="_blank" rel="noreferrer" style={{ color: "#ffffff", fontWeight: "bold" }}>
               chamudithaperera.online
             </a>
           </p>
